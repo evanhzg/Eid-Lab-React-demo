@@ -1,47 +1,55 @@
-import { useState } from 'react';
-import useSWR from 'swr';
+import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import usePagination from '../components/Pagination';
 import { Icon } from '@iconify/react';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Tooltip, OverlayTrigger, Modal, Button, Form } from 'react-bootstrap';
 
 import 'react-widgets/styles.css';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import NumberPicker from 'react-widgets/NumberPicker';
+import axios from 'axios';
+import ResizableTable from '../components/ResizableTable';
 
 interface User {
-	id: number;
+	_id?: string;
+	numericId?: number;
 	name: string;
 	username: string;
 	email: string;
 	phone: string;
 }
 
-const fetcher = (url: string): Promise<User[]> =>
-	fetch(url).then((res) => res.json());
-
 const Users = () => {
-	const [usersPerPage, setUsersPerPage] = useState<number>(9);
+	const [usersPerPage, setUsersPerPage] = useState<number>(5);
 	const [filterLongUsernames, setFilterLongUsernames] =
 		useState<boolean>(false);
 	const [sortConfig, setSortConfig] = useState<{
 		key: keyof User;
 		direction: 'asc' | 'desc';
-	}>({ key: 'id', direction: 'asc' });
+	}>({ key: 'numericId', direction: 'asc' });
 	const { currentPage, goToPage, paginate } = usePagination<User>(usersPerPage);
 
-	const { data: users, error } = useSWR<User[]>(
-		`https://jsonplaceholder.typicode.com/users?page=${currentPage}`,
-		fetcher
-	);
-
-	if (error) return <div>Failed to load users</div>;
+	const [users, setUsers] = useState<User[]>([]);
+	const [editingUser, setEditingUser] = useState<User | null>(null);
+	const [isEditing, setIsEditing] = useState(false);
+	const [newUser, setNewUser] = useState<User>({
+		name: '',
+		username: '',
+		email: '',
+		phone: '',
+	});
+	useEffect(() => {
+		axios
+			.get('http://localhost:5000/users')
+			.then((response) => setUsers(response.data))
+			.catch((error: any) => console.error('Error fetching users:', error));
+	}, []);
 	if (!users) return <div>Loading...</div>;
 
 	const filteredUsers = filterLongUsernames
-		? users.filter((user) => user.username.length < 9)
+		? users.filter((user: any) => user.username.length < 9)
 		: users;
 
 	const sortedUsers = [...filteredUsers].sort((a, b) => {
@@ -56,7 +64,31 @@ const Users = () => {
 		return 0;
 	});
 
-	const paginatedItems = paginate({ users: sortedUsers });
+	const [showAddModal, setShowAddModal] = useState(false);
+
+	const handleAddModalClose = () => {
+		setShowAddModal(false);
+		setIsEditing(false);
+		setNewUser({
+			name: '',
+			username: '',
+			email: '',
+			phone: '',
+		});
+	};
+
+	const handleAddModalShow = () => {
+		setShowAddModal(true);
+		setIsEditing(false);
+	};
+
+	const handleEditModalShow = (user: User) => {
+		setEditingUser(user);
+		setIsEditing(true);
+		setShowAddModal(true);
+	};
+
+	const paginatedIUsers = paginate({ users: sortedUsers });
 	const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 	const isLastPage = currentPage >= totalPages;
 
@@ -68,6 +100,8 @@ const Users = () => {
 		setSortConfig({ key, direction });
 	};
 
+	const columns = ['numericId', 'name', 'username', 'email', 'phone'];
+
 	const renderSortIcon = (key: keyof User) => {
 		if (sortConfig.key !== key) return null;
 		if (sortConfig.direction === 'asc')
@@ -77,154 +111,238 @@ const Users = () => {
 		return null;
 	};
 
-	const renderTooltip = (props) => (
-		<Tooltip
-			id='button-tooltip'
-			{...props}>
-			{props.text}
-		</Tooltip>
-	);
+	const handleAddUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (isEditing && editingUser) {
+			setEditingUser({ ...editingUser, [e.target.name]: e.target.value });
+		} else {
+			setNewUser({ ...newUser, [e.target.name]: e.target.value });
+		}
+	};
+
+	const handleAddUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		if (isEditing && editingUser) {
+			axios
+				.put(`http://localhost:5000/users/${editingUser._id}`, editingUser)
+				.then((response) => {
+					const updatedUser: User = response.data.user;
+					setUsers((prevUsers) =>
+						prevUsers.map((user) =>
+							user._id === updatedUser._id ? updatedUser : user
+						)
+					);
+					setEditingUser(null);
+					setIsEditing(false);
+				})
+				.catch((error) => console.error('Error updating user:', error));
+		} else {
+			axios
+				.post('http://localhost:5000/users/create', newUser)
+				.then((response) => {
+					const createdUser: User = response.data.user;
+					setUsers((prevUsers) => [...prevUsers, createdUser]);
+				})
+				.catch((error) => console.error('Error creating user:', error));
+		}
+
+		setShowAddModal(false);
+		setNewUser({
+			name: '',
+			username: '',
+			email: '',
+			phone: '',
+		});
+	};
+
+	const handleDeleteUser = (userId: string) => {
+		axios
+			.delete(`http://localhost:5000/users/${userId}`)
+			.then(() => {
+				setUsers((prevUsers) =>
+					prevUsers.filter((user) => user._id !== userId)
+				);
+			})
+			.catch((error) => console.error('Error deleting user:', error));
+	};
+
 	return (
-		<div className='my-2 mx-4 d-flex flex-column w-75'>
-			<h1>Utilisateurs</h1>
+		<div className='d-flex'>
+			<div className='my-2 mx-4 d-flex flex-column w-75'>
+				<h1>Utilisateurs</h1>
 
-			<div className='pb-2 d-flex align-items-end justify-content-between'>
-				<p className='ms-2 mb-0 fw-light fst-italic'>
-					{filteredUsers.length} résultats.
-				</p>
-				<div className='d-flex gap-2 align-items-end'>
-					<button
-						onClick={() => setFilterLongUsernames(!filterLongUsernames)}
-						className={`border border-light p-1 d-inline-flex align-items-center justify-content-center ${
-							!filterLongUsernames
-								? 'border-light bg-light'
-								: 'border-dark bg-dark'
-						}`}
-						style={{ width: '40px', height: '40px' }}>
-						<Icon
-							icon={'lucide:arrow-down-10'}
-							color={`${!filterLongUsernames ? 'black' : 'white'}`}
-						/>
-					</button>
+				<div className='pb-2 d-flex align-items-end justify-content-between'>
+					<p className='ms-2 mb-0 fw-light fst-italic'>
+						{filteredUsers.length} résultats.
+					</p>
+					<div className='d-flex gap-2 align-items-end'>
+						<button
+							onClick={handleAddModalShow}
+							className='bg-success d-inline-flex p-1 align-items-center justify-content-center'
+							style={{ width: '40px', height: '40px' }}>
+							<Icon
+								icon='basil:add-solid'
+								color='white'
+							/>
+						</button>
 
-					<div className='text-start'>
-						<label className='fw-bold'>
-							Élmts / page <span className='fst-italic fw-light'>(3-9)</span>
-						</label>
-						<NumberPicker
-							className='w-10rem'
-							defaultValue={usersPerPage}
-							max={9}
-							min={3}
-							onChange={(value) => {
-								if (value !== null && value > 0) {
-									setUsersPerPage(value);
-								}
-							}}
-						/>
+						{/* add/edit modal */}
+						<Modal
+							show={showAddModal}
+							onHide={handleAddModalClose}>
+							<Modal.Header closeButton>
+								<Modal.Title>
+									{isEditing ? 'Modifier' : 'Ajouter'} un utilisateur
+								</Modal.Title>
+							</Modal.Header>
+							<Modal.Body>
+								<Form onSubmit={handleAddUserSubmit}>
+									<Form.Group
+										className='mb-3'
+										controlId='formBasicName'>
+										<Form.Label>Nom</Form.Label>
+										<Form.Control
+											type='text'
+											placeholder='John Doe'
+											name='name'
+											value={isEditing ? editingUser?.name : newUser.name} // Use editingUser if editing
+											onChange={handleAddUserChange}
+											required
+										/>
+									</Form.Group>
+
+									<Form.Group
+										className='mb-3'
+										controlId='formBasicUsername'>
+										<Form.Label>Pseudo</Form.Label>
+										<Form.Control
+											type='text'
+											placeholder='johnny69'
+											name='username'
+											value={
+												isEditing ? editingUser?.username : newUser.username
+											} // Use editingUser if editing
+											onChange={handleAddUserChange}
+											required
+										/>
+									</Form.Group>
+
+									<Form.Group
+										className='mb-3'
+										controlId='formBasicEmail'>
+										<Form.Label>Email</Form.Label>
+										<Form.Control
+											type='email'
+											placeholder='johndoe@test.com'
+											name='email'
+											value={isEditing ? editingUser?.email : newUser.email} // Use editingUser if editing
+											onChange={handleAddUserChange}
+											required
+										/>
+									</Form.Group>
+
+									<Form.Group
+										className='mb-3'
+										controlId='formBasicPhone'>
+										<Form.Label>Téléphone</Form.Label>
+										<Form.Control
+											type='text'
+											placeholder='0612345678'
+											name='phone'
+											value={isEditing ? editingUser?.phone : newUser.phone} // Use editingUser if editing
+											onChange={handleAddUserChange}
+											required
+										/>
+									</Form.Group>
+
+									<Button
+										variant='success'
+										type='submit'>
+										{isEditing ? 'Modifier' : 'Créer'}
+									</Button>
+								</Form>
+							</Modal.Body>
+							<Modal.Footer>
+								<Button
+									variant='secondary'
+									onClick={handleAddModalClose}>
+									Fermer
+								</Button>
+							</Modal.Footer>
+						</Modal>
+
+						<button
+							onClick={() => setFilterLongUsernames(!filterLongUsernames)}
+							className={`border border-light p-1 d-inline-flex align-items-center justify-content-center ${
+								!filterLongUsernames
+									? 'border-light bg-light'
+									: 'border-dark bg-dark'
+							}`}
+							style={{ width: '40px', height: '40px' }}>
+							<Icon
+								icon={'lucide:arrow-down-10'}
+								color={`${!filterLongUsernames ? 'black' : 'white'}`}
+							/>
+						</button>
+
+						<div className='text-start'>
+							<label className='fw-bold'>
+								Élmts / page <span className='fst-italic fw-light'>(3-5)</span>
+							</label>
+							<NumberPicker
+								className='w-10rem'
+								defaultValue={usersPerPage}
+								max={5}
+								min={3}
+								onChange={(value) => {
+									if (value !== null && value > 0) {
+										setUsersPerPage(value);
+									}
+								}}
+							/>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<Table
-				className='table-fixed'
-				striped
-				bordered
-				hover>
-				<thead>
-					<tr>
-						<th
-							className='user-select-none numeric-col cursor-pointer'
-							role='button'
-							onClick={() => requestSort('id')}>
-							ID {renderSortIcon('id')}
-						</th>
-						<th
-							className='user-select-none cursor-pointer'
-							role='button'
-							onClick={() => requestSort('name')}>
-							Nom {renderSortIcon('name')}
-						</th>
-						<th
-							className='user-select-none cursor-pointer'
-							role='button'
-							onClick={() => requestSort('username')}>
-							Pseudo {renderSortIcon('username')}
-						</th>
-						<th
-							className='user-select-none cursor-pointer'
-							role='button'
-							onClick={() => requestSort('email')}>
-							Email {renderSortIcon('email')}
-						</th>
-						<th
-							className='user-select-none cursor-pointer'
-							role='button'
-							onClick={() => requestSort('phone')}>
-							Téléphone {renderSortIcon('phone')}
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{paginatedItems.map((user) => (
-						<tr key={user.id}>
-							<td className='numeric-col'>{user.id}</td>
-							<td>
-								<OverlayTrigger
-									placement='top'
-									overlay={renderTooltip({ text: user.name })}>
-									<div className='ellipsis'>{user.name}</div>
-								</OverlayTrigger>
-							</td>
-							<td>
-								<OverlayTrigger
-									placement='top'
-									overlay={renderTooltip({ text: user.username })}>
-									<div className='ellipsis'>{user.username}</div>
-								</OverlayTrigger>
-							</td>
-							<td>
-								<OverlayTrigger
-									placement='top'
-									overlay={renderTooltip({ text: user.email })}>
-									<div className='ellipsis'>{user.email}</div>
-								</OverlayTrigger>
-							</td>
-							<td>
-								<OverlayTrigger
-									placement='top'
-									overlay={renderTooltip({ text: user.phone })}>
-									<div className='ellipsis'>{user.phone}</div>
-								</OverlayTrigger>
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</Table>
-			{/* PREV-NEXT BTNS */}
-			<div className='d-flex gap-3'>
-				<button
-					onClick={() => goToPage(currentPage - 1)}
-					disabled={currentPage === 1}>
-					Previous
-				</button>
-				<div className='d-flex gap-2'>
-					{Array.from({ length: totalPages }, (_, index) => index + 1).map(
-						(page) => (
-							<button
-								key={page}
-								onClick={() => goToPage(page)}
-								disabled={page === currentPage}>
-								{page}
-							</button>
-						)
-					)}
+				<ResizableTable
+					columns={columns}
+					data={paginatedIUsers}
+					sortConfig={sortConfig}
+					requestSort={requestSort}
+					renderSortIcon={renderSortIcon}
+					handleEditModalShow={handleEditModalShow}
+					handleDeleteUser={handleDeleteUser}
+				/>
+
+				{/* PREV-NEXT BTNS */}
+				<div className='d-flex gap-3'>
+					<button
+						onClick={() => goToPage(currentPage - 1)}
+						disabled={currentPage === 1}>
+						Previous
+					</button>
+					<div className='d-flex gap-2'>
+						{Array.from({ length: totalPages }, (_, index) => index + 1).map(
+							(page) => (
+								<button
+									key={page}
+									onClick={() => goToPage(page)}
+									disabled={page === currentPage}>
+									{page}
+								</button>
+							)
+						)}
+					</div>
+					<button
+						onClick={() => goToPage(currentPage + 1)}
+						disabled={isLastPage}>
+						Next
+					</button>
 				</div>
-				<button
-					onClick={() => goToPage(currentPage + 1)}
-					disabled={isLastPage}>
-					Next
-				</button>
+			</div>
+			{/* INFOS */}
+			<div className='d-flex flex-column align-items-center flex-fill'>
+				<h2>Informations</h2>
 			</div>
 		</div>
 	);
