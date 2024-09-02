@@ -68,7 +68,7 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 
 	return (
 		<div
-			className='resizable-table'
+			className='resizable-table py-2'
 			ref={tableRef}>
 			<table className='table-fixed table-striped table-bordered table-hover'>
 				<thead>

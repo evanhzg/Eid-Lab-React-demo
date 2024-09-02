@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 import usePagination from '../components/Pagination';
 import { Icon } from '@iconify/react';
 import { Tooltip, OverlayTrigger, Modal, Button, Form } from 'react-bootstrap';
-
+import Select from 'react-select';
 import 'react-widgets/styles.css';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -40,6 +40,16 @@ const Users = () => {
 		email: '',
 		phone: '',
 	});
+	const [searchQuery, setSearchQuery] = useState('');
+	const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+	const filterOptions = [
+		{ value: 'name', label: 'Name' },
+		{ value: 'username', label: 'Username' },
+		{ value: 'email', label: 'Email' },
+		{ value: 'phone', label: 'Phone' },
+	];
+	const [isMultiselectVisible, setMultiselectVisible] = useState(false);
+
 	useEffect(() => {
 		axios
 			.get('http://localhost:5000/users')
@@ -48,9 +58,23 @@ const Users = () => {
 	}, []);
 	if (!users) return <div>Loading...</div>;
 
-	const filteredUsers = filterLongUsernames
-		? users.filter((user: any) => user.username.length < 9)
-		: users;
+	const filteredUsers = users.filter((user) => {
+		// Apply the long usernames filter
+		if (filterLongUsernames && user.username.length >= 9) {
+			return false;
+		}
+
+		// Apply the search and selected filters
+		const userValues =
+			selectedFilters.length > 0
+				? selectedFilters
+						.map((filter) => user[filter] || '')
+						.join(' ')
+						.toLowerCase()
+				: Object.values(user).join(' ').toLowerCase();
+
+		return userValues.includes(searchQuery.toLowerCase());
+	});
 
 	const sortedUsers = [...filteredUsers].sort((a, b) => {
 		const aValue = a[sortConfig.key];
@@ -88,7 +112,7 @@ const Users = () => {
 		setShowAddModal(true);
 	};
 
-	const paginatedIUsers = paginate({ users: sortedUsers });
+	const paginatedUsers = paginate({ users: sortedUsers });
 	const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 	const isLastPage = currentPage >= totalPages;
 
@@ -166,22 +190,101 @@ const Users = () => {
 			.catch((error) => console.error('Error deleting user:', error));
 	};
 
+	const handleCreateDefaultUser = () => {
+		const defaultUser = {
+			name: 'John Doe',
+			username: 'johndoe',
+			email: 'john@doe.com',
+			phone: '0123456789',
+		};
+
+		axios
+			.post('http://localhost:5000/users/create', defaultUser)
+			.then((response) => {
+				const createdUser = response.data;
+				setUsers((prevUsers) => [...prevUsers, createdUser]);
+			})
+			.catch((error) => console.error('Error creating default user:', error));
+	};
+
+	const isFirstPage = currentPage === 1;
+
+	const generatePageButtons = () => {
+		let pages: (number | string)[] = [];
+
+		if (totalPages <= 5) {
+			pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+		} else {
+			if (currentPage <= 3) {
+				pages = [1, 2, 3, 4, '...', totalPages];
+			} else if (currentPage >= totalPages - 2) {
+				pages = [
+					1,
+					'...',
+					totalPages - 3,
+					totalPages - 2,
+					totalPages - 1,
+					totalPages,
+				];
+			} else {
+				pages = [
+					1,
+					'...',
+					currentPage - 1,
+					currentPage,
+					currentPage + 1,
+					'...',
+					totalPages,
+				];
+			}
+		}
+
+		return pages;
+	};
+
 	return (
 		<div className='d-flex'>
 			<div className='my-2 mx-4 d-flex flex-column w-75'>
 				<h1>Utilisateurs</h1>
 
-				<div className='pb-2 d-flex align-items-end justify-content-between'>
-					<p className='ms-2 mb-0 fw-light fst-italic'>
-						{filteredUsers.length} résultats.
-					</p>
+				<div className='d-flex align-items-end justify-content-between'>
+					<div className='d-flex flex-column w-25'>
+						<div className='d-flex w-100 justify-content-between gap-2'>
+							<input
+								className='searchbar'
+								type='text'
+								placeholder='Search...'
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
+							/>
+							<button
+								onClick={() => setMultiselectVisible(!isMultiselectVisible)}
+								className='bg-dark'>
+								<Icon
+									className='fs-6'
+									icon='mdi:filter-menu'
+									color='white'
+								/>
+							</button>
+						</div>
+					</div>
+
 					<div className='d-flex gap-2 align-items-end'>
 						<button
-							onClick={handleAddModalShow}
-							className='bg-success d-inline-flex p-1 align-items-center justify-content-center'
-							style={{ width: '40px', height: '40px' }}>
+							onClick={handleCreateDefaultUser}
+							className='bg-warning'>
 							<Icon
-								icon='basil:add-solid'
+								className='fs-6'
+								icon='mdi:cursor-default-click'
+								color='black'
+							/>
+						</button>
+						<button
+							onClick={handleAddModalShow}
+							className='bg-success'>
+							<Icon
+								className='fs-6'
+								icon='mingcute:user-add-fill'
 								color='white'
 							/>
 						</button>
@@ -271,20 +374,6 @@ const Users = () => {
 							</Modal.Footer>
 						</Modal>
 
-						<button
-							onClick={() => setFilterLongUsernames(!filterLongUsernames)}
-							className={`border border-light p-1 d-inline-flex align-items-center justify-content-center ${
-								!filterLongUsernames
-									? 'border-light bg-light'
-									: 'border-dark bg-dark'
-							}`}
-							style={{ width: '40px', height: '40px' }}>
-							<Icon
-								icon={'lucide:arrow-down-10'}
-								color={`${!filterLongUsernames ? 'black' : 'white'}`}
-							/>
-						</button>
-
 						<div className='text-start'>
 							<label className='fw-bold'>
 								Élmts / page <span className='fst-italic fw-light'>(3-5)</span>
@@ -303,10 +392,39 @@ const Users = () => {
 						</div>
 					</div>
 				</div>
+				<div className='d-flex pt-2 gap-2'>
+					{isMultiselectVisible && (
+						<>
+							<Select
+								className='w-50 multiselect'
+								isMulti
+								options={filterOptions}
+								onChange={(selectedOptions) =>
+									setSelectedFilters(
+										selectedOptions.map((option) => option.value)
+									)
+								}
+							/>
 
+							<button
+								onClick={() => setFilterLongUsernames(!filterLongUsernames)}
+								className={`border border-light ${
+									!filterLongUsernames
+										? 'border-light bg-light'
+										: 'border-dark bg-dark'
+								}`}>
+								<Icon
+									className='fs-6'
+									icon={'lucide:arrow-down-10'}
+									color={`${!filterLongUsernames ? 'black' : 'white'}`}
+								/>
+							</button>
+						</>
+					)}
+				</div>
 				<ResizableTable
 					columns={columns}
-					data={paginatedIUsers}
+					data={paginatedUsers}
 					sortConfig={sortConfig}
 					requestSort={requestSort}
 					renderSortIcon={renderSortIcon}
@@ -315,29 +433,36 @@ const Users = () => {
 				/>
 
 				{/* PREV-NEXT BTNS */}
-				<div className='d-flex gap-3'>
-					<button
-						onClick={() => goToPage(currentPage - 1)}
-						disabled={currentPage === 1}>
-						Previous
-					</button>
-					<div className='d-flex gap-2'>
-						{Array.from({ length: totalPages }, (_, index) => index + 1).map(
-							(page) => (
+				<div className='d-flex justify-content-between align-items-center'>
+					<div className='d-flex gap-3'>
+						<button
+							onClick={() => goToPage(currentPage - 1)}
+							disabled={isFirstPage}>
+							Previous
+						</button>
+						<div className='d-flex gap-2'>
+							{generatePageButtons().map((page, index) => (
 								<button
-									key={page}
-									onClick={() => goToPage(page)}
+									key={index}
+									onClick={() => {
+										if (typeof page === 'number') {
+											goToPage(page);
+										}
+									}}
 									disabled={page === currentPage}>
 									{page}
 								</button>
-							)
-						)}
+							))}
+						</div>
+						<button
+							onClick={() => goToPage(currentPage + 1)}
+							disabled={isLastPage}>
+							Next
+						</button>
 					</div>
-					<button
-						onClick={() => goToPage(currentPage + 1)}
-						disabled={isLastPage}>
-						Next
-					</button>
+					<p className='ms-2 mb-0 fw-light fst-italic'>
+						{filteredUsers.length} résultats.
+					</p>
 				</div>
 			</div>
 			{/* INFOS */}
