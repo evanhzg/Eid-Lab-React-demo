@@ -1,37 +1,38 @@
 .resizable-table {
-    overflow-x: auto;
+	overflow-x: auto;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
 }
 
-th, td {
-    padding: 8px;
-    text-align: left;
-    position: relative;
+th,
+td {
+	padding: 8px;
+	text-align: left;
+	position: relative;
 }
 
 th .resizer {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 5px;
-    cursor: col-resize;
-    user-select: none;
-    height: 100%;
-    background-color: transparent;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 5px;
+	cursor: col-resize;
+	student-select: none;
+	height: 100%;
+	background-color: transparent;
 }
 
 th .resizer:hover {
-    background-color: #ccc;
+	background-color: #ccc;
 }
 
 .ellipsis {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: default;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: default;
 }

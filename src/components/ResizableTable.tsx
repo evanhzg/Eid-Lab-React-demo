@@ -3,7 +3,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './ResizableTable.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
-interface User {
+interface Student {
 	_id?: string;
 	numericId?: number;
 	name: string;
@@ -14,12 +14,12 @@ interface User {
 
 interface ResizableTableProps {
 	columns: string[];
-	data: User[];
-	sortConfig: { key: keyof User; direction: 'asc' | 'desc' };
-	requestSort: (key: keyof User) => void;
-	renderSortIcon: (key: keyof User) => JSX.Element | null;
-	handleEditModalShow: (userId: string) => void;
-	handleDeleteUser: (user: User) => void;
+	data: Student[];
+	sortConfig: { key: keyof Student; direction: 'asc' | 'desc' };
+	requestSort: (key: keyof Student) => void;
+	renderSortIcon: (key: keyof Student) => JSX.Element | null;
+	handleEditModalShow: (studentId: string) => void;
+	handleDeleteStudent: (student: Student) => void;
 }
 
 const ResizableTable: React.FC<ResizableTableProps> = ({
@@ -29,7 +29,7 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 	requestSort,
 	renderSortIcon,
 	handleEditModalShow,
-	handleDeleteUser,
+	handleDeleteStudent,
 }) => {
 	const [colWidths, setColWidths] = useState(
 		new Array(columns.length).fill(150)
@@ -77,9 +77,9 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 							<th
 								key={index}
 								style={{ width: `${colWidths[index]}px` }}
-								className='user-select-none cursor-pointer'
-								onClick={() => requestSort(col as keyof User)}>
-								{col} {renderSortIcon(col as keyof User)}
+								className='student-select-none cursor-pointer'
+								onClick={() => requestSort(col as keyof Student)}>
+								{col} {renderSortIcon(col as keyof Student)}
 								<div
 									className='resizer'
 									onMouseDown={handleMouseDown(index)}
@@ -90,7 +90,7 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((user, rowIndex) => (
+					{data.map((student, rowIndex) => (
 						<tr key={rowIndex}>
 							{columns.map((col, colIndex) => (
 								<td
@@ -99,11 +99,11 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 									<OverlayTrigger
 										placement='top'
 										overlay={renderTooltip({
-											text: user[col as keyof User],
+											text: student[col as keyof Student],
 										})}>
 										<div className='ellipsis'>
-											{user[col as keyof User] !== undefined
-												? user[col as keyof User]
+											{student[col as keyof Student] !== undefined
+												? student[col as keyof Student]
 												: 'Loading...'}
 										</div>
 									</OverlayTrigger>
@@ -112,13 +112,13 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 							<td>
 								<div className='d-flex justify-content-center gap-3'>
 									<button
-										onClick={() => handleEditModalShow(user)}
+										onClick={() => handleEditModalShow(student)}
 										className='bg-dark d-inline-flex p-1 align-items-center justify-content-center'
 										style={{ width: '25px', height: '25px' }}>
 										<Icon icon='iconamoon:edit-fill' />
 									</button>
 									<button
-										onClick={() => handleDeleteUser(user._id)}
+										onClick={() => handleDeleteStudent(student._id)}
 										className='bg-danger d-inline-flex p-1 align-items-center justify-content-center'
 										style={{ width: '25px', height: '25px' }}>
 										<Icon icon='mdi:delete-off' />

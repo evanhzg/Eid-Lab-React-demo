@@ -11,7 +11,7 @@ import NumberPicker from 'react-widgets/NumberPicker';
 import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
 
-interface User {
+interface Student {
 	_id?: string;
 	numericId?: number;
 	name: string;
@@ -20,20 +20,21 @@ interface User {
 	phone: string;
 }
 
-const Users = () => {
-	const [usersPerPage, setUsersPerPage] = useState<number>(10);
+const Students = () => {
+	const [studentsPerPage, setStudentsPerPage] = useState<number>(10);
 	const [filterLongUsernames, setFilterLongUsernames] =
 		useState<boolean>(false);
 	const [sortConfig, setSortConfig] = useState<{
-		key: keyof User;
+		key: keyof Student;
 		direction: 'asc' | 'desc';
 	}>({ key: 'numericId', direction: 'asc' });
-	const { currentPage, goToPage, paginate } = usePagination<User>(usersPerPage);
+	const { currentPage, goToPage, paginate } =
+		usePagination<Student>(studentsPerPage);
 
-	const [users, setUsers] = useState<User[]>([]);
-	const [editingUser, setEditingUser] = useState<User | null>(null);
+	const [students, setStudents] = useState<Student[]>([]);
+	const [editingStudent, setEditingStudent] = useState<Student | null>(null);
 	const [isEditing, setIsEditing] = useState(false);
-	const [newUser, setNewUser] = useState<User>({
+	const [newStudent, setNewStudent] = useState<Student>({
 		name: '',
 		username: '',
 		email: '',
@@ -51,31 +52,31 @@ const Users = () => {
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:5000/users')
-			.then((response) => setUsers(response.data))
-			.catch((error: any) => console.error('Error fetching users:', error));
+			.get('http://localhost:5000/students')
+			.then((response) => setStudents(response.data))
+			.catch((error: any) => console.error('Error fetching students:', error));
 	}, []);
-	if (!users) return <div>Loading...</div>;
+	if (!students) return <div>Loading...</div>;
 
-	const filteredUsers = users.filter((user) => {
+	const filteredStudents = students.filter((student) => {
 		// Apply the long usernames filter
-		if (filterLongUsernames && user.username.length >= 9) {
+		if (filterLongUsernames && student.username.length >= 9) {
 			return false;
 		}
 
 		// Apply the search and selected filters
-		const userValues =
+		const studentValues =
 			selectedFilters.length > 0
 				? selectedFilters
-						.map((filter) => user[filter] || '')
+						.map((filter) => student[filter] || '')
 						.join(' ')
 						.toLowerCase()
-				: Object.values(user).join(' ').toLowerCase();
+				: Object.values(student).join(' ').toLowerCase();
 
-		return userValues.includes(searchQuery.toLowerCase());
+		return studentValues.includes(searchQuery.toLowerCase());
 	});
 
-	const sortedUsers = [...filteredUsers].sort((a, b) => {
+	const sortedStudents = [...filteredStudents].sort((a, b) => {
 		const aValue = a[sortConfig.key];
 		const bValue = b[sortConfig.key];
 		if (aValue < bValue) {
@@ -92,7 +93,7 @@ const Users = () => {
 	const handleAddModalClose = () => {
 		setShowAddModal(false);
 		setIsEditing(false);
-		setNewUser({
+		setNewStudent({
 			name: '',
 			username: '',
 			email: '',
@@ -105,17 +106,17 @@ const Users = () => {
 		setIsEditing(false);
 	};
 
-	const handleEditModalShow = (user: User) => {
-		setEditingUser(user);
+	const handleEditModalShow = (student: Student) => {
+		setEditingStudent(student);
 		setIsEditing(true);
 		setShowAddModal(true);
 	};
 
-	const paginatedUsers = paginate({ users: sortedUsers });
-	const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+	const paginatedStudents = paginate({ students: sortedStudents });
+	const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
 	const isLastPage = currentPage >= totalPages;
 
-	const requestSort = (key: keyof User) => {
+	const requestSort = (key: keyof Student) => {
 		let direction: 'asc' | 'desc' = 'asc';
 		if (sortConfig.key === key && sortConfig.direction === 'asc') {
 			direction = 'desc';
@@ -125,7 +126,7 @@ const Users = () => {
 
 	const columns = ['numericId', 'name', 'username', 'email', 'phone'];
 
-	const renderSortIcon = (key: keyof User) => {
+	const renderSortIcon = (key: keyof Student) => {
 		if (sortConfig.key !== key) return null;
 		if (sortConfig.direction === 'asc')
 			return <Icon icon='eva:arrow-up-fill' />;
@@ -134,43 +135,46 @@ const Users = () => {
 		return null;
 	};
 
-	const handleAddUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (isEditing && editingUser) {
-			setEditingUser({ ...editingUser, [e.target.name]: e.target.value });
+	const handleAddStudentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (isEditing && editingStudent) {
+			setEditingStudent({ ...editingStudent, [e.target.name]: e.target.value });
 		} else {
-			setNewUser({ ...newUser, [e.target.name]: e.target.value });
+			setNewStudent({ ...newStudent, [e.target.name]: e.target.value });
 		}
 	};
 
-	const handleAddUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleAddStudentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		if (isEditing && editingUser) {
+		if (isEditing && editingStudent) {
 			axios
-				.put(`http://localhost:5000/users/${editingUser._id}`, editingUser)
+				.put(
+					`http://localhost:5000/students/${editingStudent._id}`,
+					editingStudent
+				)
 				.then((response) => {
-					const updatedUser: User = response.data.user;
-					setUsers((prevUsers) =>
-						prevUsers.map((user) =>
-							user._id === updatedUser._id ? updatedUser : user
+					const updatedStudent: Student = response.data.student;
+					setStudents((prevStudents) =>
+						prevStudents.map((student) =>
+							student._id === updatedStudent._id ? updatedStudent : student
 						)
 					);
-					setEditingUser(null);
+					setEditingStudent(null);
 					setIsEditing(false);
 				})
-				.catch((error) => console.error('Error updating user:', error));
+				.catch((error) => console.error('Error updating student:', error));
 		} else {
 			axios
-				.post('http://localhost:5000/users/create', newUser)
+				.post('http://localhost:5000/students/create', newStudent)
 				.then((response) => {
-					const createdUser: User = response.data.user;
-					setUsers((prevUsers) => [...prevUsers, createdUser]);
+					const createdStudent: Student = response.data.student;
+					setStudents((prevStudents) => [...prevStudents, createdStudent]);
 				})
-				.catch((error) => console.error('Error creating user:', error));
+				.catch((error) => console.error('Error creating student:', error));
 		}
 
 		setShowAddModal(false);
-		setNewUser({
+		setNewStudent({
 			name: '',
 			username: '',
 			email: '',
@@ -178,19 +182,19 @@ const Users = () => {
 		});
 	};
 
-	const handleDeleteUser = (userId: string) => {
+	const handleDeleteStudent = (studentId: string) => {
 		axios
-			.delete(`http://localhost:5000/users/${userId}`)
+			.delete(`http://localhost:5000/students/${studentId}`)
 			.then(() => {
-				setUsers((prevUsers) =>
-					prevUsers.filter((user) => user._id !== userId)
+				setStudents((prevStudents) =>
+					prevStudents.filter((student) => student._id !== studentId)
 				);
 			})
-			.catch((error) => console.error('Error deleting user:', error));
+			.catch((error) => console.error('Error deleting student:', error));
 	};
 
-	const handleCreateDefaultUser = () => {
-		const defaultUser = {
+	const handleCreateDefaultStudent = () => {
+		const defaultStudent = {
 			name: 'John Doe',
 			username: 'johndoe',
 			email: 'john@doe.com',
@@ -198,12 +202,14 @@ const Users = () => {
 		};
 
 		axios
-			.post('http://localhost:5000/users/create', defaultUser)
+			.post('http://localhost:5000/students/create', defaultStudent)
 			.then((response) => {
-				const createdUser = response.data;
-				setUsers((prevUsers) => [...prevUsers, createdUser]);
+				const createdStudent = response.data;
+				setStudents((prevStudents) => [...prevStudents, createdStudent]);
 			})
-			.catch((error) => console.error('Error creating default user:', error));
+			.catch((error) =>
+				console.error('Error creating default student:', error)
+			);
 	};
 
 	const isFirstPage = currentPage === 1;
@@ -270,7 +276,7 @@ const Users = () => {
 
 					<div className='d-flex gap-2 align-items-end'>
 						<button
-							onClick={handleCreateDefaultUser}
+							onClick={handleCreateDefaultStudent}
 							className='bg-warning'>
 							<Icon
 								className='fs-6'
@@ -298,7 +304,7 @@ const Users = () => {
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body>
-								<Form onSubmit={handleAddUserSubmit}>
+								<Form onSubmit={handleAddStudentSubmit}>
 									<Form.Group
 										className='mb-3'
 										controlId='formBasicName'>
@@ -307,8 +313,8 @@ const Users = () => {
 											type='text'
 											placeholder='John Doe'
 											name='name'
-											value={isEditing ? editingUser?.name : newUser.name} // Use editingUser if editing
-											onChange={handleAddUserChange}
+											value={isEditing ? editingStudent?.name : newStudent.name} // Use editingStudent if editing
+											onChange={handleAddStudentChange}
 											required
 										/>
 									</Form.Group>
@@ -322,9 +328,11 @@ const Users = () => {
 											placeholder='johnny69'
 											name='username'
 											value={
-												isEditing ? editingUser?.username : newUser.username
-											} // Use editingUser if editing
-											onChange={handleAddUserChange}
+												isEditing
+													? editingStudent?.username
+													: newStudent.username
+											} // Use editingStudent if editing
+											onChange={handleAddStudentChange}
 											required
 										/>
 									</Form.Group>
@@ -337,8 +345,10 @@ const Users = () => {
 											type='email'
 											placeholder='johndoe@test.com'
 											name='email'
-											value={isEditing ? editingUser?.email : newUser.email} // Use editingUser if editing
-											onChange={handleAddUserChange}
+											value={
+												isEditing ? editingStudent?.email : newStudent.email
+											} // Use editingStudent if editing
+											onChange={handleAddStudentChange}
 											required
 										/>
 									</Form.Group>
@@ -351,8 +361,10 @@ const Users = () => {
 											type='text'
 											placeholder='0612345678'
 											name='phone'
-											value={isEditing ? editingUser?.phone : newUser.phone} // Use editingUser if editing
-											onChange={handleAddUserChange}
+											value={
+												isEditing ? editingStudent?.phone : newStudent.phone
+											} // Use editingStudent if editing
+											onChange={handleAddStudentChange}
 											required
 										/>
 									</Form.Group>
@@ -379,12 +391,12 @@ const Users = () => {
 							</label>
 							<NumberPicker
 								className='w-10rem'
-								defaultValue={usersPerPage}
+								defaultValue={studentsPerPage}
 								max={10}
 								min={5}
 								onChange={(value) => {
 									if (value !== null && value > 0) {
-										setUsersPerPage(value);
+										setStudentsPerPage(value);
 									}
 								}}
 							/>
@@ -425,12 +437,12 @@ const Users = () => {
 				</div>
 				<ResizableTable
 					columns={columns}
-					data={paginatedUsers}
+					data={paginatedStudents}
 					sortConfig={sortConfig}
 					requestSort={requestSort}
 					renderSortIcon={renderSortIcon}
 					handleEditModalShow={handleEditModalShow}
-					handleDeleteUser={handleDeleteUser}
+					handleDeleteStudent={handleDeleteStudent}
 				/>
 
 				{/* PREV-NEXT BTNS */}
@@ -462,7 +474,7 @@ const Users = () => {
 						</button>
 					</div>
 					<p className='ms-2 mb-0 fw-light fst-italic'>
-						{filteredUsers.length} résultats.
+						{filteredStudents.length} résultats.
 					</p>
 				</div>
 			</div>
@@ -474,4 +486,4 @@ const Users = () => {
 	);
 };
 
-export default Users;
+export default Students;

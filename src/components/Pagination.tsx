@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 // On définit PaginateProps en tant que T, soit un type générique défini à chaque définition par l'interface
 interface PaginateProps<T> {
-	users?: T[];
+	students?: T[];
 }
 
 // Idem, avec une virgule pour préciser que la fonction pourrait contenir plusieurs types génériques
-const usePagination = <T,>(usersPerPage: number, initialPage = 1) => {
+const usePagination = <T,>(studentsPerPage: number, initialPage = 1) => {
 	// Etat de la page et fonction de mise à jour de l'état
 	const [currentPage, setCurrentPage] = useState(initialPage);
 
@@ -17,9 +17,9 @@ const usePagination = <T,>(usersPerPage: number, initialPage = 1) => {
 
 	// fonction définissant les items renvoyés sur une pafe de la pagination
 	const paginate = (jsonObject: PaginateProps<T>) => {
-		const array = jsonObject.users || [];
-		const startIndex = (currentPage - 1) * usersPerPage;
-		const endIndex = startIndex + usersPerPage;
+		const array = jsonObject.students || [];
+		const startIndex = (currentPage - 1) * studentsPerPage;
+		const endIndex = startIndex + studentsPerPage;
 
 		return array.slice(startIndex, endIndex);
 	};

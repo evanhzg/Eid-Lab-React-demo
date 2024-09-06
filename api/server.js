@@ -23,80 +23,85 @@ app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });
 
-const userSchema = new mongoose.Schema({
+const studentSchema = new mongoose.Schema({
 	name: String,
 	username: String,
 	email: String,
 	phone: String,
 });
 
-const User = mongoose.model('User', userSchema);
+const Student = mongoose.model('Student', studentSchema);
 
-// Route to get all users
-app.get('/users', async (req, res) => {
+// Route to get all students
+app.get('/students', async (req, res) => {
 	try {
-		const users = await User.find();
+		const students = await Student.find();
 
-		const usersWithNumericIds = users.map((user) => ({
-			...user._doc, // Spread existing user data
-			numericId: parseInt(user._id.toString().slice(-8), 16),
+		const studentsWithNumericIds = students.map((student) => ({
+			...student._doc, // Spread existing student data
+			numericId: parseInt(student._id.toString().slice(-8), 16),
 		}));
 
-		res.json(usersWithNumericIds);
+		res.json(studentsWithNumericIds);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
 });
 
-// Route to create a new user
-app.post('/users/create', async (req, res) => {
-	const user = new User(req.body);
+// Route to create a new student
+app.post('/students/create', async (req, res) => {
+	const student = new Student(req.body);
 
 	try {
-		// Save the new user to the database
-		const newUser = await user.save();
-		console.log(user._id);
+		// Save the new student to the database
+		const newStudent = await student.save();
+		console.log(student._id);
 
 		// Calculate the numericId
-		const userWithNumericId = {
-			...newUser._doc,
-			numericId: parseInt(newUser._id.toString().slice(-8), 16),
+		const studentWithNumericId = {
+			...newStudent._doc,
+			numericId: parseInt(newStudent._id.toString().slice(-8), 16),
 		};
 
-		console.log('New User with numericId:', userWithNumericId);
+		console.log('New Student with numericId:', studentWithNumericId);
 
-		// Respond with the full user object, including the numericId
-		res.status(201).json(userWithNumericId);
+		// Respond with the full student object, including the numericId
+		res.status(201).json(studentWithNumericId);
 	} catch (err) {
 		console.log(err.message);
 		res.status(400).json({ message: err.message });
 	}
 });
 
-// Route to update a user
-app.put('/users/:id', async (req, res) => {
+// Route to update a student
+app.put('/students/:id', async (req, res) => {
 	try {
-		const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-			new: true,
-		});
-		res.json({ user: updatedUser });
+		const updatedStudent = await Student.findByIdAndUpdate(
+			req.params.id,
+			req.body,
+			{
+				new: true,
+			}
+		);
+		res.json({ student: updatedStudent });
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}
 });
 
-// Route to delete a user
-app.delete('/users/:id', async (req, res) => {
+// Route to delete a student
+app.delete('/students/:id', async (req, res) => {
 	try {
-		const deletedUser = await User.findByIdAndDelete(req.params.id);
+		const deletedStudent = await Student.findByIdAndDelete(req.params.id);
 
-		if (!deletedUser) {
-			return res.status(404).json({ message: 'User not found' });
+		if (!deletedStudent) {
+			return res.status(404).json({ message: 'Student not found' });
 		}
 
-		res
-			.status(200)
-			.json({ message: 'User deleted successfully', user: deletedUser });
+		res.status(200).json({
+			message: 'Student deleted successfully',
+			student: deletedStudent,
+		});
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}

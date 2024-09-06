@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Users from './pages/Users';
+import Students from './pages/Students';
 import Error404 from './pages/Error404';
 import AppSidebar from './components/AppSidebar';
 
@@ -23,8 +23,8 @@ const App = () => {
 							element={<Error404 />}
 						/>
 						<Route
-							path='/users'
-							element={<Users />}
+							path='/students'
+							element={<Students />}
 						/>
 						<Route
 							path='*'
