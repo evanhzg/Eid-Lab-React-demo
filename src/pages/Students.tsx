@@ -52,7 +52,7 @@ const Students = () => {
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:5000/students')
+			.get('http://localhost:5000/api/students')
 			.then((response) => setStudents(response.data))
 			.catch((error: any) => console.error('Error fetching students:', error));
 	}, []);
