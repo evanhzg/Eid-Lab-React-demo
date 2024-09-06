@@ -7,7 +7,6 @@ import Select from 'react-select';
 import 'react-widgets/styles.css';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import NumberPicker from 'react-widgets/NumberPicker';
 import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
@@ -22,7 +21,7 @@ interface User {
 }
 
 const Users = () => {
-	const [usersPerPage, setUsersPerPage] = useState<number>(5);
+	const [usersPerPage, setUsersPerPage] = useState<number>(10);
 	const [filterLongUsernames, setFilterLongUsernames] =
 		useState<boolean>(false);
 	const [sortConfig, setSortConfig] = useState<{
@@ -376,13 +375,13 @@ const Users = () => {
 
 						<div className='text-start'>
 							<label className='fw-bold'>
-								Élmts / page <span className='fst-italic fw-light'>(3-5)</span>
+								Élmts / page <span className='fst-italic fw-light'>(5-10)</span>
 							</label>
 							<NumberPicker
 								className='w-10rem'
 								defaultValue={usersPerPage}
-								max={5}
-								min={3}
+								max={10}
+								min={5}
 								onChange={(value) => {
 									if (value !== null && value > 0) {
 										setUsersPerPage(value);
@@ -396,7 +395,9 @@ const Users = () => {
 					{isMultiselectVisible && (
 						<>
 							<Select
-								className='w-50 multiselect'
+								className={`w-50 multiselect ${
+									isMultiselectVisible ? 'show' : ''
+								}`}
 								isMulti
 								options={filterOptions}
 								onChange={(selectedOptions) =>

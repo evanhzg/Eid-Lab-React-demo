@@ -16,16 +16,20 @@
 .table-fixed {
   width: 100%;
   table-layout: fixed;
+  border-collapse: collapse;
+
 }
 
 .table-fixed th,
 .table-fixed td {
+  max-height: max-content;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .table-fixed td {
+  height: 40px;
   cursor: default;
 
 }
@@ -53,3 +57,20 @@
 .multiselect > .css-13cymwt-control, .multiselect .css-t3ipsp-control {
   height: 100%;
 ;}
+
+.action-buttons {
+  width: 100px;
+}
+
+.multiselect {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 0;
+}
+
+.multiselect.show {
+  max-height: 500px; 
+  opacity: 1;
+  transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
+}

@@ -86,7 +86,7 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 								/>
 							</th>
 						))}
-						<th>actions</th>
+						<th className='action-buttons'>actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -109,19 +109,21 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 									</OverlayTrigger>
 								</td>
 							))}
-							<td className='d-flex justify-content-evenly'>
-								<button
-									onClick={() => handleEditModalShow(user)}
-									className='bg-dark d-inline-flex p-1 align-items-center justify-content-center'
-									style={{ width: '40px', height: '40px' }}>
-									<Icon icon='iconamoon:edit-fill' />
-								</button>
-								<button
-									onClick={() => handleDeleteUser(user._id)}
-									className='bg-danger d-inline-flex p-1 align-items-center justify-content-center'
-									style={{ width: '40px', height: '40px' }}>
-									<Icon icon='mdi:delete-off' />
-								</button>
+							<td>
+								<div className='d-flex justify-content-center gap-3'>
+									<button
+										onClick={() => handleEditModalShow(user)}
+										className='bg-dark d-inline-flex p-1 align-items-center justify-content-center'
+										style={{ width: '25px', height: '25px' }}>
+										<Icon icon='iconamoon:edit-fill' />
+									</button>
+									<button
+										onClick={() => handleDeleteUser(user._id)}
+										className='bg-danger d-inline-flex p-1 align-items-center justify-content-center'
+										style={{ width: '25px', height: '25px' }}>
+										<Icon icon='mdi:delete-off' />
+									</button>
+								</div>
 							</td>
 						</tr>
 					))}
