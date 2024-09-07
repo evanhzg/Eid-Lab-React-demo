@@ -124,7 +124,7 @@ const Students = () => {
 					setSelectedStudent(undefined);
 					setIsModalOpen(true);
 				}}>
-				Add Student
+				<Icon icon='mingcute:user-add-fill' />
 			</Button>
 			<ResizableTable
 				columns={columns}
@@ -156,13 +156,20 @@ const Students = () => {
 				{generatePageButtons().map((page, index) =>
 					typeof page === 'number' ? (
 						<Button
+							className={currentPage === page ? 'highlighted-button' : ''}
 							variant='contained'
 							key={index}
 							onClick={() => goToPage(page)}>
 							{page}
 						</Button>
 					) : (
-						<span key={index}>{page}</span>
+						<Button
+							variant='contained'
+							key={index}
+							disabled
+							style={{ cursor: 'default' }}>
+							{page}
+						</Button>
 					)
 				)}
 				<Button
