@@ -3,22 +3,11 @@ const Student = require('../models/studentModel');
 // Get all students
 const getAllStudents = async (req, res) => {
 	try {
-		console.log('TEST');
-
 		const students = await Student.find();
-		console.log('here IT IS');
-
-		// Add a numericId to each student
-		const studentsWithNumericIds = students.map((student) => ({
-			...student._doc,
-			numericId: parseInt(student._id.toString().slice(-8), 16),
-		}));
-
-		res.status(200).json(studentsWithNumericIds);
-	} catch (err) {
-		res
-			.status(500)
-			.json({ message: 'Error fetching students', error: err.message });
+		res.json(students);
+	} catch (error) {
+		console.error('Error fetching students:', error);
+		res.status(500).json({ message: 'Server Error' });
 	}
 };
 
@@ -50,36 +39,21 @@ const updateStudent = async (req, res) => {
 			req.body,
 			{ new: true }
 		);
-
-		if (!updatedStudent) {
-			return res.status(404).json({ message: 'Student not found' });
-		}
-
-		res.status(200).json(updatedStudent);
-	} catch (err) {
-		res
-			.status(400)
-			.json({ message: 'Error updating student', error: err.message });
+		res.json(updatedStudent);
+	} catch (error) {
+		console.error('Error updating student:', error);
+		res.status(500).json({ message: 'Server Error' });
 	}
 };
 
 // Delete a student
 const deleteStudent = async (req, res) => {
 	try {
-		const deletedStudent = await Student.findByIdAndDelete(req.params.id);
-
-		if (!deletedStudent) {
-			return res.status(404).json({ message: 'Student not found' });
-		}
-
-		res.status(200).json({
-			message: 'Student deleted successfully',
-			student: deletedStudent,
-		});
-	} catch (err) {
-		res
-			.status(500)
-			.json({ message: 'Error deleting student', error: err.message });
+		await Student.findByIdAndDelete(req.params.id);
+		res.status(204).send();
+	} catch (error) {
+		console.error('Error deleting student:', error);
+		res.status(500).json({ message: 'Server Error' });
 	}
 };
 

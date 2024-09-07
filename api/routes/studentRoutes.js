@@ -1,17 +1,11 @@
 const express = require('express');
-const {
-	getAllStudents,
-	createStudent,
-	updateStudent,
-	deleteStudent,
-} = require('../controllers/studentController');
-
 const router = express.Router();
+const studentController = require('../controllers/studentController');
 
-// Routes for CRUD operations
-router.get('/students', getAllStudents);
-router.post('/students/create', createStudent);
-router.put('/students/:id', updateStudent);
-router.delete('/students/:id', deleteStudent);
+// Define the /students route
+router.get('/students', studentController.getAllStudents);
+router.post('/students', studentController.createStudent);
+router.put('/students/:id', studentController.updateStudent);
+router.delete('/students/:id', studentController.deleteStudent);
 
 module.exports = router;
