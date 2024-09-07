@@ -4,6 +4,7 @@ import Students from './pages/Students';
 import Error404 from './pages/Error404';
 import AppSidebar from './components/AppSidebar';
 import './App.css';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const App = () => {
 	const [theme, setTheme] = useState('light');
@@ -29,7 +30,19 @@ const App = () => {
 					<button
 						onClick={toggleTheme}
 						style={{ marginBottom: '20px' }}>
-						Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
+						{theme === 'light' ? (
+							<Icon
+								icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
+								style={{ fontSize: '1.5em' }}
+								color='var(--highlight-color)'
+							/>
+						) : (
+							<Icon
+								icon='line-md:moon-rising-filled-loop'
+								style={{ fontSize: '1.5em' }}
+								color='var(--info-color)'
+							/>
+						)}{' '}
 					</button>
 					<Routes>
 						<Route

@@ -1,20 +1,16 @@
 import { useState } from 'react';
 import usePaginate from './usePaginate';
-
-interface Student {
-	numericId: number;
-	name: string;
-	username: string;
-	email: string;
-	phone: string;
-}
+import { Student } from '../types';
 
 interface SortConfig {
 	key: keyof Student;
 	direction: 'asc' | 'desc';
 }
 
-const useTableConfig = (students: Student[], studentsPerPage: number) => {
+const useStudentTableConfig = (
+	students: Student[],
+	studentsPerPage: number
+) => {
 	const [sortConfig, setSortConfig] = useState<SortConfig>({
 		key: 'numericId',
 		direction: 'asc',
@@ -72,4 +68,4 @@ const useTableConfig = (students: Student[], studentsPerPage: number) => {
 	};
 };
 
-export default useTableConfig;
+export default useStudentTableConfig;

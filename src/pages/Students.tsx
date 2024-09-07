@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
-import useTableConfig from '../hooks/useTableConfig';
+import useTableConfig from '../hooks/useStudentTableConfig';
 import StudentModal from '../components/StudentModal';
 import { Icon } from '@iconify/react';
 import { Student } from '../types';
@@ -105,10 +105,16 @@ const Students = () => {
 
 	const columns = [
 		{ header: 'ID', accessor: 'numericId', width: 100 },
-		{ header: 'Nom', accessor: 'name', width: 200 },
-		{ header: 'Pseudo', accessor: 'username', width: 200 },
-		{ header: 'Email', accessor: 'email', width: 250 },
+		{ header: 'Prénom', accessor: 'first_name', width: 150 },
+		{ header: 'Nom', accessor: 'last_name', width: 150 },
+		{ header: 'Email', accessor: 'email', width: 200 },
 		{ header: 'Téléphone', accessor: 'phone', width: 150 },
+		{ header: 'Pays', accessor: 'country', width: 150 },
+		{ header: 'Région', accessor: 'region', width: 150 },
+		{ header: 'Ville', accessor: 'city', width: 150 },
+		{ header: 'École', accessor: 'school', width: 150 },
+		{ header: 'Niveau', accessor: 'grade', width: 100 },
+		{ header: 'Disponible', accessor: 'available', width: 100 },
 	];
 
 	return (

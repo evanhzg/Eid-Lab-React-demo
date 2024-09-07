@@ -71,6 +71,7 @@ Icon.success {
 .table-actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   height: 48px;
 }
@@ -78,6 +79,8 @@ Icon.success {
 .table-actions Button {
   background-color: var(--highlight-color) !important;
   color: var(--dark-color) !important;
+  margin: 0 !important;
+  height: 100%;
 }
 
 .search-input {
@@ -85,16 +88,21 @@ Icon.success {
   margin: 0 !important;
   background-color: var(--light-color) !important;
   color: var(--dark-color) !important;
+
 }
 
 .search-input * {
   color: var(--dark-color) !important;
 }
 
+.table-container {
+  overflow-x: auto;
+  max-width: 80vw;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
-  overflow: hidden;
   border: 1px solid var(--secondary-text-color);
   border-radius: var(--border-radius-lg);
 }

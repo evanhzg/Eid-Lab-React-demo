@@ -1,5 +1,13 @@
 import React from 'react';
-import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import {
+	Modal,
+	Box,
+	Typography,
+	TextField,
+	Button,
+	Switch,
+	FormControlLabel,
+} from '@mui/material';
 import { Student } from '../types';
 
 interface StudentModalProps {
@@ -16,18 +24,45 @@ const StudentModal: React.FC<StudentModalProps> = ({
 	student,
 }) => {
 	const [formData, setFormData] = React.useState<Student>(
-		student || { numericId: 0, name: '', username: '', email: '', phone: '' }
+		student || {
+			numericId: 0,
+			first_name: '',
+			last_name: '',
+			email: '',
+			phone: '',
+			country: '',
+			region: '',
+			city: '',
+			school: '',
+			grade: '',
+			available: false,
+		}
 	);
 
 	React.useEffect(() => {
 		setFormData(
-			student || { numericId: 0, name: '', username: '', email: '', phone: '' }
+			student || {
+				numericId: 0,
+				first_name: '',
+				last_name: '',
+				email: '',
+				phone: '',
+				country: '',
+				region: '',
+				city: '',
+				school: '',
+				grade: '',
+				available: false,
+			}
 		);
 	}, [student]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { id, value } = e.target;
-		setFormData((prevState) => ({ ...prevState, [id]: value }));
+		const { id, value, type, checked } = e.target;
+		setFormData((prevState) => ({
+			...prevState,
+			[id]: type === 'checkbox' ? checked : value,
+		}));
 	};
 
 	const handleSave = () => {
@@ -54,17 +89,17 @@ const StudentModal: React.FC<StudentModalProps> = ({
 					<TextField
 						fullWidth
 						margin='normal'
-						id='name'
-						label='Name'
-						value={formData.name}
+						id='first_name'
+						label='First Name'
+						value={formData.first_name}
 						onChange={handleChange}
 					/>
 					<TextField
 						fullWidth
 						margin='normal'
-						id='username'
-						label='Username'
-						value={formData.username}
+						id='last_name'
+						label='Last Name'
+						value={formData.last_name}
 						onChange={handleChange}
 					/>
 					<TextField
@@ -82,6 +117,56 @@ const StudentModal: React.FC<StudentModalProps> = ({
 						label='Phone'
 						value={formData.phone}
 						onChange={handleChange}
+					/>
+					<TextField
+						fullWidth
+						margin='normal'
+						id='country'
+						label='Country'
+						value={formData.country}
+						onChange={handleChange}
+					/>
+					<TextField
+						fullWidth
+						margin='normal'
+						id='region'
+						label='Region'
+						value={formData.region}
+						onChange={handleChange}
+					/>
+					<TextField
+						fullWidth
+						margin='normal'
+						id='city'
+						label='City'
+						value={formData.city}
+						onChange={handleChange}
+					/>
+					<TextField
+						fullWidth
+						margin='normal'
+						id='school'
+						label='School'
+						value={formData.school}
+						onChange={handleChange}
+					/>
+					<TextField
+						fullWidth
+						margin='normal'
+						id='grade'
+						label='Grade'
+						value={formData.grade}
+						onChange={handleChange}
+					/>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={formData.available}
+								onChange={handleChange}
+								id='available'
+							/>
+						}
+						label='Available'
 					/>
 				</Box>
 				<Box className='modal-actions'>
