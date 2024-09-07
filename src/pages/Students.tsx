@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button, Modal, Box, Typography, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
-import useStudentForm from '../hooks/useStudentForm';
 import usePaginate from '../hooks/usePaginate';
+import StudentModal from '../components/StudentModal';
+import { Icon } from '@iconify/react';
 
 interface Student {
 	_id?: string;
@@ -16,6 +17,10 @@ interface Student {
 
 const Students = () => {
 	const [students, setStudents] = useState<Student[]>([]);
+	const [selectedStudent, setSelectedStudent] = useState<Student | undefined>(
+		undefined
+	);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const {
 		currentPage,
 		itemsPerPage,
@@ -41,37 +46,34 @@ const Students = () => {
 		fetchStudents();
 	}, []);
 
-	const {
-		showAddModal,
-		openAddModal,
-		closeAddModal,
-		showEditModal,
-		openEditModal,
-		closeEditModal,
-		currentStudent,
-	} = useStudentForm();
+	const handleEdit = (id: string) => {
+		const student = students.find((s) => s._id === id);
+		setSelectedStudent(student || undefined);
+		setIsModalOpen(true);
+	};
 
-	const columns = [
-		{ header: 'ID', accessor: 'numericId', width: 100 },
-		{ header: 'Name', accessor: 'name', width: 200 },
-		{ header: 'Username', accessor: 'username', width: 200 },
-		{ header: 'Email', accessor: 'email', width: 250 },
-		{ header: 'Phone', accessor: 'phone', width: 150 },
-	];
+	const handleDelete = async (id: string) => {
+		// Handle delete action
+		console.log(`Delete student with id: ${id}`);
+		await axios.delete(`http://localhost:5001/api/students/${id}`);
+		// Refresh the student list or handle state update
+		const response = await axios.get('http://localhost:5001/api/students');
+		setStudents(Array.isArray(response.data) ? response.data : []);
+	};
 
 	const handleSave = async (student: Student) => {
-		if (currentStudent) {
+		if (selectedStudent) {
 			// Edit existing student
 			await axios.put(
-				`http://localhost:5001/api/students/${currentStudent._id}`,
+				`http://localhost:5001/api/students/${selectedStudent._id}`,
 				student
 			);
 		} else {
 			// Create new student
 			await axios.post('http://localhost:5001/api/students', student);
 		}
-		closeAddModal();
-		closeEditModal();
+		setIsModalOpen(false);
+		setSelectedStudent(undefined);
 		// Refresh the student list or handle state update
 		const response = await axios.get('http://localhost:5001/api/students');
 		setStudents(Array.isArray(response.data) ? response.data : []);
@@ -106,16 +108,43 @@ const Students = () => {
 		return pages;
 	};
 
+	const columns = [
+		{ header: 'ID', accessor: 'numericId', width: 100 },
+		{ header: 'Name', accessor: 'name', width: 200 },
+		{ header: 'Username', accessor: 'username', width: 200 },
+		{ header: 'Email', accessor: 'email', width: 250 },
+		{ header: 'Phone', accessor: 'phone', width: 150 },
+	];
+
 	return (
 		<div>
 			<Button
 				variant='contained'
-				onClick={openAddModal}>
+				onClick={() => {
+					setSelectedStudent(undefined);
+					setIsModalOpen(true);
+				}}>
 				Add Student
 			</Button>
 			<ResizableTable
 				columns={columns}
 				data={paginatedStudents}
+				renderActions={(row) => (
+					<div className='action-buttons'>
+						<Icon
+							onClick={() => handleEdit(row._id)}
+							icon='mingcute:user-edit-fill'
+							color='lightgreen'
+							style={{ cursor: 'pointer' }}
+						/>
+						<Icon
+							onClick={() => handleDelete(row._id)}
+							icon='mingcute:user-remove-fill'
+							color='red'
+							style={{ cursor: 'pointer' }}
+						/>
+					</div>
+				)}
 			/>
 			<div className='pagination-controls'>
 				<Button
@@ -143,99 +172,12 @@ const Students = () => {
 					Next
 				</Button>
 			</div>
-			<Modal
-				open={showAddModal || showEditModal}
-				onClose={closeAddModal || closeEditModal}
-				aria-labelledby='modal-modal-title'
-				aria-describedby='modal-modal-description'>
-				<Box
-					sx={{
-						position: 'absolute',
-						top: '50%',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-						width: 400,
-						bgcolor: 'background.paper',
-						border: '2px solid #000',
-						boxShadow: 24,
-						p: 4,
-					}}>
-					<Typography
-						id='modal-modal-title'
-						variant='h6'
-						component='h2'>
-						{currentStudent ? 'Edit Student' : 'Add Student'}
-					</Typography>
-					<Box
-						component='form'
-						sx={{ mt: 2 }}>
-						<TextField
-							fullWidth
-							margin='normal'
-							id='formStudentName'
-							label='Name'
-							defaultValue={currentStudent?.name}
-						/>
-						<TextField
-							fullWidth
-							margin='normal'
-							id='formStudentUsername'
-							label='Username'
-							defaultValue={currentStudent?.username}
-						/>
-						<TextField
-							fullWidth
-							margin='normal'
-							id='formStudentEmail'
-							label='Email'
-							defaultValue={currentStudent?.email}
-						/>
-						<TextField
-							fullWidth
-							margin='normal'
-							id='formStudentPhone'
-							label='Phone'
-							defaultValue={currentStudent?.phone}
-						/>
-					</Box>
-					<Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-						<Button
-							variant='contained'
-							onClick={closeAddModal || closeEditModal}
-							sx={{ mr: 1 }}>
-							Close
-						</Button>
-						<Button
-							variant='contained'
-							onClick={() =>
-								handleSave({
-									name: (
-										document.getElementById(
-											'formStudentName'
-										) as HTMLInputElement
-									).value,
-									username: (
-										document.getElementById(
-											'formStudentUsername'
-										) as HTMLInputElement
-									).value,
-									email: (
-										document.getElementById(
-											'formStudentEmail'
-										) as HTMLInputElement
-									).value,
-									phone: (
-										document.getElementById(
-											'formStudentPhone'
-										) as HTMLInputElement
-									).value,
-								})
-							}>
-							Save Changes
-						</Button>
-					</Box>
-				</Box>
-			</Modal>
+			<StudentModal
+				open={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				onSave={handleSave}
+				student={selectedStudent}
+			/>
 		</div>
 	);
 };

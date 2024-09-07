@@ -4,7 +4,11 @@ const Student = require('../models/studentModel');
 const getAllStudents = async (req, res) => {
 	try {
 		const students = await Student.find();
-		res.json(students);
+		const studentsWithNumericId = students.map((student, index) => ({
+			...student.toObject(),
+			numericId: parseInt(student._id.toString().slice(-8), 16),
+		}));
+		res.json(studentsWithNumericId);
 	} catch (error) {
 		console.error('Error fetching students:', error);
 		res.status(500).json({ message: 'Server Error' });

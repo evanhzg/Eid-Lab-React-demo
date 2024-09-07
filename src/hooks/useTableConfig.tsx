@@ -29,7 +29,6 @@ const useTableConfig = (students: Student[], studentsPerPage: number) => {
 	});
 
 	const filteredStudents = sortedStudents; // Apply any filtering logic here
-	const paginatedStudents = paginate({ students: sortedStudents });
 	const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
 	const isLastPage = currentPage >= totalPages;
 
@@ -43,7 +42,6 @@ const useTableConfig = (students: Student[], studentsPerPage: number) => {
 
 	return {
 		sortedStudents,
-		paginatedStudents,
 		totalPages,
 		isLastPage,
 		requestSort,

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
@@ -10,26 +10,21 @@ interface Column {
 	width: number;
 }
 
-interface ResizableTableProps<T> {
+interface ResizableTableProps {
 	columns: Column[];
-	data: T[];
+	data: any[];
+	renderActions?: (row: any) => React.ReactNode;
 }
 
-const ResizableTable = <T,>({ columns, data }: ResizableTableProps<T>) => {
-	const tableRef = useRef<HTMLDivElement>(null);
-	const [colWidths, setColWidths] = useState(columns.map((col) => col.width));
-
-	const renderTooltip = (props: any) => (
-		<Tooltip
-			id='button-tooltip'
-			{...props}>
-			{props.text}
-		</Tooltip>
+const ResizableTable: React.FC<ResizableTableProps> = ({
+	columns,
+	data,
+	renderActions,
+}) => {
+	const tableRef = React.useRef<HTMLDivElement>(null);
+	const [colWidths, setColWidths] = React.useState(
+		columns.map((col) => col.width)
 	);
-
-	useEffect(() => {
-		// Handle resizing logic if needed
-	}, []);
 
 	return (
 		<div
@@ -45,6 +40,7 @@ const ResizableTable = <T,>({ columns, data }: ResizableTableProps<T>) => {
 								{col.header}
 							</th>
 						))}
+						{renderActions && <th style={{ width: '150px' }}>Actions</th>}
 					</tr>
 				</thead>
 				<tbody>
@@ -54,9 +50,12 @@ const ResizableTable = <T,>({ columns, data }: ResizableTableProps<T>) => {
 								<td
 									key={colIndex}
 									style={{ width: `${colWidths[colIndex]}px` }}>
-									{String(row[col.accessor as keyof T])}
+									{row[col.accessor]}
 								</td>
 							))}
+							{renderActions && (
+								<td style={{ width: '150px' }}>{renderActions(row)}</td>
+							)}
 						</tr>
 					))}
 				</tbody>
