@@ -1,6 +1,97 @@
+:root {
+  --dark-color: #333333; /* Light gray/slightly orangy */
+  --light-color: #fffaf5; /* Black */
+
+  --primary-color: var(--dark-color); /* Light gray/slightly orangy */
+  --primary-text-color: var(--dark-color); /* Black */
+  --secondary-color: var(--light-color); /* Dark gray */
+  --highlight-color: #ffc107; /* Light gray/slightly orangy */
+
+  --secondary-text-color: #fffaf5; /* White */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+  --button-padding: 10px 20px;
+
+  --success-color: #28a745; /* Green */
+  --info-color: #076eff; /* Yellow */
+  --warning-color: #ffc107; /* Yellow */
+  --error-color: #dc3545; /* Red */
+
+  --body-color: var(--light-color)
+}
+
+[data-theme="dark"] {
+  --primary-color: var(--light-color); /* Dark gray */
+  --primary-text-color: var(--light-color); /* White */
+  --secondary-color:var(--dark-color); /* Light gray/slightly orangy */
+  --secondary-text-color: #151515; /* Black */
+
+  --body-color: var(--dark-color)
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+body {
+  background-color: var(--body-color) !important;
+  color: var(--primary-text-color) !important;
+  font-family: 'Roboto', sans-serif;
+}
+
 .action-buttons {
   display: flex;
   gap: 10px;
+}
+
+Button {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-text-color) !important;
+  border-radius: var(--border-radius-lg);
+  padding: var(--button-padding);
+}
+
+Button.success {
+  background-color: var(--success-color) !important;
+}
+
+Button.info {
+  background-color: var(--info-color) !important;
+}
+
+Button.error {
+  background-color: var(--error-color) !important;
+}
+
+Icon.success {
+  color: var(--success-color) !important;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--secondary-text-color);
+  border-radius: var(--border-radius-lg);
+}
+
+table th,
+table td {
+  padding: 8px;
+}
+
+table th {
+  border: 1px solid transparent;
+  background-color: var(--secondary-color);
+  color: var(--primary-text-color);
+}
+
+table td {
+  border: 1px solid var(--secondary-text-color);
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color);
 }
 
 .pagination-controls {
@@ -9,6 +100,58 @@
 }
 
 .highlighted-button {
-  background-color: #f8d229 !important;
-  color: black !important;
+  background-color: var(--secondary-color) !important;
+  color: var(--primary-text-color) !important;
+  border-radius: var(--border-radius);
+  padding: var(--button-padding);
+}
+
+.modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: var(--secondary-color);
+  border: 0 solid transparent;
+  border-radius: var(--border-radius-md);
+  box-shadow: 24px;
+  padding: 16px;
+}
+
+.modal-title {
+  margin-bottom: 16px;
+  font-weight: bold !important;
+  text-transform: uppercase;
+}
+
+.modal-form {
+  margin-top: 16px;
+  color: var(--primary-text-color) !important;
+
+}
+
+label {
+  color: var(--primary-text-color) !important;
+}
+
+.modal-input fieldset {
+  border-color: var(--primary-text-color) !important;
+}
+
+.modal-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.modal-button {
+  margin-right: 8px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

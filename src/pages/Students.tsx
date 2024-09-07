@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
-import usePaginate from '../hooks/usePaginate';
+import useTableConfig from '../hooks/useTableConfig';
 import StudentModal from '../components/StudentModal';
 import { Icon } from '@iconify/react';
 
@@ -21,16 +21,21 @@ const Students = () => {
 		undefined
 	);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	const {
+		sortedStudents,
+		totalPages,
+		isLastPage,
+		requestSort,
+		sortConfig,
+		setCurrentPage,
 		currentPage,
-		itemsPerPage,
-		goToPage,
+		searchQuery,
+		setSearchQuery,
 		nextPage,
 		prevPage,
-		paginate,
-		totalPages,
 		setItemsPerPageCount,
-	} = usePaginate<Student>(10);
+	} = useTableConfig(students, 10);
 
 	useEffect(() => {
 		const fetchStudents = async () => {
@@ -79,10 +84,8 @@ const Students = () => {
 		setStudents(Array.isArray(response.data) ? response.data : []);
 	};
 
-	const paginatedStudents = paginate({ items: students });
-
 	const generatePageButtons = () => {
-		const total = totalPages({ items: students });
+		const total = totalPages;
 		let pages: (number | string)[] = [];
 
 		if (total <= 5) {
@@ -110,14 +113,21 @@ const Students = () => {
 
 	const columns = [
 		{ header: 'ID', accessor: 'numericId', width: 100 },
-		{ header: 'Name', accessor: 'name', width: 200 },
-		{ header: 'Username', accessor: 'username', width: 200 },
+		{ header: 'Nom', accessor: 'name', width: 200 },
+		{ header: 'Pseudo', accessor: 'username', width: 200 },
 		{ header: 'Email', accessor: 'email', width: 250 },
-		{ header: 'Phone', accessor: 'phone', width: 150 },
+		{ header: 'Téléphone', accessor: 'phone', width: 150 },
 	];
 
 	return (
 		<div>
+			<TextField
+				label='Search'
+				value={searchQuery}
+				onChange={(e) => setSearchQuery(e.target.value)}
+				fullWidth
+				margin='normal'
+			/>
 			<Button
 				variant='contained'
 				onClick={() => {
@@ -128,19 +138,19 @@ const Students = () => {
 			</Button>
 			<ResizableTable
 				columns={columns}
-				data={paginatedStudents}
+				data={sortedStudents}
 				renderActions={(row) => (
 					<div className='action-buttons'>
 						<Icon
 							onClick={() => handleEdit(row._id)}
 							icon='mingcute:user-edit-fill'
-							color='lightgreen'
+							color='var(--success-color)'
 							style={{ cursor: 'pointer' }}
 						/>
 						<Icon
 							onClick={() => handleDelete(row._id)}
 							icon='mingcute:user-remove-fill'
-							color='red'
+							color='var(--error-color)'
 							style={{ cursor: 'pointer' }}
 						/>
 					</div>
@@ -151,7 +161,7 @@ const Students = () => {
 					variant='contained'
 					onClick={prevPage}
 					disabled={currentPage === 1}>
-					Previous
+					<Icon icon='mingcute:arrow-left-fill' />
 				</Button>
 				{generatePageButtons().map((page, index) =>
 					typeof page === 'number' ? (
@@ -159,7 +169,7 @@ const Students = () => {
 							className={currentPage === page ? 'highlighted-button' : ''}
 							variant='contained'
 							key={index}
-							onClick={() => goToPage(page)}>
+							onClick={() => setCurrentPage(page)}>
 							{page}
 						</Button>
 					) : (
@@ -175,8 +185,8 @@ const Students = () => {
 				<Button
 					variant='contained'
 					onClick={nextPage}
-					disabled={currentPage === totalPages({ items: students })}>
-					Next
+					disabled={isLastPage}>
+					<Icon icon='mingcute:arrow-right-fill' />
 				</Button>
 			</div>
 			<StudentModal

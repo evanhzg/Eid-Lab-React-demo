@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import { Icon } from '@iconify/react/dist/iconify.js';
+import ModalClose from '@mui/joy/ModalClose';
 
 interface Student {
 	_id?: string;
@@ -46,44 +48,47 @@ const StudentModal: React.FC<StudentModalProps> = ({
 			onClose={onClose}
 			aria-labelledby='modal-modal-title'
 			aria-describedby='modal-modal-description'>
-			<Box
-				sx={{
-					position: 'absolute',
-					top: '50%',
-					left: '50%',
-					transform: 'translate(-50%, -50%)',
-					width: 400,
-					bgcolor: 'background.paper',
-					border: '2px solid #000',
-					boxShadow: 24,
-					p: 4,
-				}}>
-				<Typography
-					id='modal-modal-title'
-					variant='h6'
-					component='h2'>
-					{student ? 'Edit Student' : 'Add Student'}
-				</Typography>
+			<Box className='modal-box'>
+				<div className='modal-header'>
+					<Typography
+						id='modal-modal-title'
+						variant='h6'
+						component='h2'
+						className='modal-title'>
+						{student ? 'Modifier un étudiant' : 'Ajouter un étudiant'}
+					</Typography>
+
+					<ModalClose onClick={onClose} />
+				</div>
+				{student && (
+					<p>
+						<span className='bold-text'>ID:</span> {student.numericId}
+					</p>
+				)}
+
 				<Box
 					component='form'
-					sx={{ mt: 2 }}>
+					className='modal-form'>
 					<TextField
+						className='modal-input'
 						fullWidth
 						margin='normal'
 						id='name'
-						label='Name'
+						label='Nom'
 						value={formData.name}
 						onChange={handleChange}
 					/>
 					<TextField
+						className='modal-input'
 						fullWidth
 						margin='normal'
 						id='username'
-						label='Username'
+						label='Prénom'
 						value={formData.username}
 						onChange={handleChange}
 					/>
 					<TextField
+						className='modal-input'
 						fullWidth
 						margin='normal'
 						id='email'
@@ -92,25 +97,20 @@ const StudentModal: React.FC<StudentModalProps> = ({
 						onChange={handleChange}
 					/>
 					<TextField
+						className='modal-input'
 						fullWidth
 						margin='normal'
 						id='phone'
-						label='Phone'
+						label='Téléphone'
 						value={formData.phone}
 						onChange={handleChange}
 					/>
 				</Box>
-				<Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-					<Button
-						variant='contained'
-						onClick={onClose}
-						sx={{ mr: 1 }}>
-						Close
-					</Button>
+				<Box className='modal-actions'>
 					<Button
 						variant='contained'
 						onClick={handleSave}>
-						Save Changes
+						Enregistrer
 					</Button>
 				</Box>
 			</Box>

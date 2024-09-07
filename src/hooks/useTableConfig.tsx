@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import usePaginate from './usePaginate';
 
 interface Student {
 	numericId: number;
@@ -18,7 +19,18 @@ const useTableConfig = (students: Student[], studentsPerPage: number) => {
 		key: 'numericId',
 		direction: 'asc',
 	});
-	const [currentPage, setCurrentPage] = useState(1);
+	const [searchQuery, setSearchQuery] = useState('');
+
+	const {
+		currentPage,
+		itemsPerPage,
+		goToPage,
+		nextPage,
+		prevPage,
+		paginate,
+		totalPages,
+		setItemsPerPageCount,
+	} = usePaginate<Student>(studentsPerPage);
 
 	const sortedStudents = [...students].sort((a, b) => {
 		if (a[sortConfig.key] < b[sortConfig.key])
@@ -28,9 +40,13 @@ const useTableConfig = (students: Student[], studentsPerPage: number) => {
 		return 0;
 	});
 
-	const filteredStudents = sortedStudents; // Apply any filtering logic here
-	const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
-	const isLastPage = currentPage >= totalPages;
+	const filteredStudents = sortedStudents.filter((student) =>
+		Object.values(student).some((value) =>
+			value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+		)
+	);
+
+	const paginatedStudents = paginate({ items: filteredStudents });
 
 	const requestSort = (key: keyof Student) => {
 		let direction: 'asc' | 'desc' = 'asc';
@@ -41,13 +57,18 @@ const useTableConfig = (students: Student[], studentsPerPage: number) => {
 	};
 
 	return {
-		sortedStudents,
-		totalPages,
-		isLastPage,
+		sortedStudents: paginatedStudents,
+		totalPages: totalPages({ items: filteredStudents }),
+		isLastPage: currentPage >= totalPages({ items: filteredStudents }),
 		requestSort,
 		sortConfig,
-		setCurrentPage,
+		setCurrentPage: goToPage,
 		currentPage,
+		searchQuery,
+		setSearchQuery,
+		nextPage,
+		prevPage,
+		setItemsPerPageCount,
 	};
 };
 
