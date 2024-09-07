@@ -5,15 +5,7 @@ import ResizableTable from '../components/ResizableTable';
 import useTableConfig from '../hooks/useTableConfig';
 import StudentModal from '../components/StudentModal';
 import { Icon } from '@iconify/react';
-
-interface Student {
-	_id?: string;
-	numericId?: number;
-	name: string;
-	username: string;
-	email: string;
-	phone: string;
-}
+import { Student } from '../types';
 
 const Students = () => {
 	const [students, setStudents] = useState<Student[]>([]);
@@ -121,21 +113,24 @@ const Students = () => {
 
 	return (
 		<div>
-			<TextField
-				label='Search'
-				value={searchQuery}
-				onChange={(e) => setSearchQuery(e.target.value)}
-				fullWidth
-				margin='normal'
-			/>
-			<Button
-				variant='contained'
-				onClick={() => {
-					setSelectedStudent(undefined);
-					setIsModalOpen(true);
-				}}>
-				<Icon icon='mingcute:user-add-fill' />
-			</Button>
+			<div className='table-actions'>
+				<TextField
+					className='search-input'
+					label='Search'
+					value={searchQuery}
+					onChange={(e) => setSearchQuery(e.target.value)}
+					fullWidth
+					margin='normal'
+				/>
+				<Button
+					variant='contained'
+					onClick={() => {
+						setSelectedStudent(undefined);
+						setIsModalOpen(true);
+					}}>
+					<Icon icon='mingcute:user-add-fill' />
+				</Button>
+			</div>
 			<ResizableTable
 				columns={columns}
 				data={sortedStudents}

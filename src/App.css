@@ -68,6 +68,28 @@ Icon.success {
   color: var(--success-color) !important;
 }
 
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+}
+
+.table-actions Button {
+  background-color: var(--highlight-color) !important;
+  color: var(--dark-color) !important;
+}
+
+.search-input {
+  max-width: 25%;
+  margin: 0 !important;
+  background-color: var(--light-color) !important;
+  color: var(--dark-color) !important;
+}
+
+.search-input * {
+  color: var(--dark-color) !important;
+}
 
 table {
   border-collapse: collapse;

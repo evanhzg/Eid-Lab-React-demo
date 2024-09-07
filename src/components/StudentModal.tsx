@@ -1,21 +1,11 @@
 import React from 'react';
 import { Modal, Box, Typography, TextField, Button } from '@mui/material';
-import { Icon } from '@iconify/react/dist/iconify.js';
-import ModalClose from '@mui/joy/ModalClose';
-
-interface Student {
-	_id?: string;
-	numericId?: number;
-	name: string;
-	username: string;
-	email: string;
-	phone: string;
-}
+import { Student } from '../types';
 
 interface StudentModalProps {
 	open: boolean;
 	onClose: () => void;
-	onSave: (student: Student) => void;
+	onSave: (student: Student) => void | Promise<void>;
 	student?: Student;
 }
 
@@ -26,11 +16,13 @@ const StudentModal: React.FC<StudentModalProps> = ({
 	student,
 }) => {
 	const [formData, setFormData] = React.useState<Student>(
-		student || { name: '', username: '', email: '', phone: '' }
+		student || { numericId: 0, name: '', username: '', email: '', phone: '' }
 	);
 
 	React.useEffect(() => {
-		setFormData(student || { name: '', username: '', email: '', phone: '' });
+		setFormData(
+			student || { numericId: 0, name: '', username: '', email: '', phone: '' }
+		);
 	}, [student]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,46 +41,33 @@ const StudentModal: React.FC<StudentModalProps> = ({
 			aria-labelledby='modal-modal-title'
 			aria-describedby='modal-modal-description'>
 			<Box className='modal-box'>
-				<div className='modal-header'>
-					<Typography
-						id='modal-modal-title'
-						variant='h6'
-						component='h2'
-						className='modal-title'>
-						{student ? 'Modifier un étudiant' : 'Ajouter un étudiant'}
-					</Typography>
-
-					<ModalClose onClick={onClose} />
-				</div>
-				{student && (
-					<p>
-						<span className='bold-text'>ID:</span> {student.numericId}
-					</p>
-				)}
-
+				<Typography
+					id='modal-modal-title'
+					variant='h6'
+					component='h2'
+					className='modal-title'>
+					{student ? 'Edit Student' : 'Add Student'}
+				</Typography>
 				<Box
 					component='form'
 					className='modal-form'>
 					<TextField
-						className='modal-input'
 						fullWidth
 						margin='normal'
 						id='name'
-						label='Nom'
+						label='Name'
 						value={formData.name}
 						onChange={handleChange}
 					/>
 					<TextField
-						className='modal-input'
 						fullWidth
 						margin='normal'
 						id='username'
-						label='Prénom'
+						label='Username'
 						value={formData.username}
 						onChange={handleChange}
 					/>
 					<TextField
-						className='modal-input'
 						fullWidth
 						margin='normal'
 						id='email'
@@ -97,11 +76,10 @@ const StudentModal: React.FC<StudentModalProps> = ({
 						onChange={handleChange}
 					/>
 					<TextField
-						className='modal-input'
 						fullWidth
 						margin='normal'
 						id='phone'
-						label='Téléphone'
+						label='Phone'
 						value={formData.phone}
 						onChange={handleChange}
 					/>
@@ -109,8 +87,14 @@ const StudentModal: React.FC<StudentModalProps> = ({
 				<Box className='modal-actions'>
 					<Button
 						variant='contained'
+						onClick={onClose}
+						className='modal-button'>
+						Close
+					</Button>
+					<Button
+						variant='contained'
 						onClick={handleSave}>
-						Enregistrer
+						Save Changes
 					</Button>
 				</Box>
 			</Box>
