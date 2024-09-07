@@ -1,8 +1,8 @@
 import React from 'react';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import './ResizableTable.css';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 interface Column {
 	header: string;
@@ -10,34 +10,65 @@ interface Column {
 	width: number;
 }
 
-interface ResizableTableProps {
+interface SortConfig {
+	key: string;
+	direction: 'asc' | 'desc';
+}
+
+interface ResizableTableProps<T> {
 	columns: Column[];
 	data: any[];
 	renderActions?: (row: any) => React.ReactNode;
+	requestSort: (key: T) => void;
+	sortConfig: SortConfig;
 }
 
-const ResizableTable: React.FC<ResizableTableProps> = ({
+const ResizableTable: React.FC<ResizableTableProps<any>> = ({
 	columns,
 	data,
 	renderActions,
+	requestSort,
+	sortConfig,
 }) => {
 	const tableRef = React.useRef<HTMLDivElement>(null);
 	const [colWidths, setColWidths] = React.useState(
 		columns.map((col) => col.width)
 	);
 
+	const getSortIndicator = (column: string) => {
+		if (sortConfig.key === column) {
+			return sortConfig.direction === 'asc' ? (
+				<Icon icon='mingcute:az-sort-ascending-letters-fill' />
+			) : (
+				<Icon icon='mingcute:az-sort-descending-letters-fill' />
+			);
+		}
+		return '';
+	};
+
+	const renderCellContent = (row: any, accessor: string) => {
+		if (typeof row[accessor] === 'boolean') {
+			return row[accessor] ? 'OUI' : 'NON';
+		}
+		return row[accessor];
+	};
+
 	return (
 		<div
-			className='table-container py-2'
+			className='table-container'
 			ref={tableRef}>
-			<table className='table-fixed table-striped table-bordered table-hover'>
+			<table>
 				<thead>
 					<tr>
 						{columns.map((col, index) => (
 							<th
 								key={index}
-								style={{ width: `${colWidths[index]}px` }}>
-								{col.header}
+								style={{ width: `${colWidths[index]}px` }}
+								onClick={() => requestSort(col.accessor)}>
+								<div className='th-children'>
+									<p>{col.header}</p>
+									{getSortIndicator(col.accessor)}
+								</div>
 							</th>
 						))}
 						{renderActions && <th style={{ width: '150px' }}>Actions</th>}
@@ -50,7 +81,7 @@ const ResizableTable: React.FC<ResizableTableProps> = ({
 								<td
 									key={colIndex}
 									style={{ width: `${colWidths[colIndex]}px` }}>
-									{row[col.accessor]}
+									{renderCellContent(row, col.accessor)}
 								</td>
 							))}
 							{renderActions && (

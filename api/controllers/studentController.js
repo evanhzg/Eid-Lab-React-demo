@@ -24,7 +24,7 @@ const createStudent = async (req, res) => {
 		// Add numericId to the created student
 		const studentWithNumericId = {
 			...newStudent._doc,
-			numericId: parseInt(newStudent._id.toString().slice(-8), 16),
+			numericId: newStudent.numericId, // Use numericId from the model
 		};
 
 		res.status(201).json(studentWithNumericId);

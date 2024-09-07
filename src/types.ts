@@ -1,6 +1,6 @@
 export interface Student {
     _id?: string;
-    numericId: number;
+    numericId?: number;
     first_name: string;
     last_name: string;
     email: string;
@@ -11,4 +11,6 @@ export interface Student {
     school: string;
     grade: string;
     available: boolean;
+    created_at: Date;
+    updated_at: Date;
 }

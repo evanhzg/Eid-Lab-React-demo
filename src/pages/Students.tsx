@@ -34,7 +34,14 @@ const Students = () => {
 			try {
 				const response = await axios.get('http://localhost:5001/api/students'); // Update the API endpoint
 				console.log('API Response:', response.data); // Debugging: Log the API response
-				setStudents(Array.isArray(response.data) ? response.data : []);
+				const transformedData = response.data.map(
+					(student: { createdAt: any; updatedAt: any }) => ({
+						...student,
+						created_at: student.createdAt,
+						updated_at: student.updatedAt,
+					})
+				);
+				setStudents(Array.isArray(transformedData) ? transformedData : []);
 			} catch (error) {
 				console.error('Error fetching students:', error);
 			}
@@ -115,14 +122,31 @@ const Students = () => {
 		{ header: 'École', accessor: 'school', width: 150 },
 		{ header: 'Niveau', accessor: 'grade', width: 100 },
 		{ header: 'Disponible', accessor: 'available', width: 100 },
+		{ header: 'Créé le', accessor: 'created_at', width: 150 },
+		{ header: 'Mis à jour le', accessor: 'updated_at', width: 150 },
 	];
+
+	const formatDate = (date: Date | string | undefined) => {
+		console.log('formatDate called with:', date); // Debugging: Log the date value
+		if (!date) return 'N/A';
+		const parsedDate = typeof date === 'string' ? new Date(date) : date;
+		if (isNaN(parsedDate.getTime())) return 'N/A';
+		return new Intl.DateTimeFormat('fr-FR', {
+			year: 'numeric',
+			month: 'numeric',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+			second: 'numeric',
+		}).format(parsedDate);
+	};
 
 	return (
 		<div>
 			<div className='table-actions'>
 				<TextField
 					className='search-input'
-					label='Search'
+					label='Rechercher'
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}
 					fullWidth
@@ -139,7 +163,11 @@ const Students = () => {
 			</div>
 			<ResizableTable
 				columns={columns}
-				data={sortedStudents}
+				data={sortedStudents.map((student) => ({
+					...student,
+					created_at: formatDate(student.created_at),
+					updated_at: formatDate(student.updated_at),
+				}))}
 				renderActions={(row) => (
 					<div className='action-buttons'>
 						<Icon
@@ -156,6 +184,8 @@ const Students = () => {
 						/>
 					</div>
 				)}
+				requestSort={requestSort}
+				sortConfig={sortConfig}
 			/>
 			<div className='pagination-controls'>
 				<Button

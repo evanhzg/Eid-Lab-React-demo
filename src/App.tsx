@@ -29,7 +29,7 @@ const App = () => {
 				<div style={{ flexGrow: 1, padding: '20px' }}>
 					<button
 						onClick={toggleTheme}
-						style={{ marginBottom: '20px' }}>
+						className='theme-button'>
 						{theme === 'light' ? (
 							<Icon
 								icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
