@@ -32,7 +32,7 @@ const Students = () => {
 	useEffect(() => {
 		const fetchStudents = async () => {
 			try {
-				const response = await axios.get('http://localhost:5001/api/students'); // Update the API endpoint
+				const response = await axios.get('http://localhost:5000/api/students'); // Update the API endpoint
 				console.log('API Response:', response.data); // Debugging: Log the API response
 				const transformedData = response.data.map(
 					(student: { createdAt: any; updatedAt: any }) => ({
@@ -59,9 +59,9 @@ const Students = () => {
 	const handleDelete = async (id: string) => {
 		// Handle delete action
 		console.log(`Delete student with id: ${id}`);
-		await axios.delete(`http://localhost:5001/api/students/${id}`);
+		await axios.delete(`http://localhost:5000/api/students/${id}`);
 		// Refresh the student list or handle state update
-		const response = await axios.get('http://localhost:5001/api/students');
+		const response = await axios.get('http://localhost:5000/api/students');
 		setStudents(Array.isArray(response.data) ? response.data : []);
 	};
 
@@ -69,17 +69,17 @@ const Students = () => {
 		if (selectedStudent) {
 			// Edit existing student
 			await axios.put(
-				`http://localhost:5001/api/students/${selectedStudent._id}`,
+				`http://localhost:5000/api/students/${selectedStudent._id}`,
 				student
 			);
 		} else {
 			// Create new student
-			await axios.post('http://localhost:5001/api/students', student);
+			await axios.post('http://localhost:5000/api/students', student);
 		}
 		setIsModalOpen(false);
 		setSelectedStudent(undefined);
 		// Refresh the student list or handle state update
-		const response = await axios.get('http://localhost:5001/api/students');
+		const response = await axios.get('http://localhost:5000/api/students');
 		setStudents(Array.isArray(response.data) ? response.data : []);
 	};
 
@@ -111,19 +111,19 @@ const Students = () => {
 	};
 
 	const columns = [
-		{ header: 'ID', accessor: 'numericId', width: 100 },
-		{ header: 'Prénom', accessor: 'first_name', width: 150 },
-		{ header: 'Nom', accessor: 'last_name', width: 150 },
-		{ header: 'Email', accessor: 'email', width: 200 },
-		{ header: 'Téléphone', accessor: 'phone', width: 150 },
-		{ header: 'Pays', accessor: 'country', width: 150 },
-		{ header: 'Région', accessor: 'region', width: 150 },
-		{ header: 'Ville', accessor: 'city', width: 150 },
-		{ header: 'École', accessor: 'school', width: 150 },
-		{ header: 'Niveau', accessor: 'grade', width: 100 },
-		{ header: 'Disponible', accessor: 'available', width: 100 },
-		{ header: 'Créé le', accessor: 'created_at', width: 150 },
-		{ header: 'Mis à jour le', accessor: 'updated_at', width: 150 },
+		{ header: 'ID', accessor: 'numericId' },
+		{ header: 'Prénom', accessor: 'first_name' },
+		{ header: 'Nom', accessor: 'last_name' },
+		{ header: 'Email', accessor: 'email' },
+		{ header: 'Téléphone', accessor: 'phone' },
+		{ header: 'Pays', accessor: 'country' },
+		{ header: 'Région', accessor: 'region' },
+		{ header: 'Ville', accessor: 'city' },
+		{ header: 'École', accessor: 'school' },
+		{ header: 'Niveau', accessor: 'grade' },
+		{ header: 'Disponible', accessor: 'available' },
+		{ header: 'Créé le', accessor: 'created_at' },
+		{ header: 'Mis à jour le', accessor: 'updated_at' },
 	];
 
 	const formatDate = (date: Date | string | undefined) => {

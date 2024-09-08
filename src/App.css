@@ -13,6 +13,8 @@
   --border-radius-lg: 16px;
   --button-padding: 10px 20px;
 
+  --table-boder-color: #474747;
+
   --success-color: #28a745; /* Green */
   --info-color: #076eff; /* Yellow */
   --warning-color: #ffc107; /* Yellow */
@@ -28,6 +30,8 @@
   --primary-text-color: var(--light-color); /* White */
   --secondary-color:var(--dark-color); /* Light gray/slightly orangy */
   --secondary-text-color: #151515; /* Black */
+
+  --table-boder-color: #ebe8e8;
 
   --shadow-color: #fffaf551;
   --body-color: var(--dark-color);
@@ -133,7 +137,8 @@ table {
 
 table th,
 table td {
-  padding: 8px;
+  padding-block: 8px;
+  padding-inline: 12px;
   white-space: nowrap;
 }
 
@@ -157,10 +162,9 @@ table th:hover {
 }
 
 table td {
-  border: 1px solid rgba(117, 117, 117);
+  border: 1px solid var(--table-boder-color);
   background-color: var(--primary-color);
   color: var(--secondary-text-color);
-  min-width: max-content !important;
 }
 
 .pagination-controls {

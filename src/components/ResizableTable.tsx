@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import './ResizableTable.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
 interface Column {
@@ -48,9 +47,27 @@ const ResizableTable: React.FC<ResizableTableProps<any>> = ({
 
 	const renderCellContent = (row: any, accessor: string) => {
 		if (typeof row[accessor] === 'boolean') {
-			return row[accessor] ? 'OUI' : 'NON';
+			return row[accessor] ? (
+				<Icon
+					icon='mingcute:check-fill'
+					color='var(--success-color)'
+				/>
+			) : (
+				<Icon
+					icon='mingcute:close-fill'
+					color='var(--error-color)'
+				/>
+			);
 		}
 		return row[accessor];
+	};
+
+	const handleSort = (column: string) => {
+		const newDirection =
+			sortConfig.key === column && sortConfig.direction === 'asc'
+				? 'desc'
+				: 'asc';
+		requestSort({ key: column, direction: newDirection });
 	};
 
 	return (
@@ -64,7 +81,7 @@ const ResizableTable: React.FC<ResizableTableProps<any>> = ({
 							<th
 								key={index}
 								style={{ width: `${colWidths[index]}px` }}
-								onClick={() => requestSort(col.accessor)}>
+								onClick={() => handleSort(col.accessor)}>
 								<div className='th-children'>
 									<p>{col.header}</p>
 									{getSortIndicator(col.accessor)}
