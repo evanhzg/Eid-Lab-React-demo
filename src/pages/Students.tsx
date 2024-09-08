@@ -66,15 +66,20 @@ const Students = () => {
 	};
 
 	const handleSave = async (student: Student) => {
+		const updatedStudent = {
+			...student,
+			updated_at: new Date(),
+		};
+
 		if (selectedStudent) {
 			// Edit existing student
 			await axios.put(
 				`http://localhost:5000/api/students/${selectedStudent._id}`,
-				student
+				updatedStudent
 			);
 		} else {
 			// Create new student
-			await axios.post('http://localhost:5000/api/students', student);
+			await axios.post('http://localhost:5000/api/students', updatedStudent);
 		}
 		setIsModalOpen(false);
 		setSelectedStudent(undefined);

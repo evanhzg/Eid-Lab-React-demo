@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Icon } from '@iconify/react';
 
 interface Column {
 	header: string;
@@ -18,29 +18,55 @@ interface ResizableTableProps<T> {
 	columns: Column[];
 	data: any[];
 	renderActions?: (row: any) => React.ReactNode;
-	requestSort: (key: T) => void;
-	sortConfig: SortConfig;
 }
 
 const ResizableTable: React.FC<ResizableTableProps<any>> = ({
 	columns,
 	data,
 	renderActions,
-	requestSort,
-	sortConfig,
 }) => {
 	const tableRef = React.useRef<HTMLDivElement>(null);
 	const [colWidths, setColWidths] = React.useState(
 		columns.map((col) => col.width)
 	);
+	const [sortConfig, setSortConfig] = useState<SortConfig>({
+		key: 'createdAt',
+		direction: 'desc',
+	});
+	const [sortedData, setSortedData] = useState(data);
+
+	useEffect(() => {
+		const sorted = [...data].sort((a, b) => {
+			if (a[sortConfig.key] < b[sortConfig.key]) {
+				return sortConfig.direction === 'asc' ? -1 : 1;
+			}
+			if (a[sortConfig.key] > b[sortConfig.key]) {
+				return sortConfig.direction === 'asc' ? 1 : -1;
+			}
+			return 0;
+		});
+		setSortedData(sorted);
+	}, [data, sortConfig]);
 
 	const getSortIndicator = (column: string) => {
+		// Check if the column data type is boolean
+		const isBooleanColumn =
+			sortedData.length > 0 && typeof sortedData[0][column] === 'boolean';
+
 		if (sortConfig.key === column) {
-			return sortConfig.direction === 'asc' ? (
-				<Icon icon='mingcute:az-sort-ascending-letters-fill' />
-			) : (
-				<Icon icon='mingcute:az-sort-descending-letters-fill' />
-			);
+			if (isBooleanColumn) {
+				return sortConfig.direction === 'asc' ? (
+					<Icon icon='mdi:order-bool-descending' />
+				) : (
+					<Icon icon='mdi:order-bool-ascending' />
+				);
+			} else {
+				return sortConfig.direction === 'asc' ? (
+					<Icon icon='mingcute:az-sort-ascending-letters-fill' />
+				) : (
+					<Icon icon='mingcute:az-sort-descending-letters-fill' />
+				);
+			}
 		}
 		return '';
 	};
@@ -67,7 +93,32 @@ const ResizableTable: React.FC<ResizableTableProps<any>> = ({
 			sortConfig.key === column && sortConfig.direction === 'asc'
 				? 'desc'
 				: 'asc';
-		requestSort({ key: column, direction: newDirection });
+		setSortConfig({ key: column, direction: newDirection });
+
+		const sorted = [...sortedData].sort((a, b) => {
+			if (typeof a[column] === 'boolean' && typeof b[column] === 'boolean') {
+				return newDirection === 'asc'
+					? a[column] === b[column]
+						? 0
+						: a[column]
+						? -1
+						: 1
+					: a[column] === b[column]
+					? 0
+					: a[column]
+					? 1
+					: -1;
+			}
+			if (a[column] < b[column]) {
+				return newDirection === 'asc' ? -1 : 1;
+			}
+			if (a[column] > b[column]) {
+				return newDirection === 'asc' ? 1 : -1;
+			}
+			return 0;
+		});
+
+		setSortedData(sorted);
 	};
 
 	return (
@@ -92,7 +143,7 @@ const ResizableTable: React.FC<ResizableTableProps<any>> = ({
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((row, rowIndex) => (
+					{sortedData.map((row, rowIndex) => (
 						<tr key={rowIndex}>
 							{columns.map((col, colIndex) => (
 								<td
