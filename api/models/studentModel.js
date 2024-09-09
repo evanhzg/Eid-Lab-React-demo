@@ -13,6 +13,8 @@ const studentSchema = new mongoose.Schema({
 	available: { type: Boolean, required: true },
 	createdAt: { type: Date, default: Date.now },
 	updatedAt: { type: Date, default: Date.now },
+	disabledAt: { type: Date },
+	status: { type: Boolean, default: true },
 });
 
 module.exports = mongoose.model('Student', studentSchema);
