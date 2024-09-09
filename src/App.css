@@ -146,7 +146,7 @@ table {
 }
 
 table th, table td {
-  padding: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
   white-space: nowrap;
 }
 
