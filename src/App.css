@@ -1,48 +1,41 @@
 :root {
-  --dark-color: #333333; /* Light gray/slightly orangy */
-  --light-color: #fffaf5; /* Black */
+  --dark-color: #333333;
+  --light-color: #fffaf5;
+  --primary-color: var(--dark-color);
+  --secondary-color: var(--light-color);
+  --highlight-color: #ffc107;
+  --success-color: #28a745;
+  --info-color: #076eff;
+  --warning-color: #ffc107;
+  --error-color: #dc3545;
+  --shadow-color: #3333333a;
 
-  --primary-color: var(--dark-color); /* Light gray/slightly orangy */
-  --primary-text-color: var(--dark-color); /* Black */
-  --secondary-color: var(--light-color); /* Dark gray */
-  --highlight-color: #ffc107; /* Light gray/slightly orangy */
+  --primary-text-color: var(--dark-color);
+  --secondary-text-color: #fffaf5;
 
-  --secondary-text-color: #fffaf5; /* White */
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 16px;
-  --button-padding: 10px 20px;
+  --table-border-color: #474747;
 
-  --table-boder-color: #474747;
+  --space-xs: 12px;
+  --space-sm: 24px;
+  --space-md: 48px;
+  --space-lg: 96px;
 
-  --success-color: #28a745; /* Green */
-  --info-color: #076eff; /* Yellow */
-  --warning-color: #ffc107; /* Yellow */
-  --error-color: #dc3545; /* Red */
-
-  --shadow-color: #3333333a;
+  --button-padding: var(--space-xs) var(--space-sm);
 
   --body-color: var(--light-color);
 }
 
 [data-theme="dark"] {
-  --primary-color: var(--light-color); /* Dark gray */
-  --primary-text-color: var(--light-color); /* White */
-  --secondary-color:var(--dark-color); /* Light gray/slightly orangy */
-  --secondary-text-color: #151515; /* Black */
-
-  --table-boder-color: #ebe8e8;
-
+  --primary-color: var(--light-color);
+  --primary-text-color: var(--light-color);
+  --secondary-color: var(--dark-color);
+  --secondary-text-color: #151515;
+  --table-border-color: #ebe8e8;
   --shadow-color: #fffaf551;
   --body-color: var(--dark-color);
-}
-
-p {
-  margin: 0;
-}
-
-.bold-text {
-  font-weight: bold;
 }
 
 body {
@@ -51,9 +44,12 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 10px;
+p {
+  margin: 0;
+}
+
+.bold-text {
+  font-weight: bold;
 }
 
 Button {
@@ -75,12 +71,18 @@ Button.error {
   background-color: var(--error-color) !important;
 }
 
+.highlighted-button {
+  background-color: var(--secondary-color) !important;
+  color: var(--primary-text-color) !important;
+  border-radius: var(--border-radius);
+  padding: var(--button-padding);
+}
+
 .theme-button {
-  margin-bottom: 20px;
-  border-radius: 50%; 
+  margin-bottom: var(--space-sm);
+  border-radius: 50%;
   aspect-ratio: 1;
   border: none !important;
-
   transition: all 0.2s ease-in-out;
 }
 
@@ -93,41 +95,13 @@ Icon.success {
   color: var(--success-color) !important;
 }
 
-.table-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  height: 48px;
-}
-
-.table-actions Button {
-  background-color: var(--highlight-color) !important;
-  color: var(--dark-color) !important;
-  margin: 0 !important;
-  height: 100%;
-}
-
-.search-input {
-  margin: 0 0 0 12px !important;
-  max-width: 25%;
-  background-color: var(--secondary-color) !important;
-  color: var(--dark-color) !important;
-}
-
-.search-input * {
-  color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-
-}
-
 .table-container {
   overflow-x: auto;
   max-width: 80vw;
   scrollbar-width: none;
   border-radius: var(--border-radius-lg) !important;
-  box-shadow: 0 5px 10px var(--shadow-color);
-  margin-block: 24px;
+  box-shadow: 0 5px var(--space-xs) var(--shadow-color);
+  margin-block: var(--space-sm);
 }
 
 table {
@@ -137,8 +111,8 @@ table {
 
 table th,
 table td {
-  padding-block: 8px;
-  padding-inline: 12px;
+  padding-block: calc(var(--space-xs) * 2/3);
+  padding-inline: var(--space-xs);
   white-space: nowrap;
 }
 
@@ -148,13 +122,14 @@ table th {
   color: var(--primary-text-color);
   transition: all 0.1s ease-in-out;
   cursor: pointer;
+  user-select: none;
 }
 
 .th-children {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-xs);
 }
 
 table th:hover {
@@ -163,21 +138,46 @@ table th:hover {
 }
 
 table td {
-  border: 1px solid var(--table-boder-color);
+  border: 1px solid var(--table-border-color);
   background-color: var(--primary-color);
   color: var(--secondary-text-color);
 }
 
-.pagination-controls {
+.table-actions {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  height: var(--space-md);
 }
 
-.highlighted-button {
+.table-actions Button {
+  background-color: var(--highlight-color) !important;
+  color: var(--dark-color) !important;
+  margin: 0 !important;
+  height: 100%;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.search-input {
+  margin: 0 0 0 var(--space-xs) !important;
+  max-width: 25%;
   background-color: var(--secondary-color) !important;
-  color: var(--primary-text-color) !important;
-  border-radius: var(--border-radius);
-  padding: var(--button-padding);
+  color: var(--dark-color) !important;
+}
+
+.search-input * {
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: var(--space-xs);
 }
 
 .modal-box {
@@ -189,15 +189,15 @@ table td {
   background-color: var(--secondary-color);
   border: 0 solid transparent;
   border-radius: var(--border-radius-md);
-  box-shadow: 24px;
-  padding: 16px;
+  box-shadow: var(--space-sm);
+  padding: var(--space-sm);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-sm);
 }
 
 .modal-title {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-sm);
   font-weight: bold !important;
   text-transform: uppercase;
 }
@@ -206,13 +206,13 @@ table td {
   color: var(--primary-text-color) !important;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-sm);
 }
 
 .modal-form-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-xs);
 }
 
 .modal-form-group label {
@@ -221,9 +221,8 @@ table td {
 
 .modal-form-group div {
   display: flex;
-  gap: 24px;
+  gap: var(--space-sm);
   margin: 0;
-
 }
 
 label {
@@ -235,14 +234,14 @@ label {
 }
 
 .modal-actions {
-  margin-top: 16px;
+  margin-top: var(--space-sm);
   display: flex;
-  gap: 10px;
+  gap: var(--space-xs);
   justify-content: flex-end;
 }
 
 .modal-button {
-  margin-right: 8px;
+  margin-right: calc(var(--space-xs) * 2/3);
 }
 
 .modal-header {

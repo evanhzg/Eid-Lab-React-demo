@@ -18,34 +18,39 @@ interface ResizableTableProps<T> {
 	columns: Column[];
 	data: any[];
 	renderActions?: (row: any) => React.ReactNode;
+	requestSort?: (key: keyof T) => void;
+	sortConfig?: SortConfig | null;
 }
 
-const ResizableTable: React.FC<ResizableTableProps<any>> = ({
+const ResizableTable = <T extends object>({
 	columns,
 	data,
 	renderActions,
-}) => {
+	requestSort,
+	sortConfig: initialSortConfig,
+}: ResizableTableProps<T>) => {
 	const tableRef = React.useRef<HTMLDivElement>(null);
 	const [colWidths, setColWidths] = React.useState(
 		columns.map((col) => col.width)
 	);
-	const [sortConfig, setSortConfig] = useState<SortConfig>({
-		key: 'createdAt',
-		direction: 'desc',
-	});
 	const [sortedData, setSortedData] = useState(data);
+	const [sortConfig, setSortConfig] = useState<SortConfig | null>(initialSortConfig || null);
 
 	useEffect(() => {
-		const sorted = [...data].sort((a, b) => {
-			if (a[sortConfig.key] < b[sortConfig.key]) {
-				return sortConfig.direction === 'asc' ? -1 : 1;
-			}
-			if (a[sortConfig.key] > b[sortConfig.key]) {
-				return sortConfig.direction === 'asc' ? 1 : -1;
-			}
-			return 0;
-		});
-		setSortedData(sorted);
+		if (sortConfig?.key) {
+			const sorted = [...data].sort((a, b) => {
+				if (a[sortConfig.key] < b[sortConfig.key]) {
+					return sortConfig.direction === 'asc' ? -1 : 1;
+				}
+				if (a[sortConfig?.key] > b[sortConfig?.key]) {
+					return sortConfig.direction === 'asc' ? 1 : -1;
+				}
+				return 0;
+			});
+			setSortedData(sorted);
+		} else {	
+			setSortedData(data);
+		}
 	}, [data, sortConfig]);
 
 	const getSortIndicator = (column: string) => {
@@ -53,15 +58,15 @@ const ResizableTable: React.FC<ResizableTableProps<any>> = ({
 		const isBooleanColumn =
 			sortedData.length > 0 && typeof sortedData[0][column] === 'boolean';
 
-		if (sortConfig.key === column) {
+		if (sortConfig?.key === column) {
 			if (isBooleanColumn) {
-				return sortConfig.direction === 'asc' ? (
+				return sortConfig?.direction === 'asc' ? (
 					<Icon icon='mdi:order-bool-descending' />
 				) : (
 					<Icon icon='mdi:order-bool-ascending' />
 				);
 			} else {
-				return sortConfig.direction === 'asc' ? (
+				return sortConfig?.direction === 'asc' ? (
 					<Icon icon='mingcute:az-sort-ascending-letters-fill' />
 				) : (
 					<Icon icon='mingcute:az-sort-descending-letters-fill' />
@@ -90,7 +95,7 @@ const ResizableTable: React.FC<ResizableTableProps<any>> = ({
 
 	const handleSort = (column: string) => {
 		const newDirection =
-			sortConfig.key === column && sortConfig.direction === 'asc'
+			sortConfig?.key === column && sortConfig?.direction === 'asc'
 				? 'desc'
 				: 'asc';
 		setSortConfig({ key: column, direction: newDirection });

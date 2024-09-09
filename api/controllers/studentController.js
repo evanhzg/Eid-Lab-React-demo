@@ -20,18 +20,13 @@ const createStudent = async (req, res) => {
 	try {
 		const student = new Student(req.body);
 		const newStudent = await student.save();
-
-		// Add numericId to the created student
-		const studentWithNumericId = {
-			...newStudent._doc,
-			numericId: newStudent.numericId, // Use numericId from the model
-		};
-
-		res.status(201).json(studentWithNumericId);
+		res.status(201).json({
+			...newStudent.toObject(),
+			created_at: newStudent.createdAt.toISOString(),
+			updated_at: newStudent.updatedAt.toISOString(),
+		});
 	} catch (err) {
-		res
-			.status(400)
-			.json({ message: 'Error creating student', error: err.message });
+		res.status(400).json({ message: 'Error creating student', error: err.message });
 	}
 };
 
@@ -40,10 +35,14 @@ const updateStudent = async (req, res) => {
 	try {
 		const updatedStudent = await Student.findByIdAndUpdate(
 			req.params.id,
-			req.body,
+			{ ...req.body, updatedAt: new Date() },
 			{ new: true }
 		);
-		res.json(updatedStudent);
+		res.json({
+			...updatedStudent.toObject(),
+			created_at: updatedStudent.createdAt.toISOString(),
+			updated_at: updatedStudent.updatedAt.toISOString(),
+		});
 	} catch (error) {
 		console.error('Error updating student:', error);
 		res.status(500).json({ message: 'Server Error' });

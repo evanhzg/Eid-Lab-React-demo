@@ -68,11 +68,17 @@ const StudentModal: React.FC<StudentModalProps> = ({
 	};
 
 	const handleSave = () => {
-		const updatedFormData = {
+		const updatedFormData: Student = {
 			...formData,
 			updated_at: new Date(),
+			created_at: formData.created_at ? new Date(formData.created_at) : new Date(),
 		};
 		onSave(updatedFormData);
+	};
+
+	const formatDate = (date: string | Date) => {
+		if (!date) return 'N/A';
+		return new Date(date).toLocaleString();
 	};
 
 	return (
@@ -192,6 +198,31 @@ const StudentModal: React.FC<StudentModalProps> = ({
 									/>
 								}
 								label='Disponible'
+							/>
+						</div>
+					</div>
+					<div className='modal-form-group'>
+						<label>Dates</label>
+						<div>
+							<TextField
+								fullWidth
+								margin='normal'
+								id='created_at'
+								label='Date de création'
+								value={formatDate(formData.created_at)}
+								InputProps={{
+									readOnly: true,
+								}}
+							/>
+							<TextField
+								fullWidth
+								margin='normal'
+								id='updated_at'
+								label='Date de mise à jour'
+								value={formatDate(formData.updated_at)}
+								InputProps={{
+									readOnly: true,
+								}}
 							/>
 						</div>
 					</div>
