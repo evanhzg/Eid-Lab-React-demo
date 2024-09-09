@@ -88,6 +88,7 @@ Button.error {
 }
 
 Button.delete {
+  background-color: var(--dark-color) !important;
   color: var(--error-color) !important;
   font-weight: bold;
 }
@@ -203,6 +204,7 @@ table td {
   gap: var(--space-xs);
 }
 
+
 .search-input {
   margin: 0 0 0 var(--space-xs) !important;
   max-width: 25%;
@@ -211,9 +213,29 @@ table td {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.search-input * {
-  color: var(--primary-text-color) !important;
+.search-input,
+.modal-input {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: var(--border-radius-lg) !important;
+}
+
+.search-input *,
+.modal-input * {
+  
   border-color: var(--table-border-color) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.modal-input fieldset {
+  border: none !important;
+}
+
+.modal-input input,
+.modal-input textarea {
+  color: var(--primary-text-color) !important;
+  background-color: var(--table-header-bg) !important;
+  border-radius: var(--border-radius-lg) !important;
+
 }
 
 .pagination-controls {
@@ -232,15 +254,6 @@ table td {
   transform: translate(-50%, -50%);
   border-radius: var(--border-radius-lg);
   box-shadow: 0 5px var(--space-xs) var(--shadow-color);
-}
-
-.modal-input {
-  background-color: var(--table-cell-bg);
-  color: var(--primary-text-color);
-}
-
-.modal-input input {
-  color: var(--primary-text-color);
 }
 
 .modal-button {
@@ -270,7 +283,7 @@ table td {
   font-weight: bold;
 }
 
-.modal-form-group div {
+.modal-form-group > div {
   display: flex;
   gap: var(--space-sm);
   margin: 0;
@@ -315,11 +328,6 @@ label {
 .main-content {
   position: relative;
   z-index: 1;
-}
-
-.confirm-dialog div {
-  border-radius: var(--border-radius-lg) !important;
-  color: var(--primary-text-color);
 }
 
 .confirm-dialog__button {

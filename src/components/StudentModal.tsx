@@ -64,17 +64,17 @@ const StudentModal: React.FC<StudentModalProps> = ({
 
 	const validateForm = () => {
 		const newErrors: Partial<Student> = {};
-		if (!formData.first_name) newErrors.first_name = 'First name is required';
-		if (!formData.last_name) newErrors.last_name = 'Last name is required';
-		if (!formData.email) newErrors.email = 'Email is required';
+		if (!formData.first_name) newErrors.first_name = 'Le prénom est requis';
+		if (!formData.last_name) newErrors.last_name = 'Le nom est requis';
+		if (!formData.email) newErrors.email = "L'email est requis";
 		else if (!/\S+@\S+\.\S+/.test(formData.email))
-			newErrors.email = 'Email is invalid';
-		if (!formData.phone) newErrors.phone = 'Phone is required';
-		if (!formData.country) newErrors.country = 'Country is required';
-		if (!formData.region) newErrors.region = 'Region is required';
-		if (!formData.city) newErrors.city = 'City is required';
-		if (!formData.school) newErrors.school = 'School is required';
-		if (!formData.grade) newErrors.grade = 'Grade is required';
+			newErrors.email = "L'email est invalide";
+		if (!formData.phone) newErrors.phone = 'Le téléphone est requis';
+		if (!formData.country) newErrors.country = 'Le pays est requis';
+		if (!formData.region) newErrors.region = 'La région est requise';
+		if (!formData.city) newErrors.city = 'La ville est requise';
+		if (!formData.school) newErrors.school = "L'école est requise";
+		if (!formData.grade) newErrors.grade = 'Le niveau est requis';
 		setErrors(newErrors);
 		return Object.keys(newErrors).length === 0;
 	};
@@ -129,6 +129,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 						<label>Informations personnelles</label>
 						<div>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='first_name'
@@ -139,6 +140,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								helperText={errors.first_name}
 							/>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='last_name'
@@ -149,6 +151,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								helperText={errors.last_name}
 							/>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='email'
@@ -159,6 +162,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								helperText={errors.email}
 							/>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='phone'
@@ -174,6 +178,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 						<label>Localisation</label>
 						<div>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='country'
@@ -184,6 +189,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								helperText={errors.country}
 							/>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='region'
@@ -194,6 +200,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								helperText={errors.region}
 							/>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='city'
@@ -209,6 +216,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 						<label>Scolarité</label>
 						<div>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='school'
@@ -219,6 +227,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								helperText={errors.school}
 							/>
 							<TextField
+								className='modal-input'
 								fullWidth
 								margin='normal'
 								id='grade'
@@ -241,32 +250,16 @@ const StudentModal: React.FC<StudentModalProps> = ({
 										id='available'
 									/>
 								}
-								label='Disponible'
-							/>
-						</div>
-					</div>
-					<div className='modal-form-group'>
-						<label>Dates</label>
-						<div>
-							<TextField
-								fullWidth
-								margin='normal'
-								id='created_at'
-								label='Date de création'
-								value={formatDate(formData.created_at)}
-								InputProps={{
-									readOnly: true,
-								}}
-							/>
-							<TextField
-								fullWidth
-								margin='normal'
-								id='updated_at'
-								label='Date de mise à jour'
-								value={formatDate(formData.updated_at)}
-								InputProps={{
-									readOnly: true,
-								}}
+								label={
+									<span
+										style={{
+											color: formData.available
+												? 'var(--success-color)'
+												: 'var(--error-color)',
+										}}>
+										{formData.available ? 'Disponible' : 'Indisponible'}
+									</span>
+								}
 							/>
 						</div>
 					</div>

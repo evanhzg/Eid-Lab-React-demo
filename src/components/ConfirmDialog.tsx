@@ -25,7 +25,14 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 	<Dialog
 		open={open}
 		onClose={onClose}
-		className='confirm-dialog'>
+		className='confirm-dialog'
+		PaperProps={{
+			style: {
+				backgroundColor: 'var(--secondary-color)',
+				color: 'var(--primary-text-color)',
+				borderRadius: 'var(--border-radius-lg)',
+			},
+		}}>
 		<DialogTitle>{title}</DialogTitle>
 		<DialogContent>{content}</DialogContent>
 		<DialogActions>
@@ -36,7 +43,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 			</Button>
 			<Button
 				onClick={onConfirm}
-				className='confirm-dialog__button confirm-dialog__button--delete'
+				className='delete'
 				autoFocus>
 				Confirm
 			</Button>
