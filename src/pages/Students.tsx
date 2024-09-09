@@ -6,6 +6,7 @@ import useTableConfig from '../hooks/useStudentTableConfig';
 import StudentModal from '../components/StudentModal';
 import { Icon } from '@iconify/react';
 import { Student } from '../types';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const Students = () => {
 	const [students, setStudents] = useState<Student[]>([]);
@@ -13,6 +14,8 @@ const Students = () => {
 		undefined
 	);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+	const [studentToDelete, setStudentToDelete] = useState<string | null>(null);
 
 	const {
 		sortedStudents,
@@ -54,13 +57,24 @@ const Students = () => {
 	};
 
 	const handleDelete = async (id: string) => {
-		try {
-			await axios.delete(`http://localhost:5000/api/students/${id}`);
-			// Fetch the updated list of students
-			await fetchStudents();
-		} catch (error) {
-			console.error('Error deleting student:', error);
+		setStudentToDelete(id);
+		setIsConfirmDialogOpen(true);
+	};
+
+	const confirmDelete = async () => {
+		if (studentToDelete) {
+			try {
+				await axios.delete(
+					`http://localhost:5000/api/students/${studentToDelete}`
+				);
+				// Fetch the updated list of students
+				await fetchStudents();
+			} catch (error) {
+				console.error('Error deleting student:', error);
+			}
 		}
+		setIsConfirmDialogOpen(false);
+		setStudentToDelete(null);
 	};
 
 	const handleSave = async (student: Student) => {
@@ -81,6 +95,14 @@ const Students = () => {
 			await fetchStudents();
 		} catch (error) {
 			console.error('Error saving student:', error);
+			if (axios.isAxiosError(error) && error.response) {
+				// Handle validation errors from the server
+				const validationErrors = error.response.data.details;
+				if (validationErrors) {
+					// Update the errors state in the StudentModal
+					setErrors(validationErrors);
+				}
+			}
 		}
 	};
 
@@ -128,7 +150,6 @@ const Students = () => {
 	];
 
 	const formatDate = (date: Date | string | undefined) => {
-		console.log('formatDate called with:', date); // Debugging: Log the date value
 		if (!date) return 'N/A';
 		const parsedDate = typeof date === 'string' ? new Date(date) : date;
 		if (isNaN(parsedDate.getTime())) return 'N/A';
@@ -233,6 +254,13 @@ const Students = () => {
 				onClose={() => setIsModalOpen(false)}
 				onSave={handleSave}
 				student={selectedStudent}
+			/>
+			<ConfirmDialog
+				open={isConfirmDialogOpen}
+				onClose={() => setIsConfirmDialogOpen(false)}
+				onConfirm={confirmDelete}
+				title='Confirm Deletion'
+				content='Are you sure you want to delete this student?'
 			/>
 		</div>
 	);

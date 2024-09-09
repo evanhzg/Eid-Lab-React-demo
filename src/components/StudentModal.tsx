@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Modal,
 	Box,
@@ -23,7 +23,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 	onSave,
 	student,
 }) => {
-	const [formData, setFormData] = React.useState<Student>(
+	const [formData, setFormData] = useState<Student>(
 		student || {
 			first_name: '',
 			last_name: '',
@@ -40,7 +40,9 @@ const StudentModal: React.FC<StudentModalProps> = ({
 		}
 	);
 
-	React.useEffect(() => {
+	const [errors, setErrors] = useState<Partial<Student>>({});
+
+	useEffect(() => {
 		setFormData(
 			student || {
 				first_name: '',
@@ -57,7 +59,25 @@ const StudentModal: React.FC<StudentModalProps> = ({
 				updated_at: new Date(),
 			}
 		);
+		setErrors({});
 	}, [student]);
+
+	const validateForm = () => {
+		const newErrors: Partial<Student> = {};
+		if (!formData.first_name) newErrors.first_name = 'First name is required';
+		if (!formData.last_name) newErrors.last_name = 'Last name is required';
+		if (!formData.email) newErrors.email = 'Email is required';
+		else if (!/\S+@\S+\.\S+/.test(formData.email))
+			newErrors.email = 'Email is invalid';
+		if (!formData.phone) newErrors.phone = 'Phone is required';
+		if (!formData.country) newErrors.country = 'Country is required';
+		if (!formData.region) newErrors.region = 'Region is required';
+		if (!formData.city) newErrors.city = 'City is required';
+		if (!formData.school) newErrors.school = 'School is required';
+		if (!formData.grade) newErrors.grade = 'Grade is required';
+		setErrors(newErrors);
+		return Object.keys(newErrors).length === 0;
+	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value, type, checked } = e.target;
@@ -65,15 +85,22 @@ const StudentModal: React.FC<StudentModalProps> = ({
 			...prevState,
 			[id]: type === 'checkbox' ? checked : value,
 		}));
+		if (errors[id as keyof Student]) {
+			setErrors((prevErrors) => ({ ...prevErrors, [id]: undefined }));
+		}
 	};
 
 	const handleSave = () => {
-		const updatedFormData: Student = {
-			...formData,
-			updated_at: new Date(),
-			created_at: formData.created_at ? new Date(formData.created_at) : new Date(),
-		};
-		onSave(updatedFormData);
+		if (validateForm()) {
+			const updatedFormData: Student = {
+				...formData,
+				updated_at: new Date(),
+				created_at: formData.created_at
+					? new Date(formData.created_at)
+					: new Date(),
+			};
+			onSave(updatedFormData);
+		}
 	};
 
 	const formatDate = (date: string | Date) => {
@@ -108,6 +135,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='Prénom'
 								value={formData.first_name}
 								onChange={handleChange}
+								error={!!errors.first_name}
+								helperText={errors.first_name}
 							/>
 							<TextField
 								fullWidth
@@ -116,6 +145,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='Nom'
 								value={formData.last_name}
 								onChange={handleChange}
+								error={!!errors.last_name}
+								helperText={errors.last_name}
 							/>
 							<TextField
 								fullWidth
@@ -124,6 +155,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='Email'
 								value={formData.email}
 								onChange={handleChange}
+								error={!!errors.email}
+								helperText={errors.email}
 							/>
 							<TextField
 								fullWidth
@@ -132,12 +165,13 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='Téléphone'
 								value={formData.phone}
 								onChange={handleChange}
+								error={!!errors.phone}
+								helperText={errors.phone}
 							/>
 						</div>
 					</div>
 					<div className='modal-form-group'>
 						<label>Localisation</label>
-
 						<div>
 							<TextField
 								fullWidth
@@ -146,6 +180,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='Pays'
 								value={formData.country}
 								onChange={handleChange}
+								error={!!errors.country}
+								helperText={errors.country}
 							/>
 							<TextField
 								fullWidth
@@ -154,6 +190,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='Région'
 								value={formData.region}
 								onChange={handleChange}
+								error={!!errors.region}
+								helperText={errors.region}
 							/>
 							<TextField
 								fullWidth
@@ -162,6 +200,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='Ville'
 								value={formData.city}
 								onChange={handleChange}
+								error={!!errors.city}
+								helperText={errors.city}
 							/>
 						</div>
 					</div>
@@ -175,6 +215,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='École'
 								value={formData.school}
 								onChange={handleChange}
+								error={!!errors.school}
+								helperText={errors.school}
 							/>
 							<TextField
 								fullWidth
@@ -183,6 +225,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 								label='Niveau'
 								value={formData.grade}
 								onChange={handleChange}
+								error={!!errors.grade}
+								helperText={errors.grade}
 							/>
 						</div>
 					</div>
@@ -236,7 +280,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 					</Button>
 					<Button
 						variant='contained'
-						onClick={handleSave}>
+						onClick={handleSave}
+						className='modal-button'>
 						Enregistrer
 					</Button>
 				</Box>

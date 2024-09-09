@@ -87,6 +87,11 @@ Button.error {
   background-color: var(--error-color) !important;
 }
 
+Button.delete {
+  color: var(--error-color) !important;
+  font-weight: bold;
+}
+
 .highlighted-button {
   background-color: var(--secondary-color) !important;
   color: var(--primary-text-color) !important;
@@ -106,7 +111,6 @@ Button.error {
   border: none !important;
   opacity: 0.8;
 }
-
 
 .pagination-button {
   background-color: var(--dark-color) !important;
@@ -218,25 +222,35 @@ table td {
 }
 
 .modal-box {
+  background-color: var(--secondary-color);
+  color: var(--primary-text-color);
+  max-width: 50%;
+  padding: var(--space-sm);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: fit-content;
-  background-color: var(--secondary-color);
-  border: 0 solid transparent;
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--space-sm);
-  padding: var(--space-sm);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 5px var(--space-xs) var(--shadow-color);
 }
 
-.modal-title {
-  margin-bottom: var(--space-sm);
-  font-weight: bold !important;
-  text-transform: uppercase;
+.modal-input {
+  background-color: var(--table-cell-bg);
+  color: var(--primary-text-color);
+}
+
+.modal-input input {
+  color: var(--primary-text-color);
+}
+
+.modal-button {
+  background-color: var(--dark-color) !important;
+  color: var(--light-color) !important;
+}
+
+[data-theme="dark"] .modal-button {
+  background-color: var(--light-color) !important;
+  color: var(--dark-color) !important;
 }
 
 .modal-form {
@@ -277,10 +291,6 @@ label {
   justify-content: flex-end;
 }
 
-.modal-button {
-  margin-right: calc(var(--space-xs) * 2/3);
-}
-
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -305,4 +315,24 @@ label {
 .main-content {
   position: relative;
   z-index: 1;
+}
+
+.confirm-dialog div {
+  border-radius: var(--border-radius-lg) !important;
+  color: var(--primary-text-color);
+}
+
+.confirm-dialog__button {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+}
+
+.confirm-dialog__button--delete {
+  color: var(--error-color) !important;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .confirm-dialog__button {
+  background-color: var(--secondary-color) !important;
+  color: var(--primary-color) !important;
 }
