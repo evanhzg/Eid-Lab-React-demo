@@ -164,6 +164,8 @@ table th {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  min-width: 100px;
+  gap: var(--space-xs);
 }
 
 table th:hover {

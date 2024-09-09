@@ -34,7 +34,9 @@ const ResizableTable = <T extends object>({
 		columns.map((col) => col.width)
 	);
 	const [sortedData, setSortedData] = useState(data);
-	const [sortConfig, setSortConfig] = useState<SortConfig | null>(initialSortConfig || null);
+	const [sortConfig, setSortConfig] = useState<SortConfig | null>(
+		initialSortConfig || null
+	);
 
 	useEffect(() => {
 		if (sortConfig?.key) {
@@ -48,7 +50,7 @@ const ResizableTable = <T extends object>({
 				return 0;
 			});
 			setSortedData(sorted);
-		} else {	
+		} else {
 			setSortedData(data);
 		}
 	}, [data, sortConfig]);
@@ -58,12 +60,23 @@ const ResizableTable = <T extends object>({
 		const isBooleanColumn =
 			sortedData.length > 0 && typeof sortedData[0][column] === 'boolean';
 
+		// Check if the column data type is date
+		const isDateColumn =
+			sortedData.length > 0 &&
+			typeof sortedData[0][column] === 'string' &&
+			!isNaN(Date.parse(sortedData[0][column]));
 		if (sortConfig?.key === column) {
 			if (isBooleanColumn) {
 				return sortConfig?.direction === 'asc' ? (
 					<Icon icon='mdi:order-bool-descending' />
 				) : (
 					<Icon icon='mdi:order-bool-ascending' />
+				);
+			} else if (isDateColumn) {
+				return sortConfig?.direction === 'asc' ? (
+					<Icon icon='mdi:sort-time-descending' />
+				) : (
+					<Icon icon='mdi:sort-time-ascending' />
 				);
 			} else {
 				return sortConfig?.direction === 'asc' ? (
