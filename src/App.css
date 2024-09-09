@@ -59,6 +59,15 @@ body {
   z-index: 0;
 }
 
+#root {
+  width: 100%;
+}
+
+.app-buttons-group {
+  display: flex;
+  gap: var(--space-sm);
+}
+
 p {
   margin: 0;
 }
@@ -68,7 +77,7 @@ p {
 }
 
 Button {
-  background-color: var(--primary-color) !important;
+  background-color: var(--primary-color);
   color: var(--secondary-text-color) !important;
   border-radius: var(--border-radius-lg);
   padding: var(--button-padding);
@@ -187,8 +196,7 @@ table td {
 .table-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   height: var(--space-md);
 }
 
@@ -196,12 +204,14 @@ table td {
   background-color: var(--highlight-color) !important;
   color: var(--dark-color) !important;
   margin: 0 !important;
+  border-radius: var(--border-radius-lg);
   height: 100%;
 }
 
 .action-buttons {
   display: flex;
   gap: var(--space-xs);
+  justify-content: space-between;
 }
 
 
@@ -343,4 +353,50 @@ label {
 [data-theme="dark"] .confirm-dialog__button {
   background-color: var(--secondary-color) !important;
   color: var(--primary-color) !important;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.custom-alert {
+  background-color: var(--alert-bg-color) !important;
+  color: var(--dark-color) !important;
+  transition: opacity 300ms ease-in-out;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.custom-alert.closing {
+  animation: fadeOut 300ms ease-in-out;
+}
+
+.custom-alert .MuiAlert-action {
+  padding: 0;
+  margin-right: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  height: 100%;
+}
+
+.close-button:hover {
+  opacity: 0.7;
+}
+
+.close-button .iconify {
+  display: block;
 }

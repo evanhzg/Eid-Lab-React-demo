@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Students from './pages/Students';
 import Error404 from './pages/Error404';
 import AppSidebar from './components/AppSidebar';
 import './App.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { AlertManager, AlertItem } from './components/AlertManager';
+
+export const AlertContext = createContext<
+	((message: string, type: AlertItem['type']) => void) | null
+>(null);
 
 const App = () => {
-	const [theme, setTheme] = useState('light');
+	const [theme, setTheme] = useState('dark');
+	const [addAlert, setAddAlert] = useState<
+		((message: string, type: AlertItem['type']) => void) | null
+	>(null);
 
 	useEffect(() => {
 		const savedTheme = localStorage.getItem('theme') || 'light';
@@ -22,47 +30,68 @@ const App = () => {
 		localStorage.setItem('theme', newTheme);
 	};
 
+	const testAlerts = () => {
+		addAlert?.("Alerte d'erreur", 'error');
+		setTimeout(() => addAlert?.('Alerte de confirmation', 'success'), 1000);
+		setTimeout(() => addAlert?.("Alerte d'information", 'info'), 2000);
+		setTimeout(() => addAlert?.("Alerte d'avertissement", 'warning'), 3000);
+	};
+
 	return (
-		<Router>
-			<div
-				className='app-container'
-				style={{ display: 'flex', height: '100vh' }}>
-				<AppSidebar />
-				<div style={{ flexGrow: 1, padding: '20px' }}>
-					<button
-						onClick={toggleTheme}
-						className='theme-button'>
-						{theme === 'light' ? (
-							<Icon
-								icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
-								style={{ fontSize: '1.5em' }}
-								color='var(--highlight-color)'
+		<AlertContext.Provider value={addAlert}>
+			<Router>
+				<div
+					className='app-container'
+					style={{ display: 'flex', height: '100vh' }}>
+					<AppSidebar />
+					<div style={{ flexGrow: 1, padding: '20px' }}>
+						<div className='app-buttons-group'>
+							<button
+								onClick={toggleTheme}
+								className='theme-button'>
+								{theme === 'light' ? (
+									<Icon
+										icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
+										style={{ fontSize: '1.5em' }}
+										color='var(--highlight-color)'
+									/>
+								) : (
+									<Icon
+										icon='line-md:moon-rising-filled-loop'
+										style={{ fontSize: '1.5em' }}
+										color='var(--info-color)'
+									/>
+								)}{' '}
+							</button>
+							<button
+								onClick={testAlerts}
+								className='theme-button'>
+								<Icon
+									icon='line-md:bell-alert-filled-loop'
+									style={{ fontSize: '1.5em' }}
+									color='var(--warning-color)'
+								/>
+							</button>
+						</div>
+						<Routes>
+							<Route
+								path='/'
+								element={<Error404 />}
 							/>
-						) : (
-							<Icon
-								icon='line-md:moon-rising-filled-loop'
-								style={{ fontSize: '1.5em' }}
-								color='var(--info-color)'
+							<Route
+								path='/tables'
+								element={<Error404 />}
 							/>
-						)}{' '}
-					</button>
-					<Routes>
-						<Route
-							path='/'
-							element={<Error404 />}
-						/>
-						<Route
-							path='/tables'
-							element={<Error404 />}
-						/>
-						<Route
-							path='/students'
-							element={<Students />}
-						/>
-					</Routes>
+							<Route
+								path='/students'
+								element={<Students />}
+							/>
+						</Routes>
+					</div>
+					<AlertManager setAddAlert={setAddAlert} />
 				</div>
-			</div>
-		</Router>
+			</Router>
+		</AlertContext.Provider>
 	);
 };
 

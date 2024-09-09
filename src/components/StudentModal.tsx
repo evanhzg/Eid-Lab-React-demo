@@ -23,28 +23,34 @@ const StudentModal: React.FC<StudentModalProps> = ({
 	onSave,
 	student,
 }) => {
-	const [formData, setFormData] = useState<Student>(
-		student || {
-			first_name: '',
-			last_name: '',
-			email: '',
-			phone: '',
-			country: '',
-			region: '',
-			city: '',
-			school: '',
-			grade: '',
-			available: false,
-			created_at: new Date(),
-			updated_at: new Date(),
-		}
-	);
+	const [formData, setFormData] = useState<Student>({
+		_id: '',
+		first_name: '',
+		last_name: '',
+		email: '',
+		phone: '',
+		country: '',
+		region: '',
+		city: '',
+		school: '',
+		grade: '',
+		available: false,
+		created_at: new Date(),
+		updated_at: new Date(),
+	});
 
 	const [errors, setErrors] = useState<Partial<Student>>({});
 
 	useEffect(() => {
-		setFormData(
-			student || {
+		if (student) {
+			setFormData({
+				...student,
+				created_at: new Date(student.created_at),
+				updated_at: new Date(student.updated_at),
+			});
+		} else {
+			setFormData({
+				_id: '',
 				first_name: '',
 				last_name: '',
 				email: '',
@@ -57,8 +63,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 				available: false,
 				created_at: new Date(),
 				updated_at: new Date(),
-			}
-		);
+			});
+		}
 		setErrors({});
 	}, [student]);
 
@@ -101,11 +107,6 @@ const StudentModal: React.FC<StudentModalProps> = ({
 			};
 			onSave(updatedFormData);
 		}
-	};
-
-	const formatDate = (date: string | Date) => {
-		if (!date) return 'N/A';
-		return new Date(date).toLocaleString();
 	};
 
 	return (

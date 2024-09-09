@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useContext } from 'react';
 import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
@@ -7,6 +7,7 @@ import StudentModal from '../components/StudentModal';
 import { Icon } from '@iconify/react';
 import { Student } from '../types';
 import ConfirmDialog from '../components/ConfirmDialog';
+import { AlertContext } from '../App';
 
 const Students = () => {
 	const [students, setStudents] = useState<Student[]>([]);
@@ -16,7 +17,7 @@ const Students = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 	const [studentToDelete, setStudentToDelete] = useState<string | null>(null);
-
+	const addAlert = useContext(AlertContext);
 	const {
 		sortedStudents,
 		totalPages,
@@ -67,10 +68,11 @@ const Students = () => {
 				await axios.delete(
 					`http://localhost:5000/api/students/${studentToDelete}`
 				);
-				// Fetch the updated list of students
+				addAlert?.('Student deleted successfully', 'success');
 				await fetchStudents();
 			} catch (error) {
 				console.error('Error deleting student:', error);
+				addAlert?.('Error deleting student', 'error');
 			}
 		}
 		setIsConfirmDialogOpen(false);
@@ -85,9 +87,11 @@ const Students = () => {
 					`http://localhost:5000/api/students/${selectedStudent._id}`,
 					student
 				);
+				addAlert?.('Student updated successfully', 'success');
 			} else {
 				// Create new student
 				await axios.post('http://localhost:5000/api/students', student);
+				addAlert?.('Student created successfully', 'success');
 			}
 			setIsModalOpen(false);
 			setSelectedStudent(undefined);
@@ -95,6 +99,7 @@ const Students = () => {
 			await fetchStudents();
 		} catch (error) {
 			console.error('Error saving student:', error);
+			addAlert?.('Error saving student', 'error');
 			if (axios.isAxiosError(error) && error.response) {
 				// Handle validation errors from the server
 				const validationErrors = error.response.data.details;
@@ -180,7 +185,10 @@ const Students = () => {
 						setSelectedStudent(undefined);
 						setIsModalOpen(true);
 					}}>
-					<Icon icon='mingcute:user-add-fill' />
+					<Icon
+						icon='mingcute:user-add-fill'
+						style={{ fontSize: '1.5em' }}
+					/>
 				</Button>
 			</div>
 			<ResizableTable

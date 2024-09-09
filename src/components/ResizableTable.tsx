@@ -146,10 +146,11 @@ const ResizableTable = <T extends object>({
 			<table>
 				<thead>
 					<tr>
+						{renderActions && <th>Actions</th>}
+
 						{columns.map((col, index) => (
 							<th
 								key={index}
-								style={{ width: `${colWidths[index]}px` }}
 								onClick={() => handleSort(col.accessor)}>
 								<div className='th-children'>
 									<p>{col.header}</p>
@@ -157,22 +158,15 @@ const ResizableTable = <T extends object>({
 								</div>
 							</th>
 						))}
-						{renderActions && <th style={{ width: '150px' }}>Actions</th>}
 					</tr>
 				</thead>
 				<tbody>
 					{sortedData.map((row, rowIndex) => (
 						<tr key={rowIndex}>
+							{renderActions && <td>{renderActions(row)}</td>}
 							{columns.map((col, colIndex) => (
-								<td
-									key={colIndex}
-									style={{ width: `${colWidths[colIndex]}px` }}>
-									{renderCellContent(row, col.accessor)}
-								</td>
+								<td key={colIndex}>{renderCellContent(row, col.accessor)}</td>
 							))}
-							{renderActions && (
-								<td style={{ width: '150px' }}>{renderActions(row)}</td>
-							)}
 						</tr>
 					))}
 				</tbody>
