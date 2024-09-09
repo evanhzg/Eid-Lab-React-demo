@@ -190,6 +190,7 @@ const Students = () => {
 			/>
 			<div className='pagination-controls'>
 				<Button
+					className='pagination-button'
 					variant='contained'
 					onClick={prevPage}
 					disabled={currentPage === 1}>
@@ -198,7 +199,11 @@ const Students = () => {
 				{generatePageButtons().map((page, index) =>
 					typeof page === 'number' ? (
 						<Button
-							className={currentPage === page ? 'highlighted-button' : ''}
+							className={
+								currentPage === page
+									? 'highlighted-button'
+									: 'pagination-button'
+							}
 							variant='contained'
 							key={index}
 							onClick={() => setCurrentPage(page)}>
@@ -206,6 +211,7 @@ const Students = () => {
 						</Button>
 					) : (
 						<Button
+							className='pagination-button'
 							variant='contained'
 							key={index}
 							disabled
@@ -215,6 +221,7 @@ const Students = () => {
 					)
 				)}
 				<Button
+					className='pagination-button'
 					variant='contained'
 					onClick={nextPage}
 					disabled={isLastPage}>

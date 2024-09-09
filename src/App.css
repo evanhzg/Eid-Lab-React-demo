@@ -1,47 +1,62 @@
 :root {
-  --dark-color: #333333;
-  --light-color: #fffaf5;
+  /* Colors */
+  --dark-color: #121212;
+  --light-color: #efeeee;
   --primary-color: var(--dark-color);
   --secondary-color: var(--light-color);
-  --highlight-color: #ffc107;
-  --success-color: #28a745;
-  --info-color: #076eff;
-  --warning-color: #ffc107;
-  --error-color: #dc3545;
+  --highlight-color: #ffd700;
+  --success-color: #4caf50;
+  --info-color: #2196f3;
+  --warning-color: #ff9800;
+  --error-color: #f44336;
   --shadow-color: #3333333a;
 
+  /* Text Colors */
   --primary-text-color: var(--dark-color);
-  --secondary-text-color: #fffaf5;
+  --secondary-text-color: #121212;
 
+  /* Table Colors */
+  --table-header-bg: #f0f0f0;
+  --table-cell-bg: #ffffff;
+  --table-border-color: #e0e0e0;
+
+  /* Border Styles */
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 16px;
-  --table-border-color: #474747;
 
-  --space-xs: 12px;
+  /* Spacing */
+  --space-xs: 6px;
+  --space-s: 12px;
   --space-sm: 24px;
   --space-md: 48px;
   --space-lg: 96px;
 
+  /* Button */
   --button-padding: var(--space-xs) var(--space-sm);
 
+  /* Body */
   --body-color: var(--light-color);
 }
 
 [data-theme="dark"] {
-  --primary-color: var(--light-color);
-  --primary-text-color: var(--light-color);
-  --secondary-color: var(--dark-color);
-  --secondary-text-color: #151515;
-  --table-border-color: #ebe8e8;
-  --shadow-color: #fffaf551;
+  --primary-color: #e0e0e0;
+  --primary-text-color: #e0e0e0;
+  --secondary-color: #1e1e1e;
+  --secondary-text-color: #121212;
+  --table-header-bg: #2c2c2c;
+  --table-cell-bg: #252525;
+  --table-border-color: #333333;
+  --shadow-color: #5c5c5c1a;
   --body-color: var(--dark-color);
 }
 
 body {
-  background-color: var(--body-color) !important;
-  color: var(--primary-text-color) !important;
+  background-color: var(--body-color);
+  color: var(--primary-text-color);
   font-family: 'Roboto', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 0;
 }
 
 p {
@@ -57,6 +72,7 @@ Button {
   color: var(--secondary-text-color) !important;
   border-radius: var(--border-radius-lg);
   padding: var(--button-padding);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 Button.success {
@@ -91,6 +107,24 @@ Button.error {
   opacity: 0.8;
 }
 
+
+.pagination-button {
+  background-color: var(--dark-color) !important;
+  color: var(--light-color) !important;
+  border: 1px solid var(--light-color) !important;
+}
+
+[data-theme="dark"] .pagination-button {
+  background-color: var(--dark-color) !important;
+  color: var(--light-color) !important;
+  border: 1px solid var(--light-color) !important;
+}
+
+.pagination-button:hover {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
 Icon.success {
   color: var(--success-color) !important;
 }
@@ -102,23 +136,23 @@ Icon.success {
   border-radius: var(--border-radius-lg) !important;
   box-shadow: 0 5px var(--space-xs) var(--shadow-color);
   margin-block: var(--space-sm);
+  transition: box-shadow 0.3s ease;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-table th,
-table td {
-  padding-block: calc(var(--space-xs) * 2/3);
-  padding-inline: var(--space-xs);
+table th, table td {
+  padding: var(--space-xs);
   white-space: nowrap;
 }
 
 table th {
   border: none;
-  background-color: var(--secondary-color);
+  background-color: var(--table-header-bg);
   color: var(--primary-text-color);
   transition: all 0.1s ease-in-out;
   cursor: pointer;
@@ -127,9 +161,9 @@ table th {
 
 .th-children {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: var(--space-xs);
+  align-items: center;
+  width: 100%;
 }
 
 table th:hover {
@@ -139,8 +173,8 @@ table th:hover {
 
 table td {
   border: 1px solid var(--table-border-color);
-  background-color: var(--primary-color);
-  color: var(--secondary-text-color);
+  background-color: var(--table-cell-bg);
+  color: var(--primary-text-color);
 }
 
 .table-actions {
@@ -166,13 +200,14 @@ table td {
 .search-input {
   margin: 0 0 0 var(--space-xs) !important;
   max-width: 25%;
-  background-color: var(--secondary-color) !important;
-  color: var(--dark-color) !important;
+  background-color: var(--table-header-bg) !important;
+  color: var(--primary-text-color) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .search-input * {
-  color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
+  color: var(--primary-text-color) !important;
+  border-color: var(--table-border-color) !important;
 }
 
 .pagination-controls {
@@ -230,7 +265,7 @@ label {
 }
 
 .modal-input fieldset {
-  border-color: var(--primary-text-color) !important;
+  border-color: var(--table-border-color) !important;
 }
 
 .modal-actions {
@@ -248,4 +283,24 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.app-container {
+  position: relative;
+  min-height: 100vh;
+  background: var(--gradient-background);
+}
+
+/* Theme-specific variables */
+[data-theme='light'] {
+  --gradient-background: linear-gradient(to bottom right, #e5e4e4, #ffffff);
+}
+
+[data-theme='dark'] {
+  --gradient-background: linear-gradient(to bottom right, #3b3b3b, #1a1a1a);
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
 }
