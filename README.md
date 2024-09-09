@@ -1,50 +1,84 @@
-# React + TypeScript + Vite
+# Student Apprenticeship Job-Board Admin Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a basic React SaaS application for managing a fictive students apprenticeship job-board. It provides an admin dashboard to manage student profiles, job listings, and company information.
 
-Currently, two official plugins are available:
+## Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React
+- TypeScript
+- Material-UI
+- Axios for API calls
+- React Router for navigation
+- Vite as the build tool and development server
 
-## Expanding the ESLint configuration
+### Potential Future Technologies
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Jest and React Testing Library for unit and integration testing
+- Cypress for end-to-end testing
+- Storybook for component documentation and testing
+- React Query for efficient data fetching and caching
+- Firebase or AWS Amplify for authentication and backend services
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Current Features
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Student profile management (CRUD operations)
+- Responsive table with sorting and pagination
+- Search functionality for student profiles
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Potential Future Features
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Company profile management
+- Job listing creation and management
+- Application tracking system
+- Matching algorithm for students and job listings
+- Reporting and analytics dashboard
+- User authentication and role-based access control
+- Messaging system between students and companies
+- Resume builder for students
+- Interview scheduling tool
+
+## Roadmap
+
+1. Complete admin dashboard functionality
+2. Develop user-facing applications for students and companies
+3. Implement authentication and authorization
+4. Create job listing and application management features
+5. Develop matching algorithm
+6. Add messaging system
+7. Implement analytics and reporting
+8. Enhance UI/UX based on user feedback
+9. Optimize performance and scalability
+10. Implement additional features based on user needs
+
+## Technical Steps
+
+1. Set up project structure and core dependencies
+2. Implement basic CRUD operations for student profiles
+3. Create responsive UI components
+4. Implement sorting, pagination, and search functionality
+5. Set up API integration
+6. Implement state management solution
+7. Add user authentication and authorization
+8. Develop company and job listing management features
+9. Create matching algorithm
+10. Implement messaging system
+11. Add analytics and reporting features
+12. Optimize performance and implement caching strategies
+13. Set up testing infrastructure and write tests
+14. Deploy application to production environment
+
+## Getting Started
+
+Start the Express server (API) : `npm run dev`
+
+Start the Vite server (Dashboard) : `npm run dev`
+
+## Contributing
+
+Just me, for now.
+
+## License
+
+No license as of now.
