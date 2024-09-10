@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import {
 	TextField,
 	Button,
@@ -20,6 +20,7 @@ import {
 	deleteCompany,
 } from '../services/companyService';
 import { ObjectId } from '../types';
+import { usePagination } from '../hooks/usePagination';
 
 const Companies = () => {
 	const [companies, setCompanies] = useState<Company[]>([]);
@@ -33,6 +34,16 @@ const Companies = () => {
 	const addAlert = useContext(AlertContext);
 	const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 	const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
+	const {
+		currentPage,
+		itemsPerPage,
+		goToPage,
+		nextPage,
+		prevPage,
+		paginate,
+		totalPages,
+		setItemsPerPageCount,
+	} = usePagination<Company>(10);
 
 	useEffect(() => {
 		fetchCompanies();
@@ -124,11 +135,13 @@ const Companies = () => {
 		return sortableCompanies;
 	}, [companies, sortConfig]);
 
-	const filteredCompanies = sortedCompanies.filter((company) =>
-		Object.values(company).some((value) =>
-			value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-		)
-	);
+	const filteredCompanies = useMemo(() => {
+		return sortedCompanies.filter((company) =>
+			Object.values(company).some((value) =>
+				value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+			)
+		);
+	}, [sortedCompanies, searchQuery]);
 
 	const columns = [
 		{ header: 'ID', accessor: 'numericId', width: 100 },
@@ -162,6 +175,48 @@ const Companies = () => {
 		}).format(parsedDate);
 	};
 
+	const generatePageButtons = () => {
+		const totalPagesCount = total; // This is now the actual number, not the function
+		let pages: (number | string)[] = [];
+
+		if (totalPagesCount <= 5) {
+			pages = Array.from({ length: totalPagesCount }, (_, index) => index + 1);
+		} else {
+			if (currentPage <= 3) {
+				pages = [1, 2, 3, 4, '...', totalPagesCount];
+			} else if (currentPage >= totalPagesCount - 2) {
+				pages = [
+					1,
+					'...',
+					totalPagesCount - 3,
+					totalPagesCount - 2,
+					totalPagesCount - 1,
+					totalPagesCount,
+				];
+			} else {
+				pages = [
+					1,
+					'...',
+					currentPage - 1,
+					currentPage,
+					currentPage + 1,
+					'...',
+					totalPagesCount,
+				];
+			}
+		}
+
+		return pages;
+	};
+
+	const currentItems = useMemo(() => {
+		return paginate({ items: filteredCompanies });
+	}, [paginate, filteredCompanies]);
+
+	const total = useMemo(() => {
+		return totalPages({ items: filteredCompanies });
+	}, [totalPages, filteredCompanies]);
+
 	return (
 		<div>
 			<div className='table-actions'>
@@ -187,7 +242,7 @@ const Companies = () => {
 			</div>
 			<ResizableTable
 				columns={columns}
-				data={filteredCompanies.map((company) => ({
+				data={currentItems.map((company) => ({
 					...company,
 					createdAt: formatDate(company.created_at),
 					updatedAt: formatDate(company.updated_at),
@@ -214,6 +269,46 @@ const Companies = () => {
 				requestSort={requestSort}
 				sortConfig={sortConfig}
 			/>
+			<div className='pagination-controls'>
+				<Button
+					className='pagination-button'
+					variant='contained'
+					onClick={prevPage}
+					disabled={currentPage === 1}>
+					<Icon icon='mingcute:arrow-left-fill' />
+				</Button>
+				{generatePageButtons().map((page, index) =>
+					typeof page === 'number' ? (
+						<Button
+							key={index}
+							className={
+								currentPage === page
+									? 'highlighted-button'
+									: 'pagination-button'
+							}
+							variant='contained'
+							onClick={() => goToPage(page)}>
+							{page.toString()}
+						</Button>
+					) : (
+						<Button
+							key={index}
+							className='pagination-button'
+							variant='contained'
+							disabled
+							style={{ cursor: 'default' }}>
+							{page.toString()}
+						</Button>
+					)
+				)}
+				<Button
+					className='pagination-button'
+					variant='contained'
+					onClick={nextPage}
+					disabled={currentPage === total}>
+					<Icon icon='mingcute:arrow-right-fill' />
+				</Button>
+			</div>
 			<CompanyModal
 				open={isModalOpen}
 				onClose={() => setIsModalOpen(false)}

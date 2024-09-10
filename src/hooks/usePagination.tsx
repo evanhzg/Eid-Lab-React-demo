@@ -4,7 +4,10 @@ interface PaginateProps<T> {
 	items: T[];
 }
 
-const usePaginate = <T,>(initialItemsPerPage: number, initialPage = 1) => {
+export const usePagination = <T,>(
+	initialItemsPerPage: number,
+	initialPage = 1
+) => {
 	const [currentPage, setCurrentPage] = useState(initialPage);
 	const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
 
@@ -49,4 +52,4 @@ const usePaginate = <T,>(initialItemsPerPage: number, initialPage = 1) => {
 	};
 };
 
-export default usePaginate;
+export default usePagination;

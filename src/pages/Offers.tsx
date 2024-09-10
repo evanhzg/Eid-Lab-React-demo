@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
 	Table,
 	TableBody,
@@ -10,6 +10,7 @@ import {
 	IconButton,
 	Button,
 	Typography,
+	TextField,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import OfferModal from '../components/OfferModal';
@@ -24,12 +25,58 @@ import { getCompanies } from '../services/companyService.ts';
 import '../styles/table.css';
 import ResizableTable from '../components/ResizableTable';
 import { useSortableData, formatDate } from '../utils/tableUtils.ts';
+import { usePagination } from '../hooks/usePagination';
 
 const Offers: React.FC = () => {
 	const [offers, setOffers] = useState<Offer[]>([]);
 	const [companies, setCompanies] = useState<Company[]>([]);
 	const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [searchQuery, setSearchQuery] = useState('');
+	const {
+		currentPage,
+		itemsPerPage,
+		goToPage,
+		nextPage,
+		prevPage,
+		paginate,
+		totalPages,
+		setItemsPerPageCount,
+	} = usePagination<Offer>(10); // 10 is the initial items per page
+
+	const generatePageButtons = () => {
+		const totalPagesCount = total; // This is now the actual number, not the function
+		let pages: (number | string)[] = [];
+
+		if (totalPagesCount <= 5) {
+			pages = Array.from({ length: totalPagesCount }, (_, index) => index + 1);
+		} else {
+			if (currentPage <= 3) {
+				pages = [1, 2, 3, 4, '...', totalPagesCount];
+			} else if (currentPage >= totalPagesCount - 2) {
+				pages = [
+					1,
+					'...',
+					totalPagesCount - 3,
+					totalPagesCount - 2,
+					totalPagesCount - 1,
+					totalPagesCount,
+				];
+			} else {
+				pages = [
+					1,
+					'...',
+					currentPage - 1,
+					currentPage,
+					currentPage + 1,
+					'...',
+					totalPagesCount,
+				];
+			}
+		}
+
+		return pages;
+	};
 
 	const {
 		items: sortedOffers,
@@ -146,6 +193,22 @@ const Offers: React.FC = () => {
 		},
 	];
 
+	const filteredOffers = useMemo(() => {
+		return sortedOffers.filter((offer) =>
+			Object.values(offer).some((value) =>
+				value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+			)
+		);
+	}, [sortedOffers, searchQuery]);
+
+	const currentItems = useMemo(() => {
+		return paginate({ items: filteredOffers });
+	}, [paginate, filteredOffers]);
+
+	const total = useMemo(() => {
+		return totalPages({ items: filteredOffers });
+	}, [totalPages, filteredOffers]);
+
 	return (
 		<div className='offers-container'>
 			<div className='offers-header'>
@@ -154,16 +217,28 @@ const Offers: React.FC = () => {
 					component='h1'>
 					Offres
 				</Typography>
-				<Button
-					variant='contained'
-					color='primary'
-					onClick={() => handleOpenModal()}>
-					<Icon icon='mdi:file-document-plus' />
-				</Button>
+				<div className='table-actions'>
+					<TextField
+						className='search-input'
+						label='Rechercher'
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						fullWidth
+						margin='normal'
+					/>
+					<Button
+						variant='contained'
+						onClick={() => handleOpenModal()}>
+						<Icon
+							icon='mdi:file-document-plus'
+							style={{ fontSize: '1.5em' }}
+						/>
+					</Button>
+				</div>
 			</div>
 			<ResizableTable
 				columns={columns}
-				data={sortedOffers.map((offer) => ({
+				data={currentItems.map((offer) => ({
 					...offer,
 					created_at: formatDate(offer.created_at),
 					updated_at: formatDate(offer.updated_at),
@@ -172,6 +247,46 @@ const Offers: React.FC = () => {
 				requestSort={requestSort}
 				sortConfig={sortConfig}
 			/>
+			<div className='pagination-controls'>
+				<Button
+					className='pagination-button'
+					variant='contained'
+					onClick={prevPage}
+					disabled={currentPage === 1}>
+					<Icon icon='mingcute:arrow-left-fill' />
+				</Button>
+				{generatePageButtons().map((page, index) =>
+					typeof page === 'number' ? (
+						<Button
+							key={index}
+							className={
+								currentPage === page
+									? 'highlighted-button'
+									: 'pagination-button'
+							}
+							variant='contained'
+							onClick={() => goToPage(page)}>
+							{page.toString()}
+						</Button>
+					) : (
+						<Button
+							key={index}
+							className='pagination-button'
+							variant='contained'
+							disabled
+							style={{ cursor: 'default' }}>
+							{page.toString()}
+						</Button>
+					)
+				)}
+				<Button
+					className='pagination-button'
+					variant='contained'
+					onClick={nextPage}
+					disabled={currentPage === total}>
+					<Icon icon='mingcute:arrow-right-fill' />
+				</Button>
+			</div>
 			<OfferModal
 				open={isModalOpen}
 				onClose={handleCloseModal}
