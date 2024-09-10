@@ -26,7 +26,6 @@ const StudentModal: React.FC<StudentModalProps> = ({
 	student,
 }) => {
 	const [formData, setFormData] = useState<Student>({
-		_id: '',
 		first_name: '',
 		last_name: '',
 		email: '',
@@ -52,7 +51,6 @@ const StudentModal: React.FC<StudentModalProps> = ({
 			});
 		} else {
 			setFormData({
-				_id: '',
 				first_name: '',
 				last_name: '',
 				email: '',

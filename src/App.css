@@ -11,12 +11,14 @@
   --error-color: #f44336;
   --shadow-color: #3333333a;
 
+  --background-color: var(--light-color);
+
   /* Text Colors */
   --primary-text-color: var(--dark-color);
   --secondary-text-color: #121212;
 
   /* Table Colors */
-  --table-header-bg: #f0f0f0;
+  --table-header-bg: #e0e0e0;
   --table-cell-bg: #ffffff;
   --table-border-color: #e0e0e0;
 
@@ -49,6 +51,7 @@
   --table-border-color: #333333;
   --shadow-color: #5c5c5c1a;
   --body-color: var(--dark-color);
+  --background-color: var(--dark-color);
 }
 
 body {
@@ -219,7 +222,6 @@ table td {
   margin: 0 0 0 var(--space-xs) !important;
   max-width: 25%;
   background-color: var(--table-header-bg) !important;
-  color: var(--primary-text-color) !important;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -231,6 +233,7 @@ table td {
 
 .search-input *,
 .modal-input * {
+  color: var(--primary-text-color) !important;
   
   border-color: var(--table-border-color) !important;
   transition: background-color 0.3s ease, color 0.3s ease;

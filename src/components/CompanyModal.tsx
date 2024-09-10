@@ -17,7 +17,6 @@ import { Icon } from '@iconify/react';
 import '../styles/modal.css';
 
 interface Company {
-	_id: string;
 	name: string;
 	size: string;
 	type: string;
@@ -45,7 +44,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
 	company,
 }) => {
 	const [formData, setFormData] = useState<Company>({
-		_id: '',
 		name: '',
 		size: '',
 		type: '',
@@ -68,7 +66,6 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
 			setFormData(company);
 		} else {
 			setFormData({
-				_id: '',
 				name: '',
 				size: '',
 				type: '',
@@ -204,10 +201,10 @@ const CompanyModal: React.FC<CompanyModalProps> = ({
 										name='size'
 										value={formData.size}
 										onChange={handleChange}>
-										<MenuItem value='1-10'>1-10</MenuItem>
-										<MenuItem value='11-50'>11-50</MenuItem>
-										<MenuItem value='51-100'>51-100</MenuItem>
-										<MenuItem value='101-500'>101-500</MenuItem>
+										<MenuItem value='1 à 10'>1-10</MenuItem>
+										<MenuItem value='11 à 50'>11-50</MenuItem>
+										<MenuItem value='51 à 100'>51-100</MenuItem>
+										<MenuItem value='101 à 500'>101-500</MenuItem>
 										<MenuItem value='501+'>501+</MenuItem>
 									</Select>
 									{errors.size && (

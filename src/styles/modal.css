@@ -13,7 +13,7 @@
   width: 50%;
   max-width: 1000px;
   max-height: 75vh;
-  background-color: var(--secondary-color);
+  background-color: var(--background-color);
   color: var(--primary-text-color);
   border-radius: var(--border-radius-lg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -96,8 +96,8 @@
   padding: 0;
 }
 
-.modal-input fieldset {
-  border-color: var(--table-border-color) !important;
+fieldset {
+  border: none !important;
 }
 
 .custom-modal .MuiFormHelperText-root {
@@ -135,16 +135,11 @@
 
 /* Select Inputs */
 .custom-modal .MuiSelect-select,
-.custom-modal .MuiSelect-outlined {
+.custom-modal .MuiSelect-outlined, .custom-modal .MuiSelect-select:focus {
   padding: 16.5px 14px;
-  background-color: var(--light-color);
-  color: var(--dark-color);
-}
-
-[data-theme="dark"] .custom-modal .MuiSelect-select,
-[data-theme="dark"] .custom-modal .MuiSelect-outlined {
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  background-color: var(--table-header-bg);
+  color: var(--primary-text-color);
+border-radius: var(--border-radius-lg);
 }
 
 .custom-modal .MuiOutlinedInput-notchedOutline {
@@ -163,12 +158,10 @@
   color: var(--light-color);
 }
 
-.custom-modal .MuiMenu-paper {
+.MuiMenu-paper {
   background-color: var(--light-color);
-}
-
-[data-theme="dark"] .custom-modal .MuiMenu-paper {
-  background-color: var(--dark-color);
+  border-radius: var(--border-radius-lg) !important;
+  margin-top: var(--space-xs);
 }
 
 .form-field-container {
