@@ -182,6 +182,7 @@ border-radius: var(--border-radius-lg);
 
 .modal-input {
   width: 100%;
+  background-color: var(--table-header-bg);
 }
 
 /* Media query for smaller screens */

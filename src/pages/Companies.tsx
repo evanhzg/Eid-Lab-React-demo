@@ -9,28 +9,17 @@ import {
 	DialogTitle,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
-import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
 import CompanyModal from '../components/CompanyModal';
+import { Company } from '../types';
 import { AlertContext } from '../App';
-
-interface Company {
-	_id: string;
-	numericId: number;
-	name: string;
-	size: string;
-	type: string;
-	acceptsUnsolicited: boolean;
-	domains: string[];
-	countries: string[];
-	cities: string[];
-	description: string;
-	shortDescription: string;
-	logo: string;
-	available: boolean;
-	createdAt: string;
-	updatedAt: string;
-}
+import {
+	getCompanies,
+	createCompany,
+	updateCompany,
+	deleteCompany,
+} from '../services/companyService';
+import { ObjectId } from '../types';
 
 const Companies = () => {
 	const [companies, setCompanies] = useState<Company[]>([]);
@@ -51,31 +40,28 @@ const Companies = () => {
 
 	const fetchCompanies = async () => {
 		try {
-			const response = await axios.get('http://localhost:5000/api/companies');
-			setCompanies(response.data);
+			const fetchedCompanies = await getCompanies();
+			setCompanies(fetchedCompanies);
 		} catch (error) {
 			console.error('Error fetching companies:', error);
 			addAlert?.('Erreur lors de la récupération des entreprises', 'error');
 		}
 	};
 
-	const handleEdit = (id: string) => {
-		const company = companies.find((c) => c._id === id);
+	const handleEdit = (id: ObjectId) => {
+		const company = companies.find((c) => c._id.equals(id));
 		setSelectedCompany(company);
 		setIsModalOpen(true);
 	};
-
-	const handleDelete = (id: string) => {
-		setCompanyToDelete(id);
+	const handleDelete = (id: ObjectId) => {
+		setCompanyToDelete(id.toString());
 		setIsConfirmDialogOpen(true);
 	};
 
 	const confirmDelete = async () => {
 		if (companyToDelete) {
 			try {
-				await axios.delete(
-					`http://localhost:5000/api/companies/${companyToDelete}`
-				);
+				await deleteCompany(companyToDelete);
 				addAlert?.('Entreprise supprimée avec succès', 'success');
 				fetchCompanies();
 			} catch (error) {
@@ -90,13 +76,10 @@ const Companies = () => {
 	const handleSave = async (company: Partial<Company>) => {
 		try {
 			if (selectedCompany) {
-				await axios.put(
-					`http://localhost:5000/api/companies/${selectedCompany._id}`,
-					company
-				);
+				await updateCompany(selectedCompany._id!, company);
 				addAlert?.('Entreprise mise à jour avec succès', 'success');
 			} else {
-				await axios.post('http://localhost:5000/api/companies', company);
+				await createCompany(company as Omit<Company, '_id'>);
 				addAlert?.('Entreprise créée avec succès', 'success');
 			}
 			setIsModalOpen(false);
@@ -206,10 +189,8 @@ const Companies = () => {
 				columns={columns}
 				data={filteredCompanies.map((company) => ({
 					...company,
-					createdAt: formatDate(company.createdAt),
-					updatedAt: formatDate(company.updatedAt),
-					acceptsUnsolicited: company.acceptsUnsolicited ? 'Oui' : 'Non',
-					available: company.available ? 'Oui' : 'Non',
+					createdAt: formatDate(company.created_at),
+					updatedAt: formatDate(company.updated_at),
 					domains: company.domains.join(', '),
 					countries: company.countries.join(', '),
 					cities: company.cities.join(', '),

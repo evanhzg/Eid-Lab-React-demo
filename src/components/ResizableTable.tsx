@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { Icon } from '@iconify/react';
 
-interface Column {
+interface Column<T> {
 	header: string;
-	accessor: string;
+	accessor: keyof T;
 	width: number;
+	cell?: (value: any) => React.ReactNode;
 }
 
 interface SortConfig {
@@ -15,37 +16,36 @@ interface SortConfig {
 }
 
 interface ResizableTableProps<T> {
-	columns: Column[];
-	data: any[];
-	renderActions?: (row: any) => React.ReactNode;
+	columns: Column<T>[];
+	data: T[];
+	renderActions?: (row: T) => React.ReactNode;
 	requestSort?: (key: keyof T) => void;
 	sortConfig?: SortConfig | null;
 }
 
-const ResizableTable = <T extends object>({
+const ResizableTable = <T extends Record<string, any>>({
 	columns,
 	data,
 	renderActions,
 	requestSort,
-	sortConfig: initialSortConfig,
+	sortConfig: externalSortConfig,
 }: ResizableTableProps<T>) => {
 	const tableRef = React.useRef<HTMLDivElement>(null);
-	const [colWidths, setColWidths] = React.useState(
-		columns.map((col) => col.width)
-	);
+	const [colWidths, setColWidths] = useState(columns.map((col) => col.width));
 	const [sortedData, setSortedData] = useState(data);
-	const [sortConfig, setSortConfig] = useState<SortConfig | null>(
-		initialSortConfig || null
-	);
+	const [internalSortConfig, setInternalSortConfig] =
+		useState<SortConfig | null>(null);
+
+	const activeSortConfig = externalSortConfig || internalSortConfig;
 
 	useEffect(() => {
-		if (sortConfig?.key) {
+		if (activeSortConfig?.key) {
 			const sorted = [...data].sort((a, b) => {
-				if (a[sortConfig.key] < b[sortConfig.key]) {
-					return sortConfig.direction === 'asc' ? -1 : 1;
+				if (a[activeSortConfig.key] < b[activeSortConfig.key]) {
+					return activeSortConfig.direction === 'asc' ? -1 : 1;
 				}
-				if (a[sortConfig?.key] > b[sortConfig?.key]) {
-					return sortConfig.direction === 'asc' ? 1 : -1;
+				if (a[activeSortConfig.key] > b[activeSortConfig.key]) {
+					return activeSortConfig.direction === 'asc' ? 1 : -1;
 				}
 				return 0;
 			});
@@ -53,91 +53,64 @@ const ResizableTable = <T extends object>({
 		} else {
 			setSortedData(data);
 		}
-	}, [data, sortConfig]);
+	}, [data, activeSortConfig]);
 
-	const getSortIndicator = (column: string) => {
-		// Check if the column data type is boolean
-		const isBooleanColumn =
-			sortedData.length > 0 && typeof sortedData[0][column] === 'boolean';
-
-		// Check if the column data type is date
-		const isDateColumn =
-			sortedData.length > 0 &&
-			typeof sortedData[0][column] === 'string' &&
-			!isNaN(Date.parse(sortedData[0][column]));
-		if (sortConfig?.key === column) {
-			if (isBooleanColumn) {
-				return sortConfig?.direction === 'asc' ? (
-					<Icon icon='mdi:order-bool-descending' />
-				) : (
-					<Icon icon='mdi:order-bool-ascending' />
-				);
-			} else if (isDateColumn) {
-				return sortConfig?.direction === 'asc' ? (
-					<Icon icon='mdi:sort-time-descending' />
-				) : (
-					<Icon icon='mdi:sort-time-ascending' />
-				);
+	const handleSort = useCallback(
+		(key: keyof T) => {
+			if (requestSort) {
+				requestSort(key);
 			} else {
-				return sortConfig?.direction === 'asc' ? (
-					<Icon icon='mingcute:az-sort-ascending-letters-fill' />
-				) : (
-					<Icon icon='mingcute:az-sort-descending-letters-fill' />
+				const direction =
+					internalSortConfig?.key === key &&
+					internalSortConfig.direction === 'asc'
+						? 'desc'
+						: 'asc';
+				setInternalSortConfig({ key: key as string, direction });
+			}
+		},
+		[internalSortConfig, requestSort]
+	);
+
+	const getSortIndicator = useCallback(
+		(columnAccessor: keyof T) => {
+			if (activeSortConfig?.key === columnAccessor) {
+				return (
+					<Icon
+						icon={
+							activeSortConfig.direction === 'asc'
+								? 'mdi:sort-ascending'
+								: 'mdi:sort-descending'
+						}
+						width='20'
+						height='20'
+					/>
 				);
 			}
-		}
-		return '';
-	};
+			return null;
+		},
+		[activeSortConfig]
+	);
 
-	const renderCellContent = (row: any, accessor: string) => {
-		if (typeof row[accessor] === 'boolean') {
-			return row[accessor] ? (
-				<Icon
-					icon='mingcute:check-fill'
-					color='var(--success-color)'
-				/>
-			) : (
-				<Icon
-					icon='mingcute:close-fill'
-					color='var(--error-color)'
-				/>
-			);
-		}
-		return row[accessor];
-	};
-
-	const handleSort = (column: string) => {
-		const newDirection =
-			sortConfig?.key === column && sortConfig?.direction === 'asc'
-				? 'desc'
-				: 'asc';
-		setSortConfig({ key: column, direction: newDirection });
-
-		const sorted = [...sortedData].sort((a, b) => {
-			if (typeof a[column] === 'boolean' && typeof b[column] === 'boolean') {
-				return newDirection === 'asc'
-					? a[column] === b[column]
-						? 0
-						: a[column]
-						? -1
-						: 1
-					: a[column] === b[column]
-					? 0
-					: a[column]
-					? 1
-					: -1;
+	const renderCellContent = useCallback(
+		(row: T, accessor: keyof T, cell?: (value: any) => React.ReactNode) => {
+			const value = row[accessor];
+			if (cell) {
+				return cell(value);
 			}
-			if (a[column] < b[column]) {
-				return newDirection === 'asc' ? -1 : 1;
+			if (typeof value === 'boolean') {
+				return (
+					<Icon
+						icon={value ? 'fluent:checkmark-12-filled' : 'mingcute:close-fill'}
+						color={value ? 'var(--success-color)' : 'var(--error-color)'}
+						width='24'
+						height='24'
+					/>
+				);
 			}
-			if (a[column] > b[column]) {
-				return newDirection === 'asc' ? 1 : -1;
-			}
-			return 0;
-		});
-
-		setSortedData(sorted);
-	};
+			return value as React.ReactNode;
+		},
+		[]
+	);
 
 	return (
 		<div
@@ -165,7 +138,11 @@ const ResizableTable = <T extends object>({
 						<tr key={rowIndex}>
 							{renderActions && <td>{renderActions(row)}</td>}
 							{columns.map((col, colIndex) => (
-								<td key={colIndex}>{renderCellContent(row, col.accessor)}</td>
+								<td key={colIndex}>
+									{col.cell
+										? col.cell(row[col.accessor])
+										: renderCellContent(row, col.accessor, col.cell)}
+								</td>
 							))}
 						</tr>
 					))}

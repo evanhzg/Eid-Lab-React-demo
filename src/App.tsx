@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Students from './pages/Students';
 import Companies from './pages/Companies';
+import Offers from './pages/Offers';
 import Error404 from './pages/Error404';
 import AppSidebar from './components/AppSidebar';
 import './App.css';
@@ -86,6 +87,10 @@ const App = () => {
 							<Route
 								path='/companies'
 								element={<Companies />}
+							/>
+							<Route
+								path='/offers'
+								element={<Offers />}
 							/>
 						</Routes>
 					</div>

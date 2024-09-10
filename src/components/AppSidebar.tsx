@@ -12,6 +12,7 @@ const AppSidebar: React.FC = () => {
 				<MenuItem onClick={() => navigate('/')}>Dash</MenuItem>
 				<MenuItem onClick={() => navigate('/students')}>Students</MenuItem>
 				<MenuItem onClick={() => navigate('/companies')}>Companies</MenuItem>
+				<MenuItem onClick={() => navigate('/offers')}>Offers</MenuItem>
 				<MenuItem onClick={() => navigate('/error404')}>404 Page</MenuItem>
 			</Menu>
 		</Sidebar>
