@@ -1,0 +1,80 @@
+.custom-modal .MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.custom-modal .modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  max-width: 1000px;
+  max-height: 75vh;
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-modal .modal-title {
+  color: var(--primary-text-color);
+  margin-bottom: var(--space-md);
+}
+
+.custom-modal .modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: var(--space-sm);
+}
+
+.custom-modal .modal-form::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-modal .modal-form::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-modal .modal-form::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  border: 2px solid var(--secondary-color);
+}
+
+.custom-modal .modal-form::-webkit-scrollbar-button {
+  display: none;
+}
+
+.custom-modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.custom-modal .modal-button {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+}
+
+.custom-modal .modal-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.custom-modal .MuiFormHelperText-root {
+  color: var(--primary-color);
+}
+
+.custom-modal input,
+.custom-modal textarea {
+  padding: 16.5px 14px;
+}
+
+.css-zfx7vw-MuiInputBase-root-MuiOutlinedInput-root {
+padding: 0;
+}

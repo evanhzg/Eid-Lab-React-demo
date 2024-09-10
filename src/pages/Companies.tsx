@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { TextField, Button } from '@mui/material';
+import {
+	TextField,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+} from '@mui/material';
 import { Icon } from '@iconify/react';
 import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
@@ -31,9 +39,11 @@ const Companies = () => {
 	const [selectedCompany, setSelectedCompany] = useState<Company | undefined>();
 	const [sortConfig, setSortConfig] = useState<{
 		key: string;
-		direction: 'ascending' | 'descending';
+		direction: 'asc' | 'desc';
 	} | null>(null);
 	const addAlert = useContext(AlertContext);
+	const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+	const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
 
 	useEffect(() => {
 		fetchCompanies();
@@ -55,12 +65,17 @@ const Companies = () => {
 		setIsModalOpen(true);
 	};
 
-	const handleDelete = async (id: string) => {
-		if (
-			window.confirm('Êtes-vous sûr de vouloir supprimer cette entreprise ?')
-		) {
+	const handleDelete = (id: string) => {
+		setCompanyToDelete(id);
+		setIsConfirmDialogOpen(true);
+	};
+
+	const confirmDelete = async () => {
+		if (companyToDelete) {
 			try {
-				await axios.delete(`http://localhost:5000/api/companies/${id}`);
+				await axios.delete(
+					`http://localhost:5000/api/companies/${companyToDelete}`
+				);
 				addAlert?.('Entreprise supprimée avec succès', 'success');
 				fetchCompanies();
 			} catch (error) {
@@ -68,6 +83,8 @@ const Companies = () => {
 				addAlert?.("Erreur lors de la suppression de l'entreprise", 'error');
 			}
 		}
+		setIsConfirmDialogOpen(false);
+		setCompanyToDelete(null);
 	};
 
 	const handleSave = async (company: Partial<Company>) => {
@@ -90,16 +107,16 @@ const Companies = () => {
 		}
 	};
 
-	const requestSort = (key: string) => {
-		let direction: 'ascending' | 'descending' = 'ascending';
+	const requestSort = (key: string | number) => {
+		let direction: 'asc' | 'desc' = 'asc';
 		if (
 			sortConfig &&
 			sortConfig.key === key &&
-			sortConfig.direction === 'ascending'
+			sortConfig.direction === 'asc'
 		) {
-			direction = 'descending';
+			direction = 'desc';
 		}
-		setSortConfig({ key, direction });
+		setSortConfig({ key: key.toString(), direction });
 	};
 
 	const sortedCompanies = React.useMemo(() => {
@@ -110,13 +127,13 @@ const Companies = () => {
 					a[sortConfig.key as keyof Company] <
 					b[sortConfig.key as keyof Company]
 				) {
-					return sortConfig.direction === 'ascending' ? -1 : 1;
+					return sortConfig.direction === 'asc' ? -1 : 1;
 				}
 				if (
 					a[sortConfig.key as keyof Company] >
 					b[sortConfig.key as keyof Company]
 				) {
-					return sortConfig.direction === 'ascending' ? 1 : -1;
+					return sortConfig.direction === 'asc' ? 1 : -1;
 				}
 				return 0;
 			});
@@ -217,11 +234,39 @@ const Companies = () => {
 				sortConfig={sortConfig}
 			/>
 			<CompanyModal
-				isOpen={isModalOpen}
+				open={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 				onSave={handleSave}
 				company={selectedCompany}
 			/>
+			<Dialog
+				open={isConfirmDialogOpen}
+				onClose={() => setIsConfirmDialogOpen(false)}
+				aria-labelledby='alert-dialog-title'
+				aria-describedby='alert-dialog-description'>
+				<DialogTitle id='alert-dialog-title'>
+					{'Confirmer la suppression'}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id='alert-dialog-description'>
+						Êtes-vous sûr de vouloir supprimer cette entreprise ? Cette action
+						est irréversible.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button
+						onClick={() => setIsConfirmDialogOpen(false)}
+						color='primary'>
+						Annuler
+					</Button>
+					<Button
+						onClick={confirmDelete}
+						color='primary'
+						autoFocus>
+						Confirmer
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</div>
 	);
 };

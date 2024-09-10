@@ -9,6 +9,7 @@ import {
 	FormControlLabel,
 } from '@mui/material';
 import { Student } from '../types';
+import '../styles/modal.css';
 
 interface StudentModalProps {
 	open: boolean;

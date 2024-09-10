@@ -307,19 +307,6 @@ label {
   border-color: var(--table-border-color) !important;
 }
 
-.modal-actions {
-  margin-top: var(--space-sm);
-  display: flex;
-  gap: var(--space-xs);
-  justify-content: flex-end;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .app-container {
   position: relative;
   min-height: 100vh;
