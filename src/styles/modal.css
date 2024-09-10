@@ -1,8 +1,11 @@
+/* Modal Backdrop */
 .custom-modal .MuiBackdrop-root {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-.custom-modal .modal-box {
+/* Modal Box */
+.custom-modal .modal-box,
+.modal-box {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -11,6 +14,7 @@
   max-width: 1000px;
   max-height: 75vh;
   background-color: var(--secondary-color);
+  color: var(--primary-text-color);
   border-radius: var(--border-radius-lg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: var(--space-md);
@@ -18,20 +22,27 @@
   flex-direction: column;
 }
 
+/* Modal Title */
 .custom-modal .modal-title {
   color: var(--primary-text-color);
   margin-bottom: var(--space-md);
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.custom-modal .modal-form {
+/* Modal Form */
+.custom-modal .modal-form,
+.modal-form {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
   overflow-y: auto;
   flex-grow: 1;
   padding-right: var(--space-sm);
+  color: var(--primary-text-color) !important;
 }
 
+/* Scrollbar Styles */
 .custom-modal .modal-form::-webkit-scrollbar {
   width: 8px;
 }
@@ -50,6 +61,50 @@
   display: none;
 }
 
+/* Form Groups */
+.modal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.modal-form-group label {
+  font-weight: bold;
+  color: var(--primary-text-color) !important;
+}
+
+.modal-form-group > div:not(.modal-input) {
+  padding-inline: var(--space-xs);
+  display: flex;
+  gap: var(--space-sm);
+  margin: 0;
+}
+
+.modal-form-group > div {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: nowrap;
+}
+
+/* Form Inputs */
+.custom-modal input,
+.custom-modal textarea {
+  padding: 16.5px 14px;
+}
+
+.modal-box .MuiInputBase-root {
+  padding: 0;
+}
+
+.modal-input fieldset {
+  border-color: var(--table-border-color) !important;
+}
+
+.custom-modal .MuiFormHelperText-root {
+  color: var(--primary-color);
+}
+
+/* Modal Actions */
 .custom-modal .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -57,7 +112,9 @@
   margin-top: var(--space-md);
 }
 
-.custom-modal .modal-button {
+/* Modal Buttons */
+.custom-modal .modal-button,
+.modal-button {
   background-color: var(--primary-color);
   color: var(--light-color);
 }
@@ -66,15 +123,81 @@
   background-color: var(--primary-color-dark);
 }
 
-.custom-modal .MuiFormHelperText-root {
+.modal-button {
+  background-color: var(--dark-color) !important;
+  color: var(--light-color) !important;
+}
+
+[data-theme="dark"] .modal-button {
+  background-color: var(--light-color) !important;
+  color: var(--dark-color) !important;
+}
+
+/* Select Inputs */
+.custom-modal .MuiSelect-select,
+.custom-modal .MuiSelect-outlined {
+  padding: 16.5px 14px;
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+[data-theme="dark"] .custom-modal .MuiSelect-select,
+[data-theme="dark"] .custom-modal .MuiSelect-outlined {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+
+.custom-modal .MuiOutlinedInput-notchedOutline {
+  border-color: var(--table-border-color) !important;
+}
+
+.custom-modal .MuiSelect-icon {
   color: var(--primary-color);
 }
 
-.custom-modal input,
-.custom-modal textarea {
-  padding: 16.5px 14px;
+.custom-modal .MuiMenuItem-root {
+  color: var(--dark-color);
 }
 
-.css-zfx7vw-MuiInputBase-root-MuiOutlinedInput-root {
-padding: 0;
+[data-theme="dark"] .custom-modal .MuiMenuItem-root {
+  color: var(--light-color);
+}
+
+.custom-modal .MuiMenu-paper {
+  background-color: var(--light-color);
+}
+
+[data-theme="dark"] .custom-modal .MuiMenu-paper {
+  background-color: var(--dark-color);
+}
+
+.form-field-container {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0; /* This allows the flex item to shrink below its content size */
+}
+
+.required-icon {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: var(--primary-color);
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.modal-input {
+  width: 100%;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .modal-form-group > div {
+    flex-wrap: wrap;
+  }
+
+  .form-field-container {
+    flex-basis: 100%;
+  }
 }

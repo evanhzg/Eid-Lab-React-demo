@@ -253,60 +253,6 @@ table td {
   gap: var(--space-xs);
 }
 
-.modal-box {
-  background-color: var(--secondary-color);
-  color: var(--primary-text-color);
-  max-width: 50%;
-  padding: var(--space-sm);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: var(--border-radius-lg);
-  box-shadow: 0 5px var(--space-xs) var(--shadow-color);
-}
-
-.modal-button {
-  background-color: var(--dark-color) !important;
-  color: var(--light-color) !important;
-}
-
-[data-theme="dark"] .modal-button {
-  background-color: var(--light-color) !important;
-  color: var(--dark-color) !important;
-}
-
-.modal-form {
-  color: var(--primary-text-color) !important;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.modal-form-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.modal-form-group label {
-  font-weight: bold;
-}
-
-.modal-form-group > div {
-  display: flex;
-  gap: var(--space-sm);
-  margin: 0;
-}
-
-label {
-  color: var(--primary-text-color) !important;
-}
-
-.modal-input fieldset {
-  border-color: var(--table-border-color) !important;
-}
-
 .app-container {
   position: relative;
   min-height: 100vh;
