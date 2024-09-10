@@ -4,8 +4,8 @@ const cors = require('cors');
 const portfinder = require('portfinder');
 const studentRoutes = require('./routes/studentRoutes');
 const companyRoutes = require('./routes/companyRoutes');
-const professionalRoutes = require('./routes/professionalsRoutes');
-const offerRoutes = require('./routes/offersRoutes');
+const professionalRoutes = require('./routes/professionalRoutes');
+const offerRoutes = require('./routes/offerRoutes');
 
 const app = express();
 const MONGO_URI =

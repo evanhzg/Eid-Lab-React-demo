@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const professionalController = require('../controllers/professionalsController');
+const professionalController = require('../controllers/professionalController');
 
 // Routes for professionals
 router.post('/', professionalController.createProfessional);

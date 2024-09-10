@@ -1,6 +1,7 @@
-import React, { useState, useEffect, createContext } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Students from './pages/Students';
+import Companies from './pages/Companies';
 import Error404 from './pages/Error404';
 import AppSidebar from './components/AppSidebar';
 import './App.css';
@@ -79,12 +80,12 @@ const App = () => {
 								element={<Error404 />}
 							/>
 							<Route
-								path='/tables'
-								element={<Error404 />}
-							/>
-							<Route
 								path='/students'
 								element={<Students />}
+							/>
+							<Route
+								path='/companies'
+								element={<Companies />}
 							/>
 						</Routes>
 					</div>

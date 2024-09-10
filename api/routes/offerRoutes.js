@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const offerController = require('../controllers/offersController');
+const offerController = require('../controllers/offerController');
 
 // Routes for offers
 router.post('/', offerController.createOffer);

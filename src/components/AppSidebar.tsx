@@ -10,9 +10,8 @@ const AppSidebar: React.FC = () => {
 		<Sidebar style={{ height: '100vh' }}>
 			<Menu iconShape='square'>
 				<MenuItem onClick={() => navigate('/')}>Dash</MenuItem>
-				<MenuItem onClick={() => navigate('/tables')}>Tables</MenuItem>
-				<MenuItem onClick={() => navigate('/analytics')}>Analytics</MenuItem>
 				<MenuItem onClick={() => navigate('/students')}>Students</MenuItem>
+				<MenuItem onClick={() => navigate('/companies')}>Companies</MenuItem>
 				<MenuItem onClick={() => navigate('/error404')}>404 Page</MenuItem>
 			</Menu>
 		</Sidebar>
