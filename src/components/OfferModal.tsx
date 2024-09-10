@@ -136,7 +136,6 @@ const OfferModal: React.FC<OfferModalProps> = ({
 												key={company._id}
 												value={company._id.toString()}>
 												{' '}
-												// Convert to string for comparison
 												{company.name}
 											</MenuItem>
 										))}
