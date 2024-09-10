@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const portfinder = require('portfinder');
 const studentRoutes = require('./routes/studentRoutes');
+const companyRoutes = require('./routes/companyRoutes');
+const professionalRoutes = require('./routes/professionalsRoutes');
+const offerRoutes = require('./routes/offersRoutes');
 
 const app = express();
 const MONGO_URI =
@@ -13,7 +16,10 @@ app.use(cors());
 app.use(express.json());
 
 // Use the student routes
-app.use('/api', studentRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/companies', companyRoutes);
+app.use('/api/professionals', professionalRoutes);
+app.use('/api/offers', offerRoutes);
 
 // Connect to MongoDB and start the server
 mongoose
