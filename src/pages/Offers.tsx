@@ -176,20 +176,18 @@ const Offers: React.FC = () => {
 	);
 
 	const columns: Column<Offer>[] = [
-		{ header: 'Titre', accessor: 'title', width: 170 },
+		{ header: 'Titre', accessor: 'title' },
 		{
 			header: 'Entreprise',
 			accessor: 'company',
-			width: 100,
 			cell: (value: ObjectId | { _id: ObjectId; name: string }) =>
 				getCompanyName(value),
 		},
-		{ header: 'Type', accessor: 'contractType', width: 170 },
-		{ header: 'Lieu', accessor: 'location', width: 170 },
+		{ header: 'Type', accessor: 'contractType' },
+		{ header: 'Lieu', accessor: 'location' },
 		{
 			header: 'Statut',
 			accessor: 'available',
-			width: 100,
 		},
 	];
 
@@ -212,11 +210,6 @@ const Offers: React.FC = () => {
 	return (
 		<div className='offers-container'>
 			<div className='offers-header'>
-				<Typography
-					variant='h4'
-					component='h1'>
-					Offres
-				</Typography>
 				<div className='table-actions'>
 					<TextField
 						className='search-input'

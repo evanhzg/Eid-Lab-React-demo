@@ -1,21 +1,54 @@
 import React from 'react';
-import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { NavLink } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import '../styles/sidebar.css';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const AppSidebar: React.FC = () => {
-	const navigate = useNavigate();
-
 	return (
-		<Sidebar style={{ height: '100vh' }}>
-			<Menu iconShape='square'>
-				<MenuItem onClick={() => navigate('/')}>Dash</MenuItem>
-				<MenuItem onClick={() => navigate('/students')}>Students</MenuItem>
-				<MenuItem onClick={() => navigate('/companies')}>Companies</MenuItem>
-				<MenuItem onClick={() => navigate('/offers')}>Offers</MenuItem>
-				<MenuItem onClick={() => navigate('/error404')}>404 Page</MenuItem>
-			</Menu>
-		</Sidebar>
+		<nav className='sidebar'>
+			<ul className='sidebar-menu'>
+				<li>
+					<NavLink
+						to='/'
+						className={({ isActive }) => (isActive ? 'active' : '')}>
+						<Icon icon='tabler:dashboard-filled' />
+						<p>Dashboard</p>
+					</NavLink>
+				</li>
+				<li>
+					<NavLink
+						to='/students'
+						className={({ isActive }) => (isActive ? 'active' : '')}>
+						<Icon icon='ic:round-school' />
+						<p>Students</p>
+					</NavLink>
+				</li>
+				<li>
+					<NavLink
+						to='/companies'
+						className={({ isActive }) => (isActive ? 'active' : '')}>
+						<Icon icon='material-symbols:enterprise' />
+						<p>Companies</p>
+					</NavLink>
+				</li>
+				<li>
+					<NavLink
+						to='/offers'
+						className={({ isActive }) => (isActive ? 'active' : '')}>
+						<Icon icon='mingcute:paper-fill' />
+						<p>Offers</p>
+					</NavLink>
+				</li>
+				<li>
+					<NavLink
+						to='/error404'
+						className={({ isActive }) => (isActive ? 'active' : '')}>
+						<Icon icon='material-symbols:error' />
+						<p>404 Page</p>
+					</NavLink>
+				</li>
+			</ul>
+		</nav>
 	);
 };
 

@@ -1,6 +1,7 @@
 import type { ObjectId as MongoObjectId } from 'mongodb';
 export type ObjectId = MongoObjectId;
 
+
 export interface Student {
     _id?: ObjectId;
     numericId?: number;

@@ -1,3 +1,19 @@
+# Unpaws
+
+**Slogan: Paw now, soar later!**
+
+Unpaws is an innovative app designed to match students with companies for apprenticeships and internships. Our goal is to help students gain hands-on experience and kickstart their careers.
+
+## About the App
+
+Unpaws connects ambitious students with exciting opportunities in various industries. By facilitating these connections, we aim to:
+
+- Provide students with real-world work experience
+- Help companies find fresh talent
+- Bridge the gap between academic learning and professional skills
+
+Our mascot, a clever and curious raccoon, represents the spirit of exploration and adaptability that we encourage in our users.
+
 # Student Apprenticeship Job-Board Admin Dashboard
 
 This project is a basic React SaaS application for managing a fictive students apprenticeship job-board. It provides an admin dashboard to manage student profiles, job listings, and company information.

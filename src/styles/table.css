@@ -5,7 +5,7 @@
 }
 
 [data-theme="dark"] {
-    --table-header-bg: #2c2c2c;
+  --table-header-bg: #2c2c2c;
   --table-cell-bg: #252525;
   --table-border-color: #333333;
 }

@@ -1,5 +1,10 @@
+@import './styles/table.css';
+@import './styles/modal.css';
+
 :root {
   /* Colors */
+  --unpaws-color: #f2d883;
+  
   --dark-color: #121212;
   --light-color: #efeeee;
   --primary-color: var(--dark-color);
@@ -52,6 +57,22 @@ body {
   font-family: 'Roboto', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
   z-index: 0;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header .page-title {
+  font-size: 3em;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--primary-text-color);
+  background-color: var(--table-header-bg);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xs) var(--space-sm);
 }
 
 #root {

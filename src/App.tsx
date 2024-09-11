@@ -1,5 +1,10 @@
 import { useState, useEffect, createContext } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	useLocation,
+} from 'react-router-dom';
 import Students from './pages/Students';
 import Companies from './pages/Companies';
 import Offers from './pages/Offers';
@@ -42,62 +47,98 @@ const App = () => {
 	return (
 		<AlertContext.Provider value={addAlert}>
 			<Router>
-				<div
-					className='app-container'
-					style={{ display: 'flex', height: '100vh' }}>
-					<AppSidebar />
-					<div style={{ flexGrow: 1, padding: '20px' }}>
-						<div className='app-buttons-group'>
-							<button
-								onClick={toggleTheme}
-								className='theme-button'>
-								{theme === 'light' ? (
-									<Icon
-										icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
-										style={{ fontSize: '1.5em' }}
-										color='var(--highlight-color)'
-									/>
-								) : (
-									<Icon
-										icon='line-md:moon-rising-filled-loop'
-										style={{ fontSize: '1.5em' }}
-										color='var(--info-color)'
-									/>
-								)}{' '}
-							</button>
-							<button
-								onClick={testAlerts}
-								className='theme-button'>
-								<Icon
-									icon='line-md:bell-alert-filled-loop'
-									style={{ fontSize: '1.5em' }}
-									color='var(--warning-color)'
-								/>
-							</button>
-						</div>
-						<Routes>
-							<Route
-								path='/'
-								element={<Error404 />}
-							/>
-							<Route
-								path='/students'
-								element={<Students />}
-							/>
-							<Route
-								path='/companies'
-								element={<Companies />}
-							/>
-							<Route
-								path='/offers'
-								element={<Offers />}
-							/>
-						</Routes>
-					</div>
-					<AlertManager setAddAlert={setAddAlert} />
-				</div>
+				<AppContent
+					theme={theme}
+					toggleTheme={toggleTheme}
+					testAlerts={testAlerts}
+					setAddAlert={setAddAlert}
+				/>
 			</Router>
 		</AlertContext.Provider>
+	);
+};
+
+interface AppContentProps {
+	theme: string;
+	toggleTheme: () => void;
+	testAlerts: () => void;
+	setAddAlert: React.Dispatch<
+		React.SetStateAction<
+			((message: string, type: AlertItem['type']) => void) | null
+		>
+	>;
+}
+
+const AppContent: React.FC<AppContentProps> = ({
+	theme,
+	toggleTheme,
+	testAlerts,
+	setAddAlert,
+}) => {
+	const getPageName = () => {
+		const location = useLocation();
+		const path = location.pathname.slice(1);
+		return path.charAt(0).toUpperCase() + path.slice(1) || 'Home';
+	};
+
+	return (
+		<div
+			className='app-container'
+			style={{ display: 'flex', height: '100vh' }}>
+			<AppSidebar />
+			<div style={{ flexGrow: 1, padding: '20px' }}>
+				<div className='page-header'>
+					<h1 className='page-title'>{'/' + getPageName()}</h1>
+					<div className='app-buttons-group'>
+						<button
+							onClick={testAlerts}
+							className='theme-button'>
+							<Icon
+								icon='line-md:bell-alert-filled-loop'
+								style={{ fontSize: '1.5em' }}
+								color='var(--warning-color)'
+							/>
+						</button>
+						<button
+							onClick={toggleTheme}
+							className='theme-button'>
+							{theme === 'light' ? (
+								<Icon
+									icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
+									style={{ fontSize: '1.5em' }}
+									color='var(--highlight-color)'
+								/>
+							) : (
+								<Icon
+									icon='line-md:moon-rising-filled-loop'
+									style={{ fontSize: '1.5em' }}
+									color='var(--info-color)'
+								/>
+							)}{' '}
+						</button>
+					</div>
+				</div>
+				<Routes>
+					<Route
+						path='/'
+						element={<Error404 />}
+					/>
+					<Route
+						path='/students'
+						element={<Students />}
+					/>
+					<Route
+						path='/companies'
+						element={<Companies />}
+					/>
+					<Route
+						path='/offers'
+						element={<Offers />}
+					/>
+				</Routes>
+			</div>
+			<AlertManager setAddAlert={setAddAlert} />
+		</div>
 	);
 };
 
