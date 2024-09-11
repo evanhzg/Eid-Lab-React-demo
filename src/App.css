@@ -66,9 +66,10 @@ body {
 }
 
 .page-header .page-title {
+  font-family: 'Sail', cursive;
   font-size: 3em;
   font-weight: bold;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--primary-text-color);
   background-color: var(--table-header-bg);
   border-radius: var(--border-radius-lg);

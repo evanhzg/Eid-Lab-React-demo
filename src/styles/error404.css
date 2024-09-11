@@ -1,0 +1,51 @@
+.error-404-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.error-404-icon {
+  font-size: 120px;
+  color: var(--unpaws-color);
+  margin-bottom: 20px;
+}
+
+.error-404-title {
+  color: var(--unpaws-color);
+  margin-bottom: 10px;
+  font-weight: 900;
+}
+
+.error-404-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--secondary-text-color);
+  margin-bottom: 30px;
+}
+
+.error-404-button {
+  font-family: 'Montserrat', sans-serif;
+  text-transform: none !important;
+  padding: 10px 20px !important;
+}
+
+.error-404-button-icon {
+  margin-right: 8px;
+}
+
+@media (max-width: 600px) {
+  .error-404-icon {
+      font-size: 80px;
+  }
+
+  .error-404-title {
+      font-size: 24px;
+  }
+
+  .error-404-subtitle {
+      font-size: 16px;
+  }
+}

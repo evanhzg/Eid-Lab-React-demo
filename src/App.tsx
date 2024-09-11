@@ -89,7 +89,7 @@ const AppContent: React.FC<AppContentProps> = ({
 			<AppSidebar />
 			<div style={{ flexGrow: 1, padding: '20px' }}>
 				<div className='page-header'>
-					<h1 className='page-title'>{'/' + getPageName()}</h1>
+					<h1 className='page-title'>{getPageName()}</h1>
 					<div className='app-buttons-group'>
 						<button
 							onClick={testAlerts}
@@ -139,6 +139,10 @@ const AppContent: React.FC<AppContentProps> = ({
 					<Route
 						path='/pros'
 						element={<Professionals />}
+					/>
+					<Route
+						path='*'
+						element={<Error404 />}
 					/>
 				</Routes>
 			</div>

@@ -2,10 +2,22 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import '../styles/sidebar.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import unpawsLogo from '../assets/unpaws-logo-yellow.png';
 
 const AppSidebar: React.FC = () => {
 	return (
 		<nav className='sidebar'>
+			<div className='sidebar-header'>
+				<div className='sidebar-logo-title'>
+					<img
+						src={unpawsLogo}
+						alt='Unpaws Logo'
+						className='sidebar-logo'
+					/>
+					<h1 className='sidebar-title'>unpaws</h1>
+					<p className='sidebar-title-complement'>ADMIN</p>
+				</div>
+			</div>
 			<ul className='sidebar-menu'>
 				<li>
 					<NavLink
