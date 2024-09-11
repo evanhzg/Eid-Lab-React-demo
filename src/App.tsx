@@ -8,6 +8,7 @@ import {
 import Students from './pages/Students';
 import Companies from './pages/Companies';
 import Offers from './pages/Offers';
+import Professionals from './pages/Professionals';
 import Error404 from './pages/Error404';
 import AppSidebar from './components/AppSidebar';
 import './App.css';
@@ -134,6 +135,10 @@ const AppContent: React.FC<AppContentProps> = ({
 					<Route
 						path='/offers'
 						element={<Offers />}
+					/>
+					<Route
+						path='/pros'
+						element={<Professionals />}
 					/>
 				</Routes>
 			</div>

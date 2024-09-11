@@ -33,6 +33,14 @@ const AppSidebar: React.FC = () => {
 				</li>
 				<li>
 					<NavLink
+						to='/pros'
+						className={({ isActive }) => (isActive ? 'active' : '')}>
+						<Icon icon='mdi:tie' />
+						<p>Professionals</p>
+					</NavLink>
+				</li>
+				<li>
+					<NavLink
 						to='/offers'
 						className={({ isActive }) => (isActive ? 'active' : '')}>
 						<Icon icon='mingcute:paper-fill' />

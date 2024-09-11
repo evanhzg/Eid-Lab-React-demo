@@ -11,66 +11,53 @@ import {
 	MenuItem,
 	FormControl,
 	InputLabel,
-	SelectChangeEvent,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import '../styles/modal.css';
 import { getCompanies } from '../services/companyService';
-import { Company, Offer, ObjectId } from '../types';
+import { Company, Professional, ObjectId } from '../types';
 
-interface OfferModalProps {
+interface ProfessionalModalProps {
 	open: boolean;
 	onClose: () => void;
-	onSave: (offer: Omit<Offer, '_id'>) => void;
-	offer?: Offer;
+	onSave: (professional: Omit<Professional, '_id'>) => void;
+	professional?: Professional;
+	companies: Company[];
 }
 
-const OfferModal: React.FC<OfferModalProps> = ({
+const ProfessionalModal: React.FC<ProfessionalModalProps> = ({
 	open,
 	onClose,
 	onSave,
-	offer,
+	professional,
+	companies,
 }) => {
-	const [companies, setCompanies] = useState<Company[]>([]);
-	const [formData, setFormData] = useState<Omit<Offer, '_id'>>({
-		title: '',
+	const [formData, setFormData] = useState<Omit<Professional, '_id'>>({
+		firstName: '',
+		lastName: '',
+		email: '',
+		phone: '',
 		company: '' as unknown as ObjectId,
-		description: '',
-		contractType: 'Stage',
-		location: '',
-		salary: '',
-		requiredSkills: [],
-		startDate: new Date(),
-		endDate: new Date(),
-		available: true,
+		position: '',
+		department: '',
+		skills: [],
+		active: true,
 	});
 
 	useEffect(() => {
-		fetchCompanies();
-		if (offer) {
+		if (professional) {
 			setFormData({
-				...offer,
-				company: offer.company._id || offer.company, // Use _id if it's an object, otherwise use the value directly
-				startDate: offer.startDate ? new Date(offer.startDate) : new Date(),
-				endDate: offer.endDate ? new Date(offer.endDate) : new Date(),
+				...professional,
+				company: professional.company._id || professional.company,
 			});
 		}
-	}, [offer]);
-
-	const fetchCompanies = async () => {
-		try {
-			const fetchedCompanies = await getCompanies();
-			setCompanies(fetchedCompanies);
-		} catch (error) {
-			console.error('Error fetching companies:', error);
-		}
-	};
+	}, [professional]);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		onSave({
 			...formData,
-			company: formData.company.toString(), // Ensure it's a string when sending to the backend
+			company: formData.company.toString(),
 		});
 	};
 
@@ -87,13 +74,15 @@ const OfferModal: React.FC<OfferModalProps> = ({
 					variant='h6'
 					component='h2'
 					className='modal-title'>
-					{offer ? "Modifier l'offre" : 'Ajouter une offre'}
+					{professional
+						? 'Modifier le professionnel'
+						: 'Ajouter un professionnel'}
 				</Typography>
 				<Box
 					component='form'
 					className='modal-form'>
 					<div className='modal-form-group'>
-						<label>Informations générales</label>
+						<label>Informations personnelles</label>
 						<div>
 							<div className='form-field-container'>
 								<Icon
@@ -104,15 +93,77 @@ const OfferModal: React.FC<OfferModalProps> = ({
 									className='modal-input'
 									fullWidth
 									margin='normal'
-									name='title'
-									label='Titre'
-									value={formData.title}
+									name='firstName'
+									label='Prénom'
+									value={formData.firstName}
 									onChange={(e) =>
-										setFormData({ ...formData, title: e.target.value })
+										setFormData({ ...formData, firstName: e.target.value })
 									}
 									required
 								/>
 							</div>
+							<div className='form-field-container'>
+								<Icon
+									icon='fluent:important-12-filled'
+									className='required-icon'
+								/>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									name='lastName'
+									label='Nom'
+									value={formData.lastName}
+									onChange={(e) =>
+										setFormData({ ...formData, lastName: e.target.value })
+									}
+									required
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div className='modal-form-group'>
+						<label>Coordonnées</label>
+						<div>
+							<div className='form-field-container'>
+								<Icon
+									icon='fluent:important-12-filled'
+									className='required-icon'
+								/>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									name='email'
+									label='Email'
+									type='email'
+									value={formData.email}
+									onChange={(e) =>
+										setFormData({ ...formData, email: e.target.value })
+									}
+									required
+								/>
+							</div>
+							<div className='form-field-container'>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									name='phone'
+									label='Téléphone'
+									value={formData.phone}
+									onChange={(e) =>
+										setFormData({ ...formData, phone: e.target.value })
+									}
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div className='modal-form-group'>
+						<label>Informations professionnelles</label>
+						<div>
 							<div className='form-field-container'>
 								<Icon
 									icon='fluent:important-12-filled'
@@ -124,7 +175,7 @@ const OfferModal: React.FC<OfferModalProps> = ({
 									required>
 									<InputLabel>Entreprise</InputLabel>
 									<Select
-										value={formData.company.toString()} // Convert to string for comparison
+										value={formData.company.toString()}
 										onChange={(e) =>
 											setFormData({
 												...formData,
@@ -135,46 +186,12 @@ const OfferModal: React.FC<OfferModalProps> = ({
 											<MenuItem
 												key={company._id}
 												value={company._id.toString()}>
-												{' '}
 												{company.name}
 											</MenuItem>
 										))}
 									</Select>
 								</FormControl>
 							</div>
-						</div>
-					</div>
-
-					<div className='modal-form-group'>
-						<label>Détails de l'offre</label>
-						<div>
-							<div className='form-field-container'>
-								<Icon
-									icon='fluent:important-12-filled'
-									className='required-icon'
-								/>
-								<FormControl
-									fullWidth
-									margin='normal'
-									required>
-									<InputLabel>Contract Type</InputLabel>
-									<Select
-										value={formData.contractType}
-										onChange={(e) =>
-											setFormData({
-												...formData,
-												contractType: e.target.value as Offer['contractType'],
-											})
-										}>
-										<MenuItem value='Stage'>Stage</MenuItem>
-										<MenuItem value='Apprentissage'>Apprentissage</MenuItem>
-										<MenuItem value='Professionnalisation'>
-											Professionnalisation
-										</MenuItem>
-										<MenuItem value='Freelance'>Freelance</MenuItem>
-									</Select>
-								</FormControl>
-							</div>
 							<div className='form-field-container'>
 								<Icon
 									icon='fluent:important-12-filled'
@@ -184,11 +201,11 @@ const OfferModal: React.FC<OfferModalProps> = ({
 									className='modal-input'
 									fullWidth
 									margin='normal'
-									name='location'
-									label='Lieu'
-									value={formData.location}
+									name='position'
+									label='Poste'
+									value={formData.position}
 									onChange={(e) =>
-										setFormData({ ...formData, location: e.target.value })
+										setFormData({ ...formData, position: e.target.value })
 									}
 									required
 								/>
@@ -200,11 +217,11 @@ const OfferModal: React.FC<OfferModalProps> = ({
 									className='modal-input'
 									fullWidth
 									margin='normal'
-									name='salary'
-									label='Salaire'
-									value={formData.salary}
+									name='department'
+									label='Département'
+									value={formData.department}
 									onChange={(e) =>
-										setFormData({ ...formData, salary: e.target.value })
+										setFormData({ ...formData, department: e.target.value })
 									}
 								/>
 							</div>
@@ -213,86 +230,18 @@ const OfferModal: React.FC<OfferModalProps> = ({
 									className='modal-input'
 									fullWidth
 									margin='normal'
-									name='requiredSkills'
-									label='Prérequis'
-									value={formData.requiredSkills.join(', ')}
+									name='skills'
+									label='Compétences'
+									value={formData.skills.join(', ')}
 									onChange={(e) =>
 										setFormData({
 											...formData,
-											requiredSkills: e.target.value
+											skills: e.target.value
 												.split(',')
 												.map((item) => item.trim()),
 										})
 									}
-									helperText='Séparez les prérequis par des virgules'
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div className='modal-form-group'>
-						<label>Période</label>
-						<div>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								name='startDate'
-								label='Date de début'
-								type='date'
-								value={formData.startDate.toISOString().split('T')[0]}
-								onChange={(e) =>
-									setFormData({
-										...formData,
-										startDate: new Date(e.target.value),
-									})
-								}
-								InputLabelProps={{
-									shrink: true,
-								}}
-							/>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								name='endDate'
-								label='Date de fin'
-								type='date'
-								value={formData.endDate.toISOString().split('T')[0]}
-								onChange={(e) =>
-									setFormData({
-										...formData,
-										endDate: new Date(e.target.value),
-									})
-								}
-								InputLabelProps={{
-									shrink: true,
-								}}
-							/>
-						</div>
-					</div>
-
-					<div className='modal-form-group'>
-						<label>Description</label>
-						<div>
-							<div className='form-field-container'>
-								<Icon
-									icon='fluent:important-12-filled'
-									className='required-icon'
-								/>
-								<TextField
-									className='modal-input'
-									fullWidth
-									margin='normal'
-									name='description'
-									label='Description complète'
-									value={formData.description}
-									onChange={(e) =>
-										setFormData({ ...formData, description: e.target.value })
-									}
-									multiline
-									rows={4}
-									required
+									helperText='Séparez les compétences par des virgules'
 								/>
 							</div>
 						</div>
@@ -304,24 +253,24 @@ const OfferModal: React.FC<OfferModalProps> = ({
 							<FormControlLabel
 								control={
 									<Switch
-										checked={formData.available}
+										checked={formData.active}
 										onChange={(e) =>
 											setFormData((prev) => ({
 												...prev,
-												available: e.target.checked,
+												active: e.target.checked,
 											}))
 										}
-										name='available'
+										name='active'
 									/>
 								}
 								label={
 									<span
 										style={{
-											color: formData.available
+											color: formData.active
 												? 'var(--success-color)'
 												: 'var(--error-color)',
 										}}>
-										{formData.available ? 'Disponible' : 'Indisponible'}
+										{formData.active ? 'Actif' : 'Inactif'}
 									</span>
 								}
 							/>
@@ -347,4 +296,4 @@ const OfferModal: React.FC<OfferModalProps> = ({
 	);
 };
 
-export default OfferModal;
+export default ProfessionalModal;

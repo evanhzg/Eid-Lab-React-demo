@@ -1,7 +1,6 @@
 import type { ObjectId as MongoObjectId } from 'mongodb';
 export type ObjectId = MongoObjectId;
 
-
 export interface Student {
     _id?: ObjectId;
     numericId?: number;
@@ -59,7 +58,7 @@ export interface Professional {
     last_name: string;
     email: string;
     phone: string;
-    company: string;
+    company: Company | ObjectId;
     position: string;
     linkedin: string;
     available: boolean;
@@ -70,6 +69,6 @@ export interface Professional {
 export interface Column {
     header: string;
     accessor: string;
-    width: number;
+    width?: number;
     cell?: (value: any) => React.ReactNode;
   }
