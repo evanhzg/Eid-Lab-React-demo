@@ -6,16 +6,17 @@
   height: 100vh;
   text-align: center;
   padding: 0 20px;
+  background-color: var(--unpaws-color);
 }
 
-.error-404-icon {
-  font-size: 120px;
-  color: var(--unpaws-color);
-  margin-bottom: 20px;
+.error-404-logo {
+  width: 200px; /* Adjust size as needed */
+  height: auto;
+  margin-bottom: 20px; /* Adjust spacing as needed */
 }
 
 .error-404-title {
-  color: var(--unpaws-color);
+  color: var(--dark-color);
   margin-bottom: 10px;
   font-weight: 900;
 }
@@ -27,8 +28,11 @@
 }
 
 .error-404-button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900 !important;
   text-transform: none !important;
+  background-color: transparent !important;
+  border: 2px solid var(--dark-color) !important;
   padding: 10px 20px !important;
 }
 
