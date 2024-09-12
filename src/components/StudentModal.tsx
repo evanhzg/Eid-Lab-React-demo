@@ -9,6 +9,8 @@ import {
 	FormControlLabel,
 } from '@mui/material';
 import { Student } from '../types';
+import '../styles/modal.css';
+import { Icon } from '@iconify/react';
 
 interface StudentModalProps {
 	open: boolean;
@@ -24,7 +26,6 @@ const StudentModal: React.FC<StudentModalProps> = ({
 	student,
 }) => {
 	const [formData, setFormData] = useState<Student>({
-		_id: '',
 		first_name: '',
 		last_name: '',
 		email: '',
@@ -50,7 +51,6 @@ const StudentModal: React.FC<StudentModalProps> = ({
 			});
 		} else {
 			setFormData({
-				_id: '',
 				first_name: '',
 				last_name: '',
 				email: '',
@@ -114,7 +114,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
 			open={open}
 			onClose={onClose}
 			aria-labelledby='modal-modal-title'
-			aria-describedby='modal-modal-description'>
+			aria-describedby='modal-modal-description'
+			className='custom-modal'>
 			<Box className='modal-box'>
 				<Typography
 					id='modal-modal-title'
@@ -129,126 +130,168 @@ const StudentModal: React.FC<StudentModalProps> = ({
 					<div className='modal-form-group'>
 						<label>Informations personnelles</label>
 						<div>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='first_name'
-								label='Prénom'
-								value={formData.first_name}
-								onChange={handleChange}
-								error={!!errors.first_name}
-								helperText={errors.first_name}
-							/>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='last_name'
-								label='Nom'
-								value={formData.last_name}
-								onChange={handleChange}
-								error={!!errors.last_name}
-								helperText={errors.last_name}
-							/>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='email'
-								label='Email'
-								value={formData.email}
-								onChange={handleChange}
-								error={!!errors.email}
-								helperText={errors.email}
-							/>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='phone'
-								label='Téléphone'
-								value={formData.phone}
-								onChange={handleChange}
-								error={!!errors.phone}
-								helperText={errors.phone}
-							/>
+							<div className='form-field-container'>
+								<Icon
+									icon='fluent:important-12-filled'
+									className='required-icon'
+								/>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='first_name'
+									label='Prénom'
+									value={formData.first_name}
+									onChange={handleChange}
+									error={!!errors.first_name}
+									helperText={errors.first_name}
+								/>
+							</div>
+							<div className='form-field-container'>
+								<Icon
+									icon='fluent:important-12-filled'
+									className='required-icon'
+								/>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='last_name'
+									label='Nom'
+									value={formData.last_name}
+									onChange={handleChange}
+									error={!!errors.last_name}
+									helperText={errors.last_name}
+								/>
+							</div>
+						</div>
+						<div>
+							<div className='form-field-container'>
+								<Icon
+									icon='fluent:important-12-filled'
+									className='required-icon'
+								/>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='email'
+									label='Email'
+									value={formData.email}
+									onChange={handleChange}
+									error={!!errors.email}
+									helperText={errors.email}
+								/>
+							</div>
+							<div className='form-field-container'>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='phone'
+									label='Téléphone'
+									value={formData.phone}
+									onChange={handleChange}
+									error={!!errors.phone}
+									helperText={errors.phone}
+								/>
+							</div>
 						</div>
 					</div>
 					<div className='modal-form-group'>
 						<label>Localisation</label>
 						<div>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='country'
-								label='Pays'
-								value={formData.country}
-								onChange={handleChange}
-								error={!!errors.country}
-								helperText={errors.country}
-							/>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='region'
-								label='Région'
-								value={formData.region}
-								onChange={handleChange}
-								error={!!errors.region}
-								helperText={errors.region}
-							/>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='city'
-								label='Ville'
-								value={formData.city}
-								onChange={handleChange}
-								error={!!errors.city}
-								helperText={errors.city}
-							/>
+							<div className='form-field-container'>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='country'
+									label='Pays'
+									value={formData.country}
+									onChange={handleChange}
+									error={!!errors.country}
+									helperText={errors.country}
+								/>
+							</div>
+							<div className='form-field-container'>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='region'
+									label='Région'
+									value={formData.region}
+									onChange={handleChange}
+									error={!!errors.region}
+									helperText={errors.region}
+								/>
+							</div>
+							<div className='form-field-container'>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='city'
+									label='Ville'
+									value={formData.city}
+									onChange={handleChange}
+									error={!!errors.city}
+									helperText={errors.city}
+								/>
+							</div>
 						</div>
 					</div>
 					<div className='modal-form-group'>
 						<label>Scolarité</label>
 						<div>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='school'
-								label='École'
-								value={formData.school}
-								onChange={handleChange}
-								error={!!errors.school}
-								helperText={errors.school}
-							/>
-							<TextField
-								className='modal-input'
-								fullWidth
-								margin='normal'
-								id='grade'
-								label='Niveau'
-								value={formData.grade}
-								onChange={handleChange}
-								error={!!errors.grade}
-								helperText={errors.grade}
-							/>
+							<div className='form-field-container'>
+								<Icon
+									icon='fluent:important-12-filled'
+									className='required-icon'
+								/>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='school'
+									label='École'
+									value={formData.school}
+									onChange={handleChange}
+									error={!!errors.school}
+									helperText={errors.school}
+								/>
+							</div>
+							<div className='form-field-container'>
+								<TextField
+									className='modal-input'
+									fullWidth
+									margin='normal'
+									id='grade'
+									label='Niveau'
+									value={formData.grade}
+									onChange={handleChange}
+									error={!!errors.grade}
+									helperText={errors.grade}
+								/>
+							</div>
 						</div>
 					</div>
+
 					<div className='modal-form-group'>
-						<label>Disponibilité</label>
+						<label>Statut</label>
 						<div>
 							<FormControlLabel
 								control={
 									<Switch
 										checked={formData.available}
-										onChange={handleChange}
-										id='available'
+										onChange={(e) =>
+											setFormData((prev) => ({
+												...prev,
+												available: e.target.checked,
+											}))
+										}
+										name='available'
 									/>
 								}
 								label={
@@ -270,7 +313,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 						variant='contained'
 						onClick={onClose}
 						className='modal-button'>
-						Close
+						Fermer
 					</Button>
 					<Button
 						variant='contained'

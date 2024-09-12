@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import usePaginate from './usePaginate';
+import usePagination from './usePagination';
 import { Student } from '../types';
 
 interface SortConfig {
@@ -26,7 +26,7 @@ const useStudentTableConfig = (
 		paginate,
 		totalPages,
 		setItemsPerPageCount,
-	} = usePaginate<Student>(studentsPerPage);
+	} = usePagination<Student>(studentsPerPage);
 
 	const sortedStudents = [...students].sort((a, b) => {
 		if (a[sortConfig.key] < b[sortConfig.key])

@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Sail&family=Montserrat:wght@300&display=swap');
+
+.auth-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	background: linear-gradient(to bottom right, #3b3b3b, #1a1a1a);
+}
+
+.auth-paper {
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+  gap: var(--space-s);
+	max-width: 400px;
+  border-radius: var(--border-radius-lg) !important;
+  width: 100%;
+  background-color: var(--unpaws-color) !important;
+}
+
+.auth-logo {
+	width: 100px;
+	height: auto;
+	margin-bottom: 1rem;
+}
+
+.auth-title {
+	color: var(--dark-color);
+  font-family: 'Sail', cursive !important;
+}
+
+.auth-form {
+	width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+}
+
+.auth-error {
+	margin-top: 1rem;
+}
+
+.auth-submit-button {
+  background-color: var(--dark-color) !important;
+  color: var(--unpaws-color) !important;
+  font-weight: 600 !important;
+  border-radius: var(--border-radius-md) !important;
+  width: 50% !important;
+  align-self: center;
+}
+
+.auth-toggle-button {
+	margin-top: 0.5rem;
+}
