@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Sail&family=Montserrat:wght@300&display=swap');
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.sidebar-logo-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  position: relative;
+}
+
+.sidebar-logo {
+  width: 40px; /* Adjust this value to fit your design */
+  height: auto;
+}
+
+.sidebar-title {
+  font-family: 'Sail', cursive;
+  font-size: 24px; /* Adjust this value to fit your design */
+  color: var(--unpaws-color);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-title-complement {
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--size-sm);
+  color: var(--light-color);
+  font-weight: bolder;
+  letter-spacing: 0.3px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .sidebar-header {
+    align-items: center;
+  }
+
+  .sidebar-logo {
+    width: 30px; /* Smaller size for smaller screens */
+  }
+
+  .sidebar-title {
+    font-size: 20px; /* Smaller font size for smaller screens */
+  }
+
+}
+
+/* If you want the logo to be hidden and only show the title when the sidebar is collapsed */
+.sidebar.collapsed .sidebar-logo {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-title {
+  font-size: 0; /* Hide the text */
+}
+
+.sidebar.collapsed .sidebar-title::first-letter {
+  font-size: 24px; /* Show only the first letter */
+}
+
+.sidebar.collapsed .sidebar-subtitle {
+  display: none;
+}
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: var(--dark-color);
+  box-shadow: 0 5px 10px var(--space-xs) var(--shadow-color);
+}
+
+.sidebar-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu a {
+
+  display: flex;
+  align-items: center; 
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--unpaws-color);
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+  background-color: var(--highlight-color);
+  color: var(--dark-color);
+}
+
+.logout-button {
+  display: flex;
+  align-items: center; 
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--unpaws-color) !important;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  margin: auto;
+}
+
+.logout-button:hover {
+  background-color: var(--highlight-color);
+  color: var(--dark-color) !important;
+  outline: none;
+  border: none !important;
+
+}
+
+.logout-button:focus {
+  outline: none;
+  border: none !important;
+}
+
+.logout-button:active {
+  outline: none;
+  border: none !important;
+}
