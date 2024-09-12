@@ -12,8 +12,8 @@ const setDefaultValues = async () => {
 		const result = await Student.updateMany(
 			{
 				$or: [
-					{ createdAt: { $exists: false } },
-					{ updatedAt: { $exists: false } },
+					{ created_at: { $exists: false } },
+					{ updated_at: { $exists: false } },
 					{ first_name: { $exists: false } },
 					{ last_name: { $exists: false } },
 					{ country: { $exists: false } },
@@ -24,8 +24,8 @@ const setDefaultValues = async () => {
 			},
 			{
 				$set: {
-					createdAt: now,
-					updatedAt: now,
+					created_at: now,
+					updated_at: now,
 					first_name: 'test',
 					last_name: 'test',
 					country: 'test',

@@ -66,9 +66,9 @@ export interface Professional {
     updated_at: Date;
 }
 
-export interface Column {
+export interface Column<T = any> {
     header: string;
     accessor: string;
-    width?: number;
     cell?: (value: any) => React.ReactNode;
-  }
+    render?: (value: any) => React.ReactNode;
+}

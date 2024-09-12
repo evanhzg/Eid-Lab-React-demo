@@ -43,8 +43,8 @@ const Students = () => {
 			const fetchedStudents = await getStudents();
 			const transformedData = fetchedStudents.map((student: Student) => ({
 				...student,
-				created_at: new Date(student.createdAt).toISOString(),
-				updated_at: new Date(student.updatedAt).toISOString(),
+				created_at: new Date(student.created_at).toISOString(),
+				updated_at: new Date(student.updated_at).toISOString(),
 			}));
 			setStudents(transformedData);
 		} catch (error) {

@@ -11,8 +11,8 @@ const studentSchema = new mongoose.Schema({
 	school: { type: String, required: true },
 	grade: { type: String, required: true },
 	available: { type: Boolean, required: true },
-	createdAt: { type: Date, default: Date.now },
-	updatedAt: { type: Date, default: Date.now },
+	created_at: { type: Date, default: Date.now },
+	updated_at: { type: Date, default: Date.now },
 	disabledAt: { type: Date },
 	status: { type: Boolean, default: true },
 });

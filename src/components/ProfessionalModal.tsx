@@ -33,8 +33,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({
 	companies,
 }) => {
 	const [formData, setFormData] = useState<Omit<Professional, '_id'>>({
-		firstName: '',
-		lastName: '',
+		first_name: '',
+		last_name: '',
 		email: '',
 		phone: '',
 		company: '' as unknown as ObjectId,
@@ -93,11 +93,11 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({
 									className='modal-input'
 									fullWidth
 									margin='normal'
-									name='firstName'
+									name='first_name'
 									label='Prénom'
-									value={formData.firstName}
+									value={formData.first_name}
 									onChange={(e) =>
-										setFormData({ ...formData, firstName: e.target.value })
+										setFormData({ ...formData, first_name: e.target.value })
 									}
 									required
 								/>
@@ -113,9 +113,9 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({
 									margin='normal'
 									name='lastName'
 									label='Nom'
-									value={formData.lastName}
+									value={formData.last_name}
 									onChange={(e) =>
-										setFormData({ ...formData, lastName: e.target.value })
+										setFormData({ ...formData, last_name: e.target.value })
 									}
 									required
 								/>

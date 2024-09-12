@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const professionalSchema = new mongoose.Schema({
-	lastName: { type: String, required: true },
-	firstName: { type: String, required: true },
+	last_name: { type: String, required: true },
+	first_name: { type: String, required: true },
 	email: { type: String, required: true, unique: true },
 	phone: { type: String },
 	position: { type: String, required: true },
@@ -11,10 +11,10 @@ const professionalSchema = new mongoose.Schema({
 		ref: 'Company',
 		required: true,
 	},
-	canCreateOffers: { type: Boolean, default: false },
+	can_create_offers: { type: Boolean, default: false },
 	available: { type: Boolean, default: true },
-	createdAt: { type: Date, default: Date.now },
-	updatedAt: { type: Date, default: Date.now },
+	created_at: { type: Date, default: Date.now },
+	updated_at: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Professional', professionalSchema);

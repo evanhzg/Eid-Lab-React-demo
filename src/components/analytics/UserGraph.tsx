@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../styles/components/UserGraph.css';
+import Tooltip from '../ui/Tooltip';
 
 interface UserData {
 	date: string;
@@ -18,20 +19,55 @@ const UserGraph: React.FC<UserGraphProps> = ({ data }) => {
 
 	return (
 		<div className='user-graph'>
-			<h3>New Users</h3>
 			<div className='graph-container'>
 				{data.map((item, index) => (
 					<div
 						key={index}
 						className='graph-bar'>
-						<div
-							className='bar students'
-							style={{ height: `${(item.students / maxValue) * 100}%` }}></div>
-						<div
-							className='bar professionals'
-							style={{
-								height: `${(item.professionals / maxValue) * 100}%`,
-							}}></div>
+						<div className='bar-wrapper'>
+							<div
+								className='bar students'
+								style={{
+									height: `${(item.students / maxValue) * 100}%`,
+								}}>
+								<Tooltip
+									content={
+										<div>
+											<p>
+												<strong>Date:</strong> {item.date}
+											</p>
+											<p>
+												<strong>Students:</strong> {item.students}
+											</p>
+											<p>
+												<strong>Professionals:</strong> {item.professionals}
+											</p>
+										</div>
+									}
+								/>
+							</div>
+							<div
+								className='bar professionals'
+								style={{
+									height: `${(item.professionals / maxValue) * 100}%`,
+								}}>
+								<Tooltip
+									content={
+										<div>
+											<p>
+												<strong>Date:</strong> {item.date}
+											</p>
+											<p>
+												<strong>Students:</strong> {item.students}
+											</p>
+											<p>
+												<strong>Professionals:</strong> {item.professionals}
+											</p>
+										</div>
+									}
+								/>
+							</div>
+						</div>
 						<span className='date-label'>{item.date}</span>
 					</div>
 				))}

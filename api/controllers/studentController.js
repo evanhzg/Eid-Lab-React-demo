@@ -43,8 +43,8 @@ const createStudent = async (req, res) => {
 		const newStudent = await student.save();
 		res.status(201).json({
 			...newStudent.toObject(),
-			created_at: newStudent.createdAt.toISOString(),
-			updated_at: newStudent.updatedAt.toISOString(),
+			created_at: newStudent.created_at.toISOString(),
+			updated_at: newStudent.updated_at.toISOString(),
 		});
 	} catch (error) {
 		console.error('Error creating student:', error);
@@ -66,7 +66,7 @@ const updateStudent = async (req, res) => {
 
 		const updatedStudent = await Student.findByIdAndUpdate(
 			req.params.id,
-			{ ...req.body, updatedAt: new Date() },
+			{ ...req.body, updated_at: new Date() },
 			{ new: true, runValidators: true }
 		);
 
@@ -76,8 +76,8 @@ const updateStudent = async (req, res) => {
 
 		res.status(200).json({
 			...updatedStudent.toObject(),
-			created_at: updatedStudent.createdAt.toISOString(),
-			updated_at: updatedStudent.updatedAt.toISOString(),
+			created_at: updatedStudent.created_at.toISOString(),
+			updated_at: updatedStudent.updated_at.toISOString(),
 		});
 	} catch (error) {
 		console.error('Error updating student:', error);
@@ -128,13 +128,13 @@ const disableStudent = async (req, res) => {
 
 		const disabledStudent = await Student.findByIdAndUpdate(
 			req.params.id,
-			{ updatedAt: new Date(), disabledAt: new Date(), disabled: true },
+			{ updated_at: new Date(), disabledAt: new Date(), disabled: true },
 			{ new: true }
 		);
 
 		res.status(200).json({
 			...disabledStudent.toObject(),
-			updated_at: disabledStudent.updatedAt.toISOString(),
+			updated_at: disabledStudent.updated_at.toISOString(),
 			disabled: disabledStudent.disabled,
 			disabled_at: disabledStudent.disabledAt.toISOString(),
 		});
@@ -162,13 +162,13 @@ const enableStudent = async (req, res) => {
 
 		const enabledStudent = await Student.findByIdAndUpdate(
 			req.params.id,
-			{ updatedAt: new Date(), disabledAt: null, disabled: false },
+			{ updated_at: new Date(), disabledAt: null, disabled: false },
 			{ new: true }
 		);
 
 		res.status(200).json({
 			...enabledStudent.toObject(),
-			updated_at: enabledStudent.updatedAt.toISOString(),
+			updated_at: enabledStudent.updated_at.toISOString(),
 			disabled: enabledStudent.disabled,
 			disabled_at: enabledStudent.disabledAt
 				? enabledStudent.disabledAt.toISOString()

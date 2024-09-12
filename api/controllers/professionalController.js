@@ -47,7 +47,7 @@ exports.updateProfessional = async (req, res) => {
 			return res.status(404).json({ message: 'Professionnel non trouvé' });
 		}
 		Object.assign(professional, req.body);
-		professional.updatedAt = new Date();
+		professional.updated_at = new Date();
 		const updatedProfessional = await professional.save();
 		res.json(updatedProfessional);
 	} catch (error) {
@@ -63,7 +63,7 @@ exports.deleteProfessional = async (req, res) => {
 			return res.status(404).json({ message: 'Professionnel non trouvé' });
 		}
 		professional.available = false;
-		professional.updatedAt = new Date();
+		professional.updated_at = new Date();
 		await professional.save();
 		res.json({ message: 'Professionnel supprimé avec succès' });
 	} catch (error) {

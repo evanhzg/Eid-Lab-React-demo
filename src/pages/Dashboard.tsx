@@ -18,6 +18,7 @@ interface LatestCompany {
 
 interface NumericStat {
 	label: string;
+	sublabel: string;
 	value: number;
 	icon: string;
 }
@@ -56,6 +57,7 @@ const Dashboard: React.FC = () => {
 				setNumericStats([
 					{
 						label: 'Total Users',
+						sublabel: '(' + students.length + ' Students)',
 						value: students.length + professionals.length,
 						icon: '👥',
 					},
@@ -74,12 +76,16 @@ const Dashboard: React.FC = () => {
 
 				const userGraphData = last5Days.map((date) => ({
 					date,
-					students: students.filter((s) =>
-						s.created_at.toISOString().startsWith(date)
-					).length,
-					professionals: professionals.filter((p) =>
-						p.created_at.toISOString().startsWith(date)
-					).length,
+					students: students.filter((s) => {
+						// Ensure created_at is a Date object
+						const createdAt = new Date(s.created_at);
+						return createdAt.toISOString().startsWith(date);
+					}).length,
+					professionals: professionals.filter((p) => {
+						// Ensure created_at is a Date object
+						const createdAt = new Date(p.created_at);
+						return createdAt.toISOString().startsWith(date);
+					}).length,
 				}));
 
 				setUserData(userGraphData);

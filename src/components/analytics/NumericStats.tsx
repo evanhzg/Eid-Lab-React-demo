@@ -3,6 +3,7 @@ import '../../styles/components/NumericStats.css';
 
 interface Stat {
 	label: string;
+	sublabel: string;
 	value: number;
 	icon: string;
 }
@@ -22,6 +23,7 @@ const NumericStats: React.FC<NumericStatsProps> = ({ stats }) => {
 					<div className='stat-content'>
 						<span className='stat-value'>{stat.value}</span>
 						<span className='stat-label'>{stat.label}</span>
+						<span className='stat-label'>{stat.sublabel}</span>
 					</div>
 				</div>
 			))}

@@ -47,7 +47,7 @@ exports.updateCompany = async (req, res) => {
 			return res.status(404).json({ message: 'Entreprise introuvable' });
 		}
 		Object.assign(company, req.body);
-		company.updatedAt = new Date();
+		company.updated_at = new Date();
 		company.numericId = parseInt(company._id.toString().slice(-8), 16);
 		const updatedCompany = await company.save();
 		res.json(updatedCompany);
@@ -64,7 +64,7 @@ exports.deleteCompany = async (req, res) => {
 			return res.status(404).json({ message: 'Entreprise introuvable' });
 		}
 		company.available = false;
-		company.updatedAt = new Date();
+		company.updated_at = new Date();
 		await company.save();
 		res.json({ message: 'Entreprise supprimée avec succès' });
 	} catch (error) {

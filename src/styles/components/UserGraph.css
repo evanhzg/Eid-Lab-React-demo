@@ -10,18 +10,26 @@
     justify-content: space-between;
     align-items: flex-end;
     height: 200px;
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
   }
   
   .graph-bar {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
+  }
+  
+  .bar-wrapper {
     width: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
   }
   
   .bar {
-    width: 100%;
+    width: 24px;
     transition: height 0.3s ease;
   }
   
@@ -34,26 +42,26 @@
   }
   
   .date-label {
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
+    margin-top: 5px;
+    font-size: 12px;
   }
   
   .legend {
     display: flex;
     justify-content: center;
+    margin-top: 10px;
   }
   
   .legend-item {
     display: flex;
     align-items: center;
-    margin: 0 1rem;
+    margin: 0 10px;
   }
   
   .legend-color {
     width: 20px;
     height: 20px;
-    margin-right: 0.5rem;
-    border-radius: 50%;
+    margin-right: 5px;
   }
   
   .legend-color.students {

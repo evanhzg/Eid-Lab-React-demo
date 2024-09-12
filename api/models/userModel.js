@@ -9,8 +9,8 @@ const userSchema = new mongoose.Schema({
 		enum: ['student', 'professional', 'admin'],
 		required: true,
 	},
-	createdAt: { type: Date, default: Date.now },
-	updatedAt: { type: Date, default: Date.now },
+	created_at: { type: Date, default: Date.now },
+	updated_at: { type: Date, default: Date.now },
 });
 
 userSchema.pre('save', async function (next) {

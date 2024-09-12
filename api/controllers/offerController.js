@@ -45,7 +45,7 @@ exports.updateOffer = async (req, res) => {
 			return res.status(404).json({ message: 'Offre non trouvée' });
 		}
 		Object.assign(offer, req.body);
-		offer.updatedAt = new Date();
+		offer.updated_at = new Date();
 		const updatedOffer = await offer.save();
 		res.json(updatedOffer);
 	} catch (error) {
@@ -61,7 +61,7 @@ exports.deleteOffer = async (req, res) => {
 			return res.status(404).json({ message: 'Offre non trouvée' });
 		}
 		offer.available = false;
-		offer.updatedAt = new Date();
+		offer.updated_at = new Date();
 		await offer.save();
 		res.json({ message: 'Offre supprimée avec succès' });
 	} catch (error) {

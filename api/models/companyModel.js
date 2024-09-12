@@ -28,8 +28,8 @@ const companySchema = new mongoose.Schema({
 	shortDescription: { type: String, required: true },
 	logo: { type: String },
 	available: { type: Boolean, default: true },
-	createdAt: { type: Date, default: Date.now },
-	updatedAt: { type: Date, default: Date.now },
+	created_at: { type: Date, default: Date.now },
+	updated_at: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Company', companySchema);

@@ -157,8 +157,8 @@ const Companies = () => {
 		{ header: 'Pays', accessor: 'countries' },
 		{ header: 'Villes', accessor: 'cities' },
 		{ header: 'Disponible', accessor: 'available' },
-		{ header: 'Créé le', accessor: 'createdAt' },
-		{ header: 'Mis à jour le', accessor: 'updatedAt' },
+		{ header: 'Créé le', accessor: 'created_at' },
+		{ header: 'Mis à jour le', accessor: 'updated_at' },
 	];
 
 	const formatDate = (date: Date | string | undefined) => {
@@ -244,8 +244,8 @@ const Companies = () => {
 				columns={columns}
 				data={currentItems.map((company) => ({
 					...company,
-					createdAt: formatDate(company.created_at),
-					updatedAt: formatDate(company.updated_at),
+					created_at: formatDate(company.created_at),
+					updated_at: formatDate(company.updated_at),
 					domains: company.domains?.join(', ') || '',
 					countries: company.countries?.join(', ') || '',
 					cities: company.cities?.join(', ') || '',

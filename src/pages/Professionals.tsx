@@ -23,6 +23,50 @@ import { AlertContext } from '../App';
 import { usePagination } from '../hooks/usePagination';
 import ResizableTable from '../components/ResizableTable';
 
+const columns: Column<Professional>[] = [
+	{
+		header: 'Nom',
+		accessor: 'last_name',
+	},
+	{
+		header: 'Prénom',
+		accessor: 'first_name',
+	},
+	{
+		header: 'Email',
+		accessor: 'email',
+	},
+	{
+		header: 'Téléphone',
+		accessor: 'phone',
+	},
+	{
+		header: 'Entreprise',
+		accessor: 'company',
+		cell: (value: any) => value?.name || '',
+	},
+	{
+		header: 'Poste',
+		accessor: 'position',
+	},
+	{
+		header: 'LinkedIn',
+		accessor: 'linkedin',
+	},
+	{
+		header: 'Statut',
+		accessor: 'available',
+	},
+	{
+		header: 'Créé le',
+		accessor: 'created_at',
+	},
+	{
+		header: 'Mis à jour le',
+		accessor: 'updated_at',
+	},
+];
+
 const Professionals = () => {
 	const [professionals, setProfessionals] = useState<Professional[]>([]);
 	const [companies, setCompanies] = useState<Company[]>([]);
@@ -176,49 +220,6 @@ const Professionals = () => {
 		});
 	};
 
-	const columns: Column[] = [
-		{
-			header: 'Nom',
-			accessor: 'last_name',
-		},
-		{
-			header: 'Prénom',
-			accessor: 'first_name',
-		},
-		{
-			header: 'Email',
-			accessor: 'email',
-		},
-		{
-			header: 'Téléphone',
-			accessor: 'phone',
-		},
-		{
-			header: 'Entreprise',
-			accessor: 'company',
-		},
-		{
-			header: 'Poste',
-			accessor: 'position',
-		},
-		{
-			header: 'LinkedIn',
-			accessor: 'linkedin',
-		},
-		{
-			header: 'Statut',
-			accessor: 'available',
-		},
-		{
-			header: 'Créé le',
-			accessor: 'createdAt',
-		},
-		{
-			header: 'Mis à jour le',
-			accessor: 'updatedAt',
-		},
-	];
-
 	const generatePageButtons = useCallback(() => {
 		const totalPageCount = totalPages({ items: filteredProfessionals });
 		const currentPageNumber = currentPage;
@@ -287,9 +288,10 @@ const Professionals = () => {
 				columns={columns}
 				data={currentItems.map((professional) => ({
 					...professional,
-					createdAt: formatDate(professional.created_at),
-					updatedAt: formatDate(professional.updated_at),
+					created_at: formatDate(professional.created_at),
+					updated_at: formatDate(professional.updated_at),
 					available: professional.available ? 'Disponible' : 'Indisponible',
+					company: professional.company, // Pass the entire company object
 				}))}
 				renderActions={(row) => (
 					<div className='action-buttons'>
