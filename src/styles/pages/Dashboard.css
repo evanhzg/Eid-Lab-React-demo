@@ -1,0 +1,30 @@
+.dashboard {
+    padding: 1rem;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  
+  .dashboard-item {
+    background-color: var(--unpaws-color);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .wide {
+    grid-column: span 2;
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .wide {
+      grid-column: auto;
+    }
+  }

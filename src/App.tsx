@@ -18,6 +18,7 @@ import AppSidebar from './components/AppSidebar';
 import { AlertManager, AlertItem } from './components/AlertManager';
 import './App.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import Dashboard from './pages/Dashboard';
 
 export const AlertContext = createContext<
 	((message: string, type: AlertItem['type']) => void) | null
@@ -126,12 +127,7 @@ const App: React.FC = () => {
 							}>
 							<Route
 								path='/'
-								element={
-									<Navigate
-										to='/students'
-										replace
-									/>
-								}
+								element={<Dashboard />}
 							/>
 							<Route
 								path='/students'

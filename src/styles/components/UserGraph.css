@@ -1,0 +1,65 @@
+.user-graph {
+    background-color: var(--unpaws-color);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .graph-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 200px;
+    margin-bottom: 1rem;
+  }
+  
+  .graph-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+  }
+  
+  .bar {
+    width: 100%;
+    transition: height 0.3s ease;
+  }
+  
+  .bar.students {
+    background-color: var(--primary-color);
+  }
+  
+  .bar.professionals {
+    background-color: var(--secondary-color);
+  }
+  
+  .date-label {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+  
+  .legend {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+  }
+  
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+  }
+  
+  .legend-color.students {
+    background-color: var(--primary-color);
+  }
+  
+  .legend-color.professionals {
+    background-color: var(--secondary-color);
+  }

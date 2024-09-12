@@ -1,0 +1,36 @@
+.latest-companies {
+  background-color: var(--unpaws-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.company-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.company-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--light-color);
+}
+
+.company-item:last-child {
+  border-bottom: none;
+}
+
+.company-name {
+  font-weight: bold;
+}
+
+.company-industry {
+  color: var(--secondary-color);
+}
+
+.company-date {
+  font-size: 0.8rem;
+  color: var(--dark-color);
+}
