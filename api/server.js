@@ -19,7 +19,7 @@ const app = express();
 // CORS configuration
 app.use(
 	cors({
-		origin: 'http://localhost:5173', // Update this to match your frontend URL
+		origin: /^http:\/\/localhost:\d+$/, // Allow any localhost URL with any port
 		credentials: true,
 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 		allowedHeaders: ['Content-Type', 'Authorization'],
@@ -30,10 +30,10 @@ app.use(cookieParser());
 app.use(express.json());
 
 // Use the student routes
-app.use('/api/students', auth, studentRoutes);
-app.use('/api/companies', auth, companyRoutes);
-app.use('/api/professionals', auth, professionalRoutes);
-app.use('/api/offers', auth, offerRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/companies', companyRoutes);
+app.use('/api/professionals', professionalRoutes);
+app.use('/api/offers', offerRoutes);
 app.use('/api/auth', authRoutes);
 
 // Connect to MongoDB and start the server
