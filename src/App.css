@@ -1,55 +1,6 @@
 @import './styles/table.css';
 @import './styles/modal.css';
-
-:root {
-  /* Colors */
-  --unpaws-color: #f2d883;
-  
-  --dark-color: #121212;
-  --light-color: #efeeee;
-  --primary-color: var(--dark-color);
-  --secondary-color: var(--light-color);
-  --highlight-color: #ffd700;
-  --success-color: #4caf50;
-  --info-color: #2196f3;
-  --warning-color: #ff9800;
-  --error-color: #f44336;
-  --shadow-color: #3333333a;
-
-  --background-color: var(--light-color);
-
-  /* Text Colors */
-  --primary-text-color: var(--dark-color);
-  --secondary-text-color: #121212;
-
-  /* Border Styles */
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
-  --border-radius-lg: 16px;
-
-  /* Spacing */
-  --space-xs: 6px;
-  --space-s: 12px;
-  --space-sm: 24px;
-  --space-md: 48px;
-  --space-lg: 96px;
-
-  /* Button */
-  --button-padding: var(--space-xs) var(--space-sm);
-
-  /* Body */
-  --body-color: var(--light-color);
-}
-
-[data-theme="dark"] {
-  --primary-color: #e0e0e0;
-  --primary-text-color: #e0e0e0;
-  --secondary-color: #1e1e1e;
-  --secondary-text-color: #121212;
-  --shadow-color: #5c5c5c1a;
-  --body-color: var(--dark-color);
-  --background-color: var(--dark-color);
-}
+@import './styles/variables.css';
 
 body {
   background-color: var(--body-color);
