@@ -1,18 +1,18 @@
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { Button, TextField } from '@mui/material';
-import Table from '../shared/components/ui/Table.tsx';
-import useTableConfig from '../admin/hooks/useStudentTableConfig.tsx';
-import StudentModal from '../admin/components/StudentModal.ts';
+import Table from '../../shared/components/ui/Table.tsx';
+import useTableConfig from '../hooks/useStudentTableConfig.tsx';
+import StudentModal from '../components/modals/StudentModal.tsx';
 import { Icon } from '@iconify/react';
-import { Student } from '../shared/types/index.ts';
-import ConfirmDialog from '../shared/components/ui/ConfirmDialog.tsx';
-import { AlertContext } from '../App';
+import { Student } from '../../shared/types/index.ts';
+import ConfirmDialog from '../../shared/components/ui/ConfirmDialog.tsx';
+import { AlertContext } from '../../App.tsx';
 import {
 	getStudents,
 	createStudent,
 	updateStudent,
 	deleteStudent,
-} from '../admin/services/studentService.ts';
+} from '../../services/studentService.ts';
 
 const Students = () => {
 	const [students, setStudents] = useState<Student[]>([]);

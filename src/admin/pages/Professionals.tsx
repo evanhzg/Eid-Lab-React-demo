@@ -9,24 +9,24 @@ import {
 	DialogTitle,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
-import ProfessionalModal from '../admin/components/ProfessionalModal.ts';
+import ProfessionalModal from '../components/modals/ProfessionalModal.tsx';
 import {
 	Professional,
 	Column,
 	Company,
 	ObjectId,
-} from '../shared/types/index.ts';
+} from '../../shared/types/index.ts';
 import {
 	getProfessionals,
 	createProfessional,
 	updateProfessional,
 	deleteProfessional,
-} from '../admin/services/professionalService.ts';
-import { getCompanies } from '../admin/services/companyService.ts';
+} from '../../services/professionalService.ts';
+import { getCompanies } from '../../services/companyService.ts';
 import { useContext } from 'react';
-import { AlertContext } from '../App';
-import { usePagination } from '../admin/hooks/usePagination.tsx';
-import Table from '../shared/components/ui/Table.tsx';
+import { AlertContext } from '../../App.tsx';
+import { usePagination } from '../hooks/usePagination.tsx';
+import Table from '../../shared/components/ui/Table.tsx';
 
 const columns: Column<Professional>[] = [
 	{

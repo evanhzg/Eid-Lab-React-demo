@@ -1,5 +1,5 @@
-import api from '../utils/api';
-import { Company } from '../types';
+import api from './api.ts';
+import { Company } from '../../shared/types/index.ts';
 
 export const getCompanies = async (): Promise<Company[]> => {
   try {

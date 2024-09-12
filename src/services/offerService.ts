@@ -1,5 +1,5 @@
-import api from '../utils/api';
-import { Offer } from '../types';
+import api from './api.ts';
+import { Offer } from '../../shared/types/index.ts';
 
 export const getOffers = async (): Promise<Offer[]> => {
   try {

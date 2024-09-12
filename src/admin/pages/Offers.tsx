@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Button, TextField } from '@mui/material';
 import { Icon } from '@iconify/react';
-import OfferModal from '../admin/components/modals/OfferModal.tsx';
-import { Offer, Column, Company, ObjectId } from '../shared/types/index.ts';
+import OfferModal from '../components/modals/OfferModal.tsx';
+import { Offer, Column, Company, ObjectId } from '../../shared/types/index.ts';
 import {
 	getOffers,
 	createOffer,
 	updateOffer,
 	deleteOffer,
-} from '../admin/services/offerService.ts';
-import { getCompanies } from '../admin/services/companyService.ts';
-import '../styles/components/ui/Table.css';
-import Table from '../shared/components/ui/Table.tsx';
-import { useSortableData, formatDate } from '../admin/utils/tableUtils.ts';
-import { usePagination } from '../admin/hooks/usePagination.tsx';
+} from '../../services/offerService.ts';
+import { getCompanies } from '../../services/companyService.ts';
+import '../../shared/styles/ui/Table.css';
+import { useSortableData, formatDate } from '../utils/tableUtils.ts';
+import { usePagination } from '../hooks/usePagination.tsx';
 
 const Offers: React.FC = () => {
 	const [offers, setOffers] = useState<Offer[]>([]);

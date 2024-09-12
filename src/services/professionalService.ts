@@ -1,5 +1,5 @@
-import api from '../utils/api';
-import { Professional } from '../types';
+import api from './api.ts';
+import { Professional } from '../../shared/types/index.ts';
 
 export const getProfessionals = async (): Promise<Professional[]> => {
   try {

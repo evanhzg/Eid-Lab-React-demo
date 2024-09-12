@@ -1,6 +1,6 @@
-@import './styles/table.css';
-@import './styles/modal.css';
-@import './styles/variables.css';
+@import './shared/styles/ui/Table.css';
+@import './shared/styles/ui/Modal.css';
+@import './shared/styles/variables.css';
 
 body {
   background-color: var(--body-color);

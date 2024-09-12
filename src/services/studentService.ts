@@ -1,5 +1,5 @@
-import api from '../utils/api';
-import { Student } from '../types';
+import api from './api.ts';
+import { Student } from '../../shared/types/index.ts';
 
 export const getStudents = async (): Promise<Student[]> => {
   try {

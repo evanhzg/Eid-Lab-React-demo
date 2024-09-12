@@ -9,18 +9,18 @@ import {
 	DialogTitle,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
-import Table from '../shared/components/ui/Table.tsx';
-import CompanyModal from '../admin/components/modals/CompanyModal.tsx';
-import { Company } from '../shared/types/index.ts';
-import { AlertContext } from '../App';
+import Table from '../../shared/components/ui/Table.tsx';
+import CompanyModal from '../components/modals/CompanyModal.tsx';
+import { Company } from '../../shared/types/index.ts';
+import { AlertContext } from '../../App.tsx';
 import {
 	getCompanies,
 	createCompany,
 	updateCompany,
 	deleteCompany,
-} from '../admin/services/companyService.ts';
-import { ObjectId } from '../shared/types/index.ts';
-import { usePagination } from '../admin/hooks/usePagination.tsx';
+} from '../../services/companyService.ts';
+import { ObjectId } from '../../shared/types/index.ts';
+import { usePagination } from '../hooks/usePagination.tsx';
 
 const Companies = () => {
 	const [companies, setCompanies] = useState<Company[]>([]);

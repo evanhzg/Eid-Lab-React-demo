@@ -7,18 +7,18 @@ import {
 	Outlet,
 	useLocation,
 } from 'react-router-dom';
-import AuthPage from './pages/AuthPage';
-import Students from './pages/Students';
-import Companies from './pages/Companies';
-import Offers from './pages/Offers';
-import Professionals from './pages/Professionals';
-import Error404 from './pages/Error404';
-import ProtectedRoute from './components/ProtectedRoute';
-import AppSidebar from './components/AppSidebar';
-import { AlertManager, AlertItem } from './components/AlertManager';
+import AuthPage from './shared/components/AuthPage';
+import Students from './admin/pages/Students';
+import Companies from './admin/pages/Companies';
+import Offers from './admin/pages/Offers';
+import Professionals from './admin/pages/Professionals';
+import Error404 from './admin/pages/Error404';
+import ProtectedRoute from './admin/components/config/ProtectedRoute';
+import AppSidebar from './admin/components/app/AppSidebar';
+import { AlertManager, AlertItem } from './admin/components/app/AlertManager';
 import './App.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './admin/pages/Dashboard';
 
 export const AlertContext = createContext<
 	((message: string, type: AlertItem['type']) => void) | null
