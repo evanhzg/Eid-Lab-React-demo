@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { Button, TextField } from '@mui/material';
-import axios from 'axios';
 import ResizableTable from '../components/ResizableTable';
 import useTableConfig from '../hooks/useStudentTableConfig';
 import StudentModal from '../components/StudentModal';
@@ -8,6 +7,12 @@ import { Icon } from '@iconify/react';
 import { Student } from '../types';
 import ConfirmDialog from '../components/ConfirmDialog';
 import { AlertContext } from '../App';
+import {
+	getStudents,
+	createStudent,
+	updateStudent,
+	deleteStudent,
+} from '../services/studentService';
 
 const Students = () => {
 	const [students, setStudents] = useState<Student[]>([]);
@@ -35,25 +40,26 @@ const Students = () => {
 
 	const fetchStudents = useCallback(async () => {
 		try {
-			const response = await axios.get('http://localhost:5000/api/students');
-			const transformedData = response.data.map((student: any) => ({
+			const fetchedStudents = await getStudents();
+			const transformedData = fetchedStudents.map((student: Student) => ({
 				...student,
 				created_at: new Date(student.createdAt).toISOString(),
 				updated_at: new Date(student.updatedAt).toISOString(),
 			}));
-			setStudents(Array.isArray(transformedData) ? transformedData : []);
+			setStudents(transformedData);
 		} catch (error) {
 			console.error('Error fetching students:', error);
+			addAlert?.('Error fetching students', 'error');
 		}
-	}, []);
+	}, [addAlert]);
 
 	useEffect(() => {
 		fetchStudents();
 	}, [fetchStudents]);
 
 	const handleEdit = (id: string) => {
-		const student = students.find((s) => s._id === id);
-		setSelectedStudent(student || undefined);
+		const student = students.find((s) => s._id?.toString() === id);
+		setSelectedStudent(student);
 		setIsModalOpen(true);
 	};
 
@@ -65,9 +71,7 @@ const Students = () => {
 	const confirmDelete = async () => {
 		if (studentToDelete) {
 			try {
-				await axios.delete(
-					`http://localhost:5000/api/students/${studentToDelete}`
-				);
+				await deleteStudent(studentToDelete);
 				addAlert?.('Student deleted successfully', 'success');
 				await fetchStudents();
 			} catch (error) {
@@ -83,14 +87,11 @@ const Students = () => {
 		try {
 			if (selectedStudent) {
 				// Edit existing student
-				await axios.put(
-					`http://localhost:5000/api/students/${selectedStudent._id}`,
-					student
-				);
+				await updateStudent(selectedStudent._id, student);
 				addAlert?.('Student updated successfully', 'success');
 			} else {
 				// Create new student
-				await axios.post('http://localhost:5000/api/students', student);
+				await createStudent(student);
 				addAlert?.('Student created successfully', 'success');
 			}
 			setIsModalOpen(false);
@@ -100,14 +101,6 @@ const Students = () => {
 		} catch (error) {
 			console.error('Error saving student:', error);
 			addAlert?.('Error saving student', 'error');
-			if (axios.isAxiosError(error) && error.response) {
-				// Handle validation errors from the server
-				const validationErrors = error.response.data.details;
-				if (validationErrors) {
-					// Update the errors state in the StudentModal
-					setErrors(validationErrors);
-				}
-			}
 		}
 	};
 
@@ -139,19 +132,19 @@ const Students = () => {
 	};
 
 	const columns = [
-		{ header: 'ID', accessor: 'numericId', width: 100 },
-		{ header: 'Prénom', accessor: 'first_name', width: 150 },
-		{ header: 'Nom', accessor: 'last_name', width: 150 },
-		{ header: 'Email', accessor: 'email', width: 200 },
-		{ header: 'Téléphone', accessor: 'phone', width: 150 },
-		{ header: 'Pays', accessor: 'country', width: 150 },
-		{ header: 'Région', accessor: 'region', width: 150 },
-		{ header: 'Ville', accessor: 'city', width: 150 },
-		{ header: 'École', accessor: 'school', width: 200 },
-		{ header: 'Niveau', accessor: 'grade', width: 100 },
-		{ header: 'Disponible', accessor: 'available', width: 100 },
-		{ header: 'Créé le', accessor: 'created_at', width: 200 },
-		{ header: 'Mis à jour le', accessor: 'updated_at', width: 200 },
+		{ header: 'ID', accessor: 'numericId' },
+		{ header: 'Prénom', accessor: 'first_name' },
+		{ header: 'Nom', accessor: 'last_name' },
+		{ header: 'Email', accessor: 'email' },
+		{ header: 'Téléphone', accessor: 'phone' },
+		{ header: 'Pays', accessor: 'country' },
+		{ header: 'Région', accessor: 'region' },
+		{ header: 'Ville', accessor: 'city' },
+		{ header: 'École', accessor: 'school' },
+		{ header: 'Niveau', accessor: 'grade' },
+		{ header: 'Disponible', accessor: 'available' },
+		{ header: 'Créé le', accessor: 'created_at' },
+		{ header: 'Mis à jour le', accessor: 'updated_at' },
 	];
 
 	const formatDate = (date: Date | string | undefined) => {
@@ -201,13 +194,13 @@ const Students = () => {
 				renderActions={(row) => (
 					<div className='action-buttons'>
 						<Icon
-							onClick={() => handleEdit(row._id)}
+							onClick={() => handleEdit(row._id?.toString() || '')}
 							icon='mingcute:user-edit-fill'
 							color='var(--success-color)'
 							style={{ cursor: 'pointer' }}
 						/>
 						<Icon
-							onClick={() => handleDelete(row._id)}
+							onClick={() => handleDelete(row._id?.toString() || '')}
 							icon='mingcute:user-remove-fill'
 							color='var(--error-color)'
 							style={{ cursor: 'pointer' }}

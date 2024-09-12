@@ -1,22 +1,19 @@
-import axios from 'axios';
+import api from '../utils/api';
 import { Professional } from '../types';
-import { ObjectId } from '../types';
-
-const API_BASE_URL = 'http://localhost:5000/api';
 
 export const getProfessionals = async (): Promise<Professional[]> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/professionals`);
-    return response.data;
+    const response = await api.get('/professionals');
+    return Array.isArray(response.data) ? response.data : response.data.professionals || [];
   } catch (error) {
     console.error('Error fetching professionals:', error);
     throw error;
   }
 };
 
-export const getProfessionalById = async (id: ObjectId): Promise<Professional> => {
+export const getProfessionalById = async (id: string): Promise<Professional> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/professionals/${id}`);
+    const response = await api.get(`/professionals/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching professional with id ${id}:`, error);
@@ -26,7 +23,7 @@ export const getProfessionalById = async (id: ObjectId): Promise<Professional> =
 
 export const createProfessional = async (professionalData: Omit<Professional, '_id'>): Promise<Professional> => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/professionals`, professionalData);
+    const response = await api.post('/professionals', professionalData);
     return response.data;
   } catch (error) {
     console.error('Error creating professional:', error);
@@ -34,9 +31,9 @@ export const createProfessional = async (professionalData: Omit<Professional, '_
   }
 };
 
-export const updateProfessional = async (id: ObjectId, professionalData: Partial<Professional>): Promise<Professional> => {
+export const updateProfessional = async (id: string, professionalData: Partial<Professional>): Promise<Professional> => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/professionals/${id.toString()}`, professionalData);
+    const response = await api.put(`/professionals/${id}`, professionalData);
     return response.data;
   } catch (error) {
     console.error(`Error updating professional with id ${id}:`, error);
@@ -44,11 +41,23 @@ export const updateProfessional = async (id: ObjectId, professionalData: Partial
   }
 };
 
-export const deleteProfessional = async (id: ObjectId): Promise<void> => {
+export const deleteProfessional = async (id: string): Promise<void> => {
   try {
-    await axios.delete(`${API_BASE_URL}/professionals/${id.toString()}`);
+    await api.delete(`/professionals/${id}`);
   } catch (error) {
     console.error(`Error deleting professional with id ${id}:`, error);
+    throw error;
+  }
+};
+
+export const searchProfessionals = async (query: string): Promise<Professional[]> => {
+  try {
+    const response = await api.get('/professionals/search', {
+      params: { q: query },
+    });
+    return Array.isArray(response.data) ? response.data : response.data.professionals || [];
+  } catch (error) {
+    console.error('Error searching professionals:', error);
     throw error;
   }
 };

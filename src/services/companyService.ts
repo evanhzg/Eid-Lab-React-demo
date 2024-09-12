@@ -1,22 +1,19 @@
-import axios from 'axios';
+import api from '../utils/api';
 import { Company } from '../types';
-import { ObjectId } from '../types';
-
-const API_BASE_URL = 'http://localhost:5000/api';
 
 export const getCompanies = async (): Promise<Company[]> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/companies`);
-    return response.data;
+    const response = await api.get('/companies');
+    return Array.isArray(response.data) ? response.data : response.data.companies || [];
   } catch (error) {
     console.error('Error fetching companies:', error);
     throw error;
   }
 };
 
-export const getCompanyById = async (id: ObjectId): Promise<Company> => {
+export const getCompanyById = async (id: string): Promise<Company> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/companies/${id.toString()}`);
+    const response = await api.get(`/companies/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching company with id ${id}:`, error);
@@ -26,7 +23,7 @@ export const getCompanyById = async (id: ObjectId): Promise<Company> => {
 
 export const createCompany = async (companyData: Omit<Company, '_id'>): Promise<Company> => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/companies`, companyData);
+    const response = await api.post('/companies', companyData);
     return response.data;
   } catch (error) {
     console.error('Error creating company:', error);
@@ -34,9 +31,9 @@ export const createCompany = async (companyData: Omit<Company, '_id'>): Promise<
   }
 };
 
-export const updateCompany = async (id: ObjectId, companyData: Partial<Company>): Promise<Company> => {
+export const updateCompany = async (id: string, companyData: Partial<Company>): Promise<Company> => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/companies/${id.toString()}`, companyData);
+    const response = await api.put(`/companies/${id}`, companyData);
     return response.data;
   } catch (error) {
     console.error(`Error updating company with id ${id}:`, error);
@@ -46,7 +43,7 @@ export const updateCompany = async (id: ObjectId, companyData: Partial<Company>)
 
 export const deleteCompany = async (id: string): Promise<void> => {
   try {
-    await axios.delete(`${API_BASE_URL}/companies/${id.toString()}`);
+    await api.delete(`/companies/${id}`);
   } catch (error) {
     console.error(`Error deleting company with id ${id}:`, error);
     throw error;
@@ -55,10 +52,10 @@ export const deleteCompany = async (id: string): Promise<void> => {
 
 export const searchCompanies = async (query: string): Promise<Company[]> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/companies/search`, {
+    const response = await api.get('/companies/search', {
       params: { q: query },
     });
-    return response.data;
+    return Array.isArray(response.data) ? response.data : response.data.companies || [];
   } catch (error) {
     console.error('Error searching companies:', error);
     throw error;

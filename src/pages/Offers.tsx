@@ -133,7 +133,7 @@ const Offers: React.FC = () => {
 	const handleSaveOffer = async (offerData: Omit<Offer, '_id'> | Offer) => {
 		try {
 			if ('_id' in offerData) {
-				await updateOffer(offerData._id, offerData);
+				await updateOffer(offerData._id?.toString()!, offerData);
 			} else {
 				await createOffer(offerData);
 			}
@@ -167,7 +167,7 @@ const Offers: React.FC = () => {
 				style={{ cursor: 'pointer' }}
 			/>
 			<Icon
-				onClick={() => handleDeleteOffer(offer._id!)}
+				onClick={() => handleDeleteOffer(offer._id?.toString()!)}
 				icon='mdi:file-document-remove'
 				color='var(--error-color)'
 				style={{ cursor: 'pointer' }}

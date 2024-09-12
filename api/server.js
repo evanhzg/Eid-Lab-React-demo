@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,20 +8,33 @@ const studentRoutes = require('./routes/studentRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const professionalRoutes = require('./routes/professionalRoutes');
 const offerRoutes = require('./routes/offerRoutes');
+const authRoutes = require('./routes/authRoutes');
+const auth = require('./middleware/authMiddleware');
+const cookieParser = require('cookie-parser');
+
+const MONGO_URI = process.env.MONGO_URI;
 
 const app = express();
-const MONGO_URI =
-	'mongodb+srv://admin:admin@cluster0.e94qo0s.mongodb.net/react-saas?retryWrites=true&w=majority';
 
-// Middleware for CORS and JSON parsing
-app.use(cors());
+// CORS configuration
+app.use(
+	cors({
+		origin: 'http://localhost:5173', // Update this to match your frontend URL
+		credentials: true,
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+		allowedHeaders: ['Content-Type', 'Authorization'],
+	})
+);
+
+app.use(cookieParser());
 app.use(express.json());
 
 // Use the student routes
-app.use('/api/students', studentRoutes);
-app.use('/api/companies', companyRoutes);
-app.use('/api/professionals', professionalRoutes);
-app.use('/api/offers', offerRoutes);
+app.use('/api/students', auth, studentRoutes);
+app.use('/api/companies', auth, companyRoutes);
+app.use('/api/professionals', auth, professionalRoutes);
+app.use('/api/offers', auth, offerRoutes);
+app.use('/api/auth', authRoutes);
 
 // Connect to MongoDB and start the server
 mongoose
@@ -35,8 +50,8 @@ mongoose
 				process.exit(1);
 			}
 
-			app.listen(port, () => {
-				console.log(`Server is running on port ${port}`);
+			app.listen(port, 'localhost', () => {
+				console.log(`Server running on http://localhost:${port}`);
 			});
 		});
 	})

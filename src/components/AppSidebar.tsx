@@ -3,8 +3,17 @@ import { NavLink } from 'react-router-dom';
 import '../styles/sidebar.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import unpawsLogo from '../assets/unpaws-logo-yellow.png';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../utils/auth';
 
 const AppSidebar: React.FC = () => {
+	const navigate = useNavigate();
+
+	const handleLogout = () => {
+		logout();
+		navigate('/auth');
+	};
+
 	return (
 		<nav className='sidebar'>
 			<div className='sidebar-header'>
@@ -66,6 +75,14 @@ const AppSidebar: React.FC = () => {
 						<Icon icon='material-symbols:error' />
 						<p>404 Page</p>
 					</NavLink>
+				</li>
+				<li>
+					<button
+						onClick={handleLogout}
+						className='logout-button'>
+						<Icon icon='mdi:logout' />
+						<p>Logout</p>
+					</button>
 				</li>
 			</ul>
 		</nav>

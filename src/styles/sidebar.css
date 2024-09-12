@@ -104,3 +104,33 @@
   background-color: var(--highlight-color);
   color: var(--dark-color);
 }
+
+.logout-button {
+  display: flex;
+  align-items: center; 
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--unpaws-color) !important;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  margin: auto;
+}
+
+.logout-button:hover {
+  background-color: var(--highlight-color);
+  color: var(--dark-color) !important;
+  outline: none;
+  border: none !important;
+
+}
+
+.logout-button:focus {
+  outline: none;
+  border: none !important;
+}
+
+.logout-button:active {
+  outline: none;
+  border: none !important;
+}

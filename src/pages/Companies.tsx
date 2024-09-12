@@ -52,6 +52,7 @@ const Companies = () => {
 	const fetchCompanies = async () => {
 		try {
 			const fetchedCompanies = await getCompanies();
+			console.log('Fetched companies:', fetchedCompanies); // Add this line
 			setCompanies(fetchedCompanies);
 		} catch (error) {
 			console.error('Error fetching companies:', error);
@@ -59,8 +60,8 @@ const Companies = () => {
 		}
 	};
 
-	const handleEdit = (id: ObjectId) => {
-		const company = companies.find((c) => c._id.equals(id));
+	const handleEdit = (id: string) => {
+		const company = companies.find((c) => c._id.toString() === id);
 		setSelectedCompany(company);
 		setIsModalOpen(true);
 	};
@@ -144,21 +145,20 @@ const Companies = () => {
 	}, [sortedCompanies, searchQuery]);
 
 	const columns = [
-		{ header: 'ID', accessor: 'numericId', width: 100 },
-		{ header: 'Nom', accessor: 'name', width: 200 },
-		{ header: 'Taille', accessor: 'size', width: 100 },
-		{ header: 'Type', accessor: 'type', width: 150 },
+		{ header: 'ID', accessor: 'numericId' },
+		{ header: 'Nom', accessor: 'name' },
+		{ header: 'Taille', accessor: 'size' },
+		{ header: 'Type', accessor: 'type' },
 		{
 			header: 'Accepte candidatures spontanées',
 			accessor: 'acceptsUnsolicited',
-			width: 200,
 		},
-		{ header: 'Domaines', accessor: 'domains', width: 200 },
-		{ header: 'Pays', accessor: 'countries', width: 150 },
-		{ header: 'Villes', accessor: 'cities', width: 150 },
-		{ header: 'Disponible', accessor: 'available', width: 100 },
-		{ header: 'Créé le', accessor: 'createdAt', width: 200 },
-		{ header: 'Mis à jour le', accessor: 'updatedAt', width: 200 },
+		{ header: 'Domaines', accessor: 'domains' },
+		{ header: 'Pays', accessor: 'countries' },
+		{ header: 'Villes', accessor: 'cities' },
+		{ header: 'Disponible', accessor: 'available' },
+		{ header: 'Créé le', accessor: 'createdAt' },
+		{ header: 'Mis à jour le', accessor: 'updatedAt' },
 	];
 
 	const formatDate = (date: Date | string | undefined) => {
@@ -246,9 +246,9 @@ const Companies = () => {
 					...company,
 					createdAt: formatDate(company.created_at),
 					updatedAt: formatDate(company.updated_at),
-					domains: company.domains.join(', '),
-					countries: company.countries.join(', '),
-					cities: company.cities.join(', '),
+					domains: company.domains?.join(', ') || '',
+					countries: company.countries?.join(', ') || '',
+					cities: company.cities?.join(', ') || '',
 				}))}
 				renderActions={(row) => (
 					<div className='action-buttons'>
