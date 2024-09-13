@@ -21,6 +21,7 @@ interface NumericStat {
 	sublabel: string;
 	value: number;
 	icon: string;
+	route: string;
 }
 
 interface UserDataPoint {
@@ -48,6 +49,20 @@ const Dashboard: React.FC = () => {
 
 				// Fetch offers
 				const offers = await getOffers();
+				const offersThisWeek = offers.filter((offer) => {
+					const offerDate = new Date(offer.created_at);
+					const today = new Date();
+					const oneWeekAgo = new Date(
+						today.getTime() - 7 * 24 * 60 * 60 * 1000
+					);
+					return offerDate >= oneWeekAgo && offerDate <= today;
+				}).length;
+
+				// Calculate companies with at least one offer
+				const companiesWithOffers = new Set(
+					offers.map((offer) => offer.company)
+				);
+				const companiesWithOffersCount = companiesWithOffers.size;
 
 				// Fetch students and professionals
 				const students = await getStudents();
@@ -60,9 +75,22 @@ const Dashboard: React.FC = () => {
 						sublabel: '(' + students.length + ' Students)',
 						value: students.length + professionals.length,
 						icon: '👥',
+						route: '/users',
 					},
-					{ label: 'Active Offers', value: offers.length, icon: '📋' },
-					{ label: 'Companies', value: companies.length, icon: '🏢' },
+					{
+						label: 'Active Offers',
+						sublabel: `(${offersThisWeek} this week)`,
+						value: offersThisWeek,
+						icon: '📋',
+						route: '/offers',
+					},
+					{
+						label: 'Companies',
+						sublabel: `(${companiesWithOffersCount} with active offers)`,
+						value: companies.length,
+						icon: '🏢',
+						route: '/companies',
+					},
 				]);
 
 				// Calculate user data for the graph (last 5 days)

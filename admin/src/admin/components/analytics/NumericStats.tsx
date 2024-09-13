@@ -1,7 +1,9 @@
 import React from 'react';
 import '../../styles/components/analytics/NumericStats.css';
+import { NavLink } from 'react-router-dom';
 
 interface Stat {
+	route: string;
 	label: string;
 	sublabel: string;
 	value: number;
@@ -16,7 +18,8 @@ const NumericStats: React.FC<NumericStatsProps> = ({ stats }) => {
 	return (
 		<div className='numeric-stats'>
 			{stats.map((stat, index) => (
-				<div
+				<NavLink
+					to={stat.route}
 					key={index}
 					className='stat-item'>
 					<div className='stat-icon'>{stat.icon}</div>
@@ -25,7 +28,7 @@ const NumericStats: React.FC<NumericStatsProps> = ({ stats }) => {
 						<span className='stat-label'>{stat.label}</span>
 						<span className='stat-label'>{stat.sublabel}</span>
 					</div>
-				</div>
+				</NavLink>
 			))}
 		</div>
 	);
