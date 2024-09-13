@@ -19,54 +19,41 @@ const UserGraph: React.FC<UserGraphProps> = ({ data }) => {
 
 	return (
 		<div className='user-graph'>
-			<div className='graph-container'>
+			<div className='graph-bars-container'>
 				{data.map((item, index) => (
 					<div
 						key={index}
 						className='graph-bar'>
 						<div className='bar-wrapper'>
-							<div
-								className='bar students'
-								style={{
-									height: `${(item.students / maxValue) * 100}%`,
-								}}>
-								<Tooltip
-									content={
-										<div>
-											<p>
-												<strong>Date:</strong> {item.date}
-											</p>
-											<p>
-												<strong>Students:</strong> {item.students}
-											</p>
-											<p>
-												<strong>Professionals:</strong> {item.professionals}
-											</p>
-										</div>
-									}
-								/>
-							</div>
-							<div
-								className='bar professionals'
-								style={{
-									height: `${(item.professionals / maxValue) * 100}%`,
-								}}>
-								<Tooltip
-									content={
-										<div>
-											<p>
-												<strong>Date:</strong> {item.date}
-											</p>
-											<p>
-												<strong>Students:</strong> {item.students}
-											</p>
-											<p>
-												<strong>Professionals:</strong> {item.professionals}
-											</p>
-										</div>
-									}
-								/>
-							</div>
+							<Tooltip
+								content={
+									<div>
+										<p>
+											<strong>Date:</strong> {item.date}
+										</p>
+										<p>
+											<strong>Students:</strong> {item.students}
+										</p>
+										<p>
+											<strong>Professionals:</strong> {item.professionals}
+										</p>
+									</div>
+								}>
+								<div className='bar-container'>
+									<div
+										className='bar professionals'
+										style={{
+											height: `${(item.professionals / maxValue) * 100}%`,
+										}}
+									/>
+									<div
+										className='bar students'
+										style={{
+											height: `${(item.students / maxValue) * 100}%`,
+										}}
+									/>
+								</div>
+							</Tooltip>
 						</div>
 						<span className='date-label'>{item.date}</span>
 					</div>

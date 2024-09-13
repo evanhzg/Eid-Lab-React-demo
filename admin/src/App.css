@@ -1,6 +1,7 @@
 @import './shared/styles/ui/Table.css';
 @import './shared/styles/ui/Modal.css';
 @import './shared/styles/variables.css';
+@import './shared/styles/ui/Sidebar.css';
 
 body {
   background-color: var(--body-color);
@@ -8,6 +9,43 @@ body {
   font-family: 'Roboto', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
   z-index: 0;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+.confirm-dialog__button {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+}
+
+.confirm-dialog__button--delete {
+  color: var(--error-color) !important;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .confirm-dialog__button {
+  background-color: var(--secondary-color) !important;
+  color: var(--primary-color) !important;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.custom-alert {
+  background-color: var(--alert-bg-color) !important;
+  color: var(--inverted-color) !important;
+  transition: opacity 300ms ease-in-out;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.custom-alert.closing {
+  animation: fadeOut 300ms ease-in-out;
 }
 
 .page-header {
@@ -65,7 +103,7 @@ Button.error {
 }
 
 Button.delete {
-  background-color: var(--dark-color) !important;
+  background-color: var(--inverted-color) !important;
   color: var(--error-color) !important;
   font-weight: bold;
 }
@@ -91,13 +129,13 @@ Button.delete {
 }
 
 .pagination-button {
-  background-color: var(--dark-color) !important;
+  background-color: var(--inverted-color) !important;
   color: var(--light-color) !important;
   border: 1px solid var(--light-color) !important;
 }
 
 [data-theme="dark"] .pagination-button {
-  background-color: var(--dark-color) !important;
+  background-color: var(--inverted-color) !important;
   color: var(--light-color) !important;
   border: 1px solid var(--light-color) !important;
 }
@@ -112,7 +150,9 @@ Icon.success {
 }
 
 .app-container {
+  padding-left: var(--sidebar-width);
   position: relative;
+  width: 100%;
   min-height: 100vh;
   background: var(--gradient-background);
 }
@@ -153,7 +193,7 @@ Icon.success {
 
 .custom-alert {
   background-color: var(--alert-bg-color) !important;
-  color: var(--dark-color) !important;
+  color: var(--inverted-color) !important;
   transition: opacity 300ms ease-in-out;
   display: flex !important;
   align-items: center !important;

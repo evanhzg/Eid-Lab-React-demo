@@ -28,7 +28,7 @@
 }
 
 .auth-title {
-	color: var(--dark-color);
+	color: var(--inverted-color);
   font-family: 'Sail', cursive !important;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .auth-submit-button {
-  background-color: var(--dark-color) !important;
+  background-color: var(--inverted-color) !important;
   color: var(--unpaws-color) !important;
   font-weight: 600 !important;
   border-radius: var(--border-radius-md) !important;

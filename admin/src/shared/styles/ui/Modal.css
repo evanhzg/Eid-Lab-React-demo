@@ -124,13 +124,13 @@ fieldset {
 }
 
 .modal-button {
-  background-color: var(--dark-color) !important;
+  background-color: var(--inverted-color) !important;
   color: var(--light-color) !important;
 }
 
 [data-theme="dark"] .modal-button {
   background-color: var(--light-color) !important;
-  color: var(--dark-color) !important;
+  color: var(--inverted-color) !important;
 }
 
 /* Select Inputs */
@@ -151,7 +151,7 @@ border-radius: var(--border-radius-lg);
 }
 
 .custom-modal .MuiMenuItem-root {
-  color: var(--dark-color);
+  color: var(--inverted-color);
 }
 
 [data-theme="dark"] .custom-modal .MuiMenuItem-root {

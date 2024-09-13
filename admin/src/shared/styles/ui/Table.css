@@ -51,7 +51,7 @@
   
   table th:hover {
     background-color: var(--highlight-color);
-    color: var(--dark-color) !important;
+    color: var(--inverted-color) !important;
   }
   
   table td {
@@ -69,7 +69,7 @@
   
   .table-actions Button {
     background-color: var(--highlight-color) !important;
-    color: var(--dark-color) !important;
+    color: var(--inverted-color) !important;
     margin: 0 !important;
     border-radius: var(--border-radius-lg);
     height: 100%;
@@ -107,13 +107,13 @@
   }
   
   .pagination-button {
-    background-color: var(--dark-color) !important;
+    background-color: var(--inverted-color) !important;
     color: var(--light-color) !important;
     border: 1px solid var(--light-color) !important;
   }
   
   [data-theme="dark"] .pagination-button {
-    background-color: var(--dark-color) !important;
+    background-color: var(--inverted-color) !important;
     color: var(--light-color) !important;
     border: 1px solid var(--light-color) !important;
   }

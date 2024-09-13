@@ -1,49 +1,48 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import '../../styles/ui/Tooltip.css';
 
 interface TooltipProps {
-	children: React.ReactNode;
 	content: React.ReactNode;
+	children: React.ReactNode;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
+const Tooltip: React.FC<TooltipProps> = ({ content, children }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
+	const containerRef = useRef<HTMLDivElement>(null);
 	const tooltipRef = useRef<HTMLDivElement>(null);
 
 	const handleMouseMove = (e: React.MouseEvent) => {
-		if (tooltipRef.current) {
-			const rect = tooltipRef.current.getBoundingClientRect();
-			setPosition({
-				x: e.clientX - rect.width / 2,
-				y: e.clientY - rect.height - 10, // 10px above the cursor
-			});
-		}
-	};
+		if (containerRef.current && tooltipRef.current) {
+			const rect = containerRef.current.getBoundingClientRect();
+			const tooltipRect = tooltipRef.current.getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const y = e.clientY - rect.top;
 
-	useEffect(() => {
-		if (isVisible) {
-			document.addEventListener('mousemove', handleMouseMove as any);
+			const rightSpace =
+				window.innerWidth - (rect.left + x + tooltipRect.width);
+			const xPos = rightSpace < 0 ? x - tooltipRect.width : x;
+
+			setPosition({ x: xPos, y });
 		}
-		return () => {
-			document.removeEventListener('mousemove', handleMouseMove as any);
-		};
-	}, [isVisible]);
+		setIsVisible(true);
+	};
 
 	return (
 		<div
+			ref={containerRef}
 			className='tooltip-container'
-			onMouseEnter={() => setIsVisible(true)}
+			onMouseMove={handleMouseMove}
 			onMouseLeave={() => setIsVisible(false)}>
 			{children}
 			{isVisible && (
 				<div
-					className='tooltip'
 					ref={tooltipRef}
+					className='tooltip'
 					style={{
+						position: 'absolute',
 						left: `${position.x}px`,
 						top: `${position.y}px`,
-						position: 'fixed',
 					}}>
 					{content}
 				</div>

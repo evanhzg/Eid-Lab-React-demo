@@ -3,7 +3,6 @@ import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	Navigate,
 	Outlet,
 	useLocation,
 } from 'react-router-dom';
@@ -38,9 +37,7 @@ const AppContent: React.FC<{
 	};
 
 	return (
-		<div
-			className='app-container'
-			style={{ display: 'flex', height: '100vh' }}>
+		<div className='app-container'>
 			{!isAuthPage && <AppSidebar />}
 			<div style={{ flexGrow: 1, padding: '20px' }}>
 				{!isAuthPage && (

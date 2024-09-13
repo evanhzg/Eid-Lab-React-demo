@@ -16,7 +16,7 @@
 }
 
 .error-404-title {
-  color: var(--dark-color);
+  color: var(--inverted-color);
   margin-bottom: 10px;
   font-weight: 900;
 }
@@ -32,7 +32,7 @@
   font-weight: 900 !important;
   text-transform: none !important;
   background-color: transparent !important;
-  border: 2px solid var(--dark-color) !important;
+  border: 2px solid var(--inverted-color) !important;
   padding: 10px 20px !important;
 }
 
