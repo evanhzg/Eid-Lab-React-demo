@@ -23,13 +23,13 @@ export interface Offer {
     title: string;
     company: ObjectId;
     description: string;
-    shortDescription: string;
+    short_description: string;
     type: string;
     location: string;
     salary: string;
     requirements: string[];
-    startDate: string;
-    endDate: string;
+    start_date: string;
+    end_date: string;
     available: boolean;
     created_at: Date;
     updated_at: Date;

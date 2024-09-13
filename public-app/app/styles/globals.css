@@ -1,0 +1,6 @@
+@import './ui/Typography.css';
+
+body {
+	font-family: 'Montserrat', sans-serif;
+	background-color: var(--brand-color);
+}

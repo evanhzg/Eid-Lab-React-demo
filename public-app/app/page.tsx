@@ -1,21 +1,42 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Icon } from '@iconify/react/dist/iconify.js';
+
 import { useOffers, Offer } from '../hooks/useOffers';
 import Link from 'next/link';
+import './styles/homepage.css';
+import Card from './components/Card';
 
 const OfferCard: React.FC<{ offer: Offer }> = ({ offer }) => (
-	<div className='bg-white shadow-md rounded-lg p-6 mb-4'>
-		<h2 className='text-xl font-bold mb-2'>{offer.title}</h2>
-		<p className='text-gray-600 mb-2'>{offer.company.name}</p>
-		<p className='text-gray-600 mb-2'>{offer.location}</p>
-		<p className='text-gray-600 mb-4'>{offer.salary}</p>
+	<Card
+		className='offer-card'
+		title={offer.title}>
+		<div className='offer-content'>
+			<div className='offer-informations-container'>
+				<div className='offer-informations'>
+					<Icon icon='mdi:tie' /> <p>{offer.company.name}</p>
+				</div>
+				<div className='offer-informations'>
+					<Icon icon='mdi:location' /> <p>{offer.location}</p>
+				</div>
+				{offer.salary && (
+					<div className='offer-informations'>
+						<Icon icon='mingcute:pig-money-fill' />{' '}
+						<p>{offer.salary}€ / mois*</p>
+					</div>
+				)}
+			</div>
+			<p className='offer-description'>
+				{offer.short_description || 'No description provided.'}
+			</p>
+		</div>
 		<Link
-			href={`/offers/${offer._id}`}
-			className='text-blue-500 hover:underline'>
+			className='card-link'
+			href={`/offers/${offer._id}`}>
 			View Details
 		</Link>
-	</div>
+	</Card>
 );
 
 const OfferFilter: React.FC<{
@@ -33,32 +54,49 @@ const OfferFilter: React.FC<{
 		onFilterChange(filters);
 	};
 
+	const [theme, setTheme] = useState('light');
+
+	const toggleTheme = () => {
+		setTheme((prevTheme: string) => (prevTheme === 'light' ? 'dark' : 'light'));
+	};
+
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className='mb-8'>
-			<input
-				type='text'
-				name='location'
-				placeholder='Location'
-				value={filters.location}
-				onChange={handleChange}
-				className='border p-2 mr-2'
-			/>
-			<input
-				type='text'
-				name='salary'
-				placeholder='Minimum Salary'
-				value={filters.salary}
-				onChange={handleChange}
-				className='border p-2 mr-2'
-			/>
+		<>
 			<button
-				type='submit'
-				className='bg-blue-500 text-white p-2 rounded'>
-				Apply Filters
+				onClick={toggleTheme}
+				className='theme-button'>
+				{theme === 'light' ? (
+					<Icon
+						icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
+						style={{ fontSize: '1.5em' }}
+						color='var(--highlight-color)'
+					/>
+				) : (
+					<Icon
+						icon='line-md:moon-rising-filled-loop'
+						style={{ fontSize: '1.5em' }}
+						color='var(--info-color)'
+					/>
+				)}
 			</button>
-		</form>
+			<form onSubmit={handleSubmit}>
+				<input
+					type='text'
+					name='location'
+					placeholder='Location'
+					value={filters.location}
+					onChange={handleChange}
+				/>
+				<input
+					type='text'
+					name='salary'
+					placeholder='Minimum Salary'
+					value={filters.salary}
+					onChange={handleChange}
+				/>
+				<button type='submit'>Apply Filters</button>
+			</form>
+		</>
 	);
 };
 
@@ -73,10 +111,10 @@ export default function Home() {
 	if (error) return <div>Error: {error}</div>;
 
 	return (
-		<main className='container mx-auto px-4 py-8'>
-			<h1 className='text-3xl font-bold mb-8'>Job Offers</h1>
+		<main>
+			<h1>Job Offers</h1>
 			<OfferFilter onFilterChange={handleFilterChange} />
-			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+			<div>
 				{offers.map((offer) => (
 					<OfferCard
 						key={offer._id}
