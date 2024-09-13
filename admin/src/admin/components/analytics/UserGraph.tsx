@@ -16,15 +16,39 @@ const UserGraph: React.FC<UserGraphProps> = ({ data }) => {
 	const maxValue = Math.max(
 		...data.flatMap((d) => [d.students, d.professionals])
 	);
+	const roundedMax = Math.ceil(maxValue / 10) * 10;
+
+	const getYAxisSteps = (max: number) => {
+		const step = max > 50 ? 20 : 10;
+		const steps = [];
+		for (let i = 0; i <= max; i += step) {
+			steps.push(i);
+		}
+		return steps.reverse();
+	};
+
+	const yAxisSteps = getYAxisSteps(roundedMax);
+
+	const calculateBarHeight = (value: number) => (value / roundedMax) * 100;
 
 	return (
-		<div className='user-graph'>
-			<div className='graph-bars-container'>
-				{data.map((item, index) => (
-					<div
-						key={index}
-						className='graph-bar'>
-						<div className='bar-wrapper'>
+		<div className='user-graph-container'>
+			<div className='user-graph'>
+				<div className='y-axis'>
+					{yAxisSteps.map((step) => (
+						<div
+							key={step}
+							className='y-axis-step'>
+							<span className='y-axis-label'>{step}</span>
+							<div className='x-axis-bar'></div>
+						</div>
+					))}
+				</div>
+				<div className='graph-bars-container'>
+					{data.map((item, index) => (
+						<div
+							key={index}
+							className='graph-bar'>
 							<Tooltip
 								content={
 									<div>
@@ -43,19 +67,25 @@ const UserGraph: React.FC<UserGraphProps> = ({ data }) => {
 									<div
 										className='bar professionals'
 										style={{
-											height: `${(item.professionals / maxValue) * 100}%`,
+											height: `${calculateBarHeight(item.professionals)}%`,
 										}}
 									/>
 									<div
 										className='bar students'
-										style={{
-											height: `${(item.students / maxValue) * 100}%`,
-										}}
+										style={{ height: `${calculateBarHeight(item.students)}%` }}
 									/>
 								</div>
 							</Tooltip>
 						</div>
-						<span className='date-label'>{item.date}</span>
+					))}
+				</div>
+			</div>
+			<div className='x-axis'>
+				{data.map((item, index) => (
+					<div
+						key={index}
+						className='x-axis-label'>
+						{item.date}
 					</div>
 				))}
 			</div>

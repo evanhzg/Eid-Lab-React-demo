@@ -1,34 +1,67 @@
-.user-graph {
+@import '../../../../shared/styles/variables.css';
+
+.user-graph-container {
   display: flex;
   flex-direction: column;
-  height: 300px; /* Adjust as needed */
+  height: 100%;
+}
+
+.user-graph {
+  display: flex;
+  height: calc(100% - 60px); /* Adjust based on x-axis and legend height */
+  position: relative;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 40px;
+  padding-right: 10px;
+  height: 100%;
+  z-index: 2;
+}
+
+.y-axis-step {
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.y-axis-label {
+  position: absolute;
+  left: 10px;
+  font-size: 12px;
+  width: 20px;
+  text-align: right;
+}
+
+.x-axis-bar {
+  position: absolute;
+  left: 40px;
+  width: calc(100% - 40px);
+  height: 1px;
+  background-color: var(--inverted-color);
+  opacity: 0.1;
 }
 
 .graph-bars-container {
+  flex-grow: 1;
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
-  height: 100%;
-  width: 100%;
+  padding-bottom: 10px;
+  position: relative;
 }
 
 .graph-bar {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   height: 100%;
-}
-
-.bar-wrapper {
-  width: 40px;
-  height: 90%; /* Adjust to leave space for date label */
   display: flex;
-  flex-direction: column-reverse;
+  align-items: flex-end;
 }
 
 .bar-container {
-  width: 100%;
+  width: 40px;
   height: 100%;
   display: flex;
   flex-direction: column-reverse;
@@ -37,26 +70,25 @@
 .bar {
   width: 24px;
   transition: height 0.3s ease;
+  z-index: 30;
 }
 
-.bar.students {
-  background-color: var(--primary-color);
+.x-axis {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
 }
 
-.bar.professionals {
-  background-color: var(--secondary-color);
-}
-
-.date-label {
-  margin-top: 5px;
+.x-axis-label {
   font-size: 12px;
+  text-align: center;
 }
 
 /* Legend styles */
 .legend {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  padding: 10px 0;
 }
 
 .legend-item {
