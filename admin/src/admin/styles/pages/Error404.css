@@ -6,7 +6,7 @@
   height: 100vh;
   text-align: center;
   padding: 0 20px;
-  background-color: var(--unpaws-color);
+  background-color: var(--brand-color);
 }
 
 .error-404-logo {
@@ -16,14 +16,14 @@
 }
 
 .error-404-title {
-  color: var(--inverted-color);
+  color: var(--dark-color);
   margin-bottom: 10px;
   font-weight: 900;
 }
 
 .error-404-subtitle {
   font-family: 'Montserrat', sans-serif;
-  color: var(--secondary-text-color);
+  color: var(--dark-color);
   margin-bottom: 30px;
 }
 
@@ -32,8 +32,9 @@
   font-weight: 900 !important;
   text-transform: none !important;
   background-color: transparent !important;
-  border: 2px solid var(--inverted-color) !important;
+  border: 2px solid var(--dark-color) !important;
   padding: 10px 20px !important;
+  color: var(--dark-color) !important;
 }
 
 .error-404-button-icon {

@@ -32,6 +32,9 @@ const AppContent: React.FC<{
 	const isAuthPage = location.pathname === '/auth';
 
 	const getPageName = () => {
+		if (location.pathname === '/') {
+			return 'Dashboard';
+		}
 		const path = location.pathname.split('/')[1];
 		return path.charAt(0).toUpperCase() + path.slice(1);
 	};

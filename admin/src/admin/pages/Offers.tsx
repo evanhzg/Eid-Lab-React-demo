@@ -13,6 +13,8 @@ import { getCompanies } from '../../services/companyService.ts';
 import '../../shared/styles/ui/Table.css';
 import { useSortableData, formatDate } from '../utils/tableUtils.ts';
 import { usePagination } from '../hooks/usePagination.tsx';
+import Table from '../../shared/components/ui/Table.tsx';
+import { parseISO, format, isValid } from 'date-fns';
 
 const Offers: React.FC = () => {
 	const [offers, setOffers] = useState<Offer[]>([]);
@@ -109,12 +111,46 @@ const Offers: React.FC = () => {
 		setIsModalOpen(false);
 	};
 
+	const parseDate = (dateString: string): Date => {
+		// Try parsing as ISO string
+		let date = parseISO(dateString);
+
+		// If not valid, try parsing as a custom format (DD/MM/YYYY HH:mm:ss)
+		if (!isValid(date)) {
+			const [datePart, timePart] = dateString.split(' ');
+			const [day, month, year] = datePart.split('/');
+			const [hours, minutes, seconds] = timePart.split(':');
+			date = new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
+		}
+
+		// If still not valid, use current date
+		if (!isValid(date)) {
+			date = new Date();
+		}
+
+		return date;
+	};
+
 	const handleSaveOffer = async (offerData: Omit<Offer, '_id'> | Offer) => {
 		try {
-			if ('_id' in offerData) {
-				await updateOffer(offerData._id?.toString()!, offerData);
+			const formattedOfferData = {
+				...offerData,
+				created_at: offerData.created_at
+					? format(
+							parseDate(offerData.created_at),
+							"yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+					  )
+					: new Date().toISOString(),
+				updated_at: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+			};
+
+			if ('_id' in formattedOfferData) {
+				await updateOffer(
+					formattedOfferData._id?.toString()!,
+					formattedOfferData
+				);
 			} else {
-				await createOffer(offerData);
+				await createOffer(formattedOfferData);
 			}
 			fetchOffers();
 			handleCloseModal();

@@ -60,13 +60,19 @@ const Dashboard: React.FC = () => {
 
 				// Calculate companies with at least one offer
 				const companiesWithOffers = new Set(
-					offers.map((offer) => offer.company)
+					offers
+						.filter((offer) => offer.company.name)
+						.map((offer) => offer.company.name)
 				);
+				console.log(companiesWithOffers);
 				const companiesWithOffersCount = companiesWithOffers.size;
 
 				// Fetch students and professionals
 				const students = await getStudents();
 				const professionals = await getProfessionals();
+
+				console.log('Fetched students:', students);
+				console.log('Fetched professionals:', professionals);
 
 				// Set numeric stats
 				setNumericStats([
@@ -102,19 +108,41 @@ const Dashboard: React.FC = () => {
 					})
 					.reverse();
 
-				const userGraphData = last5Days.map((date) => ({
-					date,
-					students: students.filter((s) => {
-						// Ensure created_at is a Date object
-						const createdAt = new Date(s.created_at);
-						return createdAt.toISOString().startsWith(date);
-					}).length,
-					professionals: professionals.filter((p) => {
-						// Ensure created_at is a Date object
-						const createdAt = new Date(p.created_at);
-						return createdAt.toISOString().startsWith(date);
-					}).length,
-				}));
+				console.log('Last 5 days:', last5Days);
+
+				const userGraphData = last5Days.map((date) => {
+					console.log(`Processing date: ${date}`);
+
+					const studentsCount = students.filter((s) => {
+						const createdDate = new Date(s.created_at);
+						const matches = createdDate.toISOString().split('T')[0] === date;
+						console.log(
+							`Student ${s._id} created_at: ${s.created_at}, matches: ${matches}`
+						);
+						return matches;
+					}).length;
+
+					const professionalsCount = professionals.filter((p) => {
+						const createdDate = new Date(p.created_at);
+						const matches = createdDate.toISOString().split('T')[0] === date;
+						console.log(
+							`Professional ${p._id} created_at: ${p.created_at}, matches: ${matches}`
+						);
+						return matches;
+					}).length;
+
+					console.log(
+						`Date: ${date}, Students: ${studentsCount}, Professionals: ${professionalsCount}`
+					);
+
+					return {
+						date,
+						students: studentsCount,
+						professionals: professionalsCount,
+					};
+				});
+
+				console.log('Final userGraphData:', userGraphData);
 
 				setUserData(userGraphData);
 			} catch (error) {

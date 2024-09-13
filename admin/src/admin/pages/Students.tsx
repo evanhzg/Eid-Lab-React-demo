@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useContext } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { Button, TextField } from '@mui/material';
 import Table from '../../shared/components/ui/Table.tsx';
 import useTableConfig from '../hooks/useStudentTableConfig.tsx';
