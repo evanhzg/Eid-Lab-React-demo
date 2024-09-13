@@ -14,12 +14,22 @@ exports.createCompany = async (req, res) => {
 // Get all companies
 exports.getAllCompanies = async (req, res) => {
 	try {
-		const companies = await Company.find({ available: true });
+		const companies = await Company.find();
 		const companiesWithNumericId = companies.map((company, index) => ({
 			...company.toObject(),
 			numericId: parseInt(company._id.toString().slice(-8), 16),
 		}));
 		res.json(companiesWithNumericId);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+};
+
+// Get all available companies
+exports.getAllAvailableCompanies = async (req, res) => {
+	try {
+		const companies = await Company.find({ available: true });
+		res.json(companies);
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}

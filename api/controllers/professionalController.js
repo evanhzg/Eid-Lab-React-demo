@@ -14,10 +14,22 @@ exports.createProfessional = async (req, res) => {
 // Get all professionals
 exports.getAllProfessionals = async (req, res) => {
 	try {
+		const professionals = await Professional.find().populate('company', 'name');
+		console.log(professionals.length);
+		res.json(professionals);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+};
+
+// Get all professionals
+exports.getAllAvailableProfessionals = async (req, res) => {
+	try {
 		const professionals = await Professional.find({ available: true }).populate(
 			'company',
 			'name'
 		);
+		console.log(professionals.length);
 		res.json(professionals);
 	} catch (error) {
 		res.status(500).json({ message: error.message });

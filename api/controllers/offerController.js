@@ -14,6 +14,16 @@ exports.createOffer = async (req, res) => {
 // Get all offers
 exports.getAllOffers = async (req, res) => {
 	try {
+		const offers = await Offer.find().populate('company', 'name');
+		res.json(offers);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+};
+
+// Get all offers
+exports.getAllAvailableOffers = async (req, res) => {
+	try {
 		const offers = await Offer.find({ available: true }).populate(
 			'company',
 			'name'
