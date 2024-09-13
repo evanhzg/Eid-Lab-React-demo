@@ -11,7 +11,7 @@
 .tooltip {
     padding: 8px 12px;
     background-color: var(--inverted-color);
-    color: var(--light-color);
+    color: var(--theme-color);
     border-radius: 4px;
     font-size: 14px;
     white-space: nowrap;

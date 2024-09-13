@@ -63,7 +63,7 @@ const AuthPage: React.FC = () => {
 		<Box className='auth-container'>
 			<Paper className='auth-paper'>
 				<img
-					src='/unpaws-logo.png'
+					src='/unpaws-logo-yellow.png'
 					alt='Unpaws Logo'
 					className='auth-logo'
 				/>

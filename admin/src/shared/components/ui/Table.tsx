@@ -2,13 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/ui/Table.css';
 import { Icon } from '@iconify/react';
-
-interface Column<T> {
-	header: string;
-	accessor: keyof T;
-	width: number;
-	cell?: (value: any) => React.ReactNode;
-}
+import { Column } from '../../types/index.ts';
 
 interface SortConfig {
 	key: string;
@@ -31,7 +25,6 @@ const Table = <T extends Record<string, any>>({
 	sortConfig: externalSortConfig,
 }: TableProps<T>) => {
 	const tableRef = React.useRef<HTMLDivElement>(null);
-	const [colWidths, setColWidths] = useState(columns.map((col) => col.width));
 	const [sortedData, setSortedData] = useState(data);
 	const [internalSortConfig, setInternalSortConfig] =
 		useState<SortConfig | null>(null);

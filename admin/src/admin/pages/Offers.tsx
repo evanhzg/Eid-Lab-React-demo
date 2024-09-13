@@ -11,7 +11,7 @@ import {
 } from '../../services/offerService.ts';
 import { getCompanies } from '../../services/companyService.ts';
 import '../../shared/styles/ui/Table.css';
-import { useSortableData, formatDate } from '../utils/tableUtils.ts';
+import { useSortableData } from '../utils/tableUtils.ts';
 import { usePagination } from '../hooks/usePagination.tsx';
 import Table from '../../shared/components/ui/Table.tsx';
 import { parseISO, format, isValid } from 'date-fns';
@@ -137,7 +137,7 @@ const Offers: React.FC = () => {
 				...offerData,
 				created_at: offerData.created_at
 					? format(
-							parseDate(offerData.created_at),
+							parseDate(offerData.created_at.toString()),
 							"yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
 					  )
 					: new Date().toISOString(),
@@ -248,8 +248,8 @@ const Offers: React.FC = () => {
 				columns={columns}
 				data={currentItems.map((offer) => ({
 					...offer,
-					created_at: formatDate(offer.created_at),
-					updated_at: formatDate(offer.updated_at),
+					created_at: new Date(offer.created_at),
+					updated_at: new Date(offer.updated_at),
 				}))}
 				renderActions={renderActions}
 				requestSort={requestSort}
