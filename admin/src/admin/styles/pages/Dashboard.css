@@ -42,12 +42,16 @@
   box-shadow: 0 6px 12px var(--shadow-color);
 }
 
-.graph-bar .bar.students {
-  background-color: var(--secondary-highlight-color);
+.legend-color {
+  border-radius: var(--border-radius-lg);
 }
 
-.graph-bar .bar.professionals {
-  background-color: var(--alt-secondary-highlight-color);
+.graph-bar .bar.students, .legend-color.students {
+  background-color: var(--highlight-color);
+}
+
+.graph-bar .bar.professionals, .legend-color.professionals {
+  background-color: var(--secondary-highlight-color);
 }
 
 /* Latest Companies Styles */

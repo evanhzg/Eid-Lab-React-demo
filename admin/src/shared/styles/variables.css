@@ -8,6 +8,7 @@
   
   --light-color: #efeeee;
   --inverted-color: var(--dark-color);
+  --inverted-color-ghost: #1312002c;
   --primary-color: var(--dark-color);
   --secondary-color: var(--light-color);
   --success-color: #4caf50;
@@ -43,6 +44,7 @@
 
 [data-theme="dark"] {
   --inverted-color: var(--light-color);
+  --inverted-color-ghost: #efeeee2c;
   --primary-color: var(--light-color);
   --primary-text-color: var(--light-color);
   --secondary-color: var(--dark-color);

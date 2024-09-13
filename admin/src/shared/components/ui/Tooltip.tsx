@@ -19,9 +19,13 @@ const Tooltip: React.FC<TooltipProps> = ({ content, children }) => {
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;
 
-			const rightSpace =
-				window.innerWidth - (rect.left + x + tooltipRect.width);
-			const xPos = rightSpace < 0 ? x - tooltipRect.width : x;
+			const tooltipStyle = window.getComputedStyle(tooltipRef.current);
+			const paddingLeft = parseFloat(tooltipStyle.paddingLeft);
+			const paddingRight = parseFloat(tooltipStyle.paddingRight);
+			const tooltipWidth = tooltipRect.width + paddingLeft + paddingRight;
+
+			const rightSpace = window.innerWidth - (rect.left + x + tooltipWidth);
+			const xPos = rightSpace < 0 ? x - tooltipWidth : x;
 
 			setPosition({ x: xPos, y });
 		}

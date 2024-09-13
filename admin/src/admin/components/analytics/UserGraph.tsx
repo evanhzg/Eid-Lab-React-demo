@@ -48,33 +48,46 @@ const UserGraph: React.FC<UserGraphProps> = ({ data }) => {
 					{data.map((item, index) => (
 						<div
 							key={index}
-							className='graph-bar'>
+							className='graph-bar-group'>
 							<Tooltip
 								content={
-									<div>
+									<div className='tooltip-content'>
 										<p>
-											<strong>Date:</strong> {item.date}
+											<strong>
+												{new Date(item.date).toLocaleDateString('en-GB', {
+													day: 'numeric',
+													month: 'numeric',
+												})}
+											</strong>
 										</p>
-										<p>
-											<strong>Students:</strong> {item.students}
-										</p>
-										<p>
-											<strong>Professionals:</strong> {item.professionals}
-										</p>
+										<p>{item.students} Students</p>
 									</div>
 								}>
-								<div className='bar-container'>
-									<div
-										className='bar professionals'
-										style={{
-											height: `${calculateBarHeight(item.professionals)}%`,
-										}}
-									/>
-									<div
-										className='bar students'
-										style={{ height: `${calculateBarHeight(item.students)}%` }}
-									/>
-								</div>
+								<div
+									className='bar students'
+									style={{ height: `${calculateBarHeight(item.students)}%` }}
+								/>
+							</Tooltip>
+							<Tooltip
+								content={
+									<div className='tooltip-content'>
+										<p>
+											<strong>
+												{new Date(item.date).toLocaleDateString('en-GB', {
+													day: 'numeric',
+													month: 'numeric',
+												})}
+											</strong>
+										</p>
+										<p>{item.professionals} Professionals</p>
+									</div>
+								}>
+								<div
+									className='bar professionals'
+									style={{
+										height: `${calculateBarHeight(item.professionals)}%`,
+									}}
+								/>
 							</Tooltip>
 						</div>
 					))}
@@ -85,7 +98,10 @@ const UserGraph: React.FC<UserGraphProps> = ({ data }) => {
 					<div
 						key={index}
 						className='x-axis-label'>
-						{item.date}
+						{new Date(item.date).toLocaleDateString('en-GB', {
+							day: 'numeric',
+							month: 'numeric',
+						})}
 					</div>
 				))}
 			</div>
