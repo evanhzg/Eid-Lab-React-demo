@@ -13,7 +13,7 @@ const studentSchema = new mongoose.Schema({
 	available: { type: Boolean, required: true },
 	created_at: { type: Date, default: Date.now },
 	updated_at: { type: Date, default: Date.now },
-	disabledAt: { type: Date },
+	disabled_at: { type: Date },
 	status: { type: Boolean, default: true },
 });
 
