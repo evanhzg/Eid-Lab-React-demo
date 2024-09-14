@@ -2,8 +2,6 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
-const portfinder = require('portfinder');
 const studentRoutes = require('./app/routes/studentRoutes');
 const companyRoutes = require('./app/routes/companyRoutes');
 const professionalRoutes = require('./app/routes/professionalRoutes');
@@ -15,16 +13,6 @@ const cookieParser = require('cookie-parser');
 const MONGO_URI = process.env.MONGO_URI;
 
 const app = express();
-
-// CORS configuration
-app.use(
-	cors({
-		origin: /^http:\/\/localhost:\d+$/, // Allow any localhost URL with any port
-		credentials: true,
-		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-		allowedHeaders: ['Content-Type', 'Authorization'],
-	})
-);
 
 app.use(cookieParser());
 app.use(express.json());
