@@ -36,23 +36,15 @@ app.use('/api/professionals', professionalRoutes);
 app.use('/api/offers', offerRoutes);
 app.use('/api/auth', authRoutes);
 
-// Connect to MongoDB and start the server
+// Replace the portfinder logic with this:
+const PORT = process.env.PORT || 3000;
+
 mongoose
 	.connect(MONGO_URI)
 	.then(() => {
 		console.log('Connected to MongoDB');
-		const DEFAULT_PORT = process.env.PORT || 5000;
-
-		portfinder.basePort = DEFAULT_PORT;
-		portfinder.getPort((err, port) => {
-			if (err) {
-				console.error('Error finding available port:', err);
-				process.exit(1);
-			}
-
-			app.listen(port, 'localhost', () => {
-				console.log(`Server running on http://localhost:${port}`);
-			});
+		app.listen(PORT, '0.0.0.0', () => {
+			console.log(`Server running on http://0.0.0.0:${PORT}`);
 		});
 	})
 	.catch((err) => console.error('MongoDB connection error:', err));
