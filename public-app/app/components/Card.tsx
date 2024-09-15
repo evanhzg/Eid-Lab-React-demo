@@ -1,15 +1,26 @@
 import React from 'react';
 import '../styles/components/Card.css';
-import { Icon } from '@iconify/react';
+
 interface CardProps {
+	className?: string;
 	title: string;
 	children: React.ReactNode;
-	className?: string;
+	onMouseEnter?: () => void;
+	onMouseLeave?: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ className, title, children }) => {
+const Card: React.FC<CardProps> = ({
+	className,
+	title,
+	children,
+	onMouseEnter,
+	onMouseLeave,
+}) => {
 	return (
-		<div className={`${className} card`}>
+		<div
+			className={`card ${className || ''}`}
+			onMouseEnter={onMouseEnter}
+			onMouseLeave={onMouseLeave}>
 			<h2 className='card-title'>{title}</h2>
 			{children}
 		</div>
