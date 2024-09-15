@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
 import { useOffers, Offer } from '../hooks/useOffers';
 import Link from 'next/link';
 import './styles/homepage.css';
 import Card from './components/Card';
+import Input from './components/Input';
+import Button, { SendButton } from './components/Button';
 
 const OfferCard: React.FC<{ offer: Offer }> = ({ offer }) => (
 	<Card
@@ -14,22 +16,64 @@ const OfferCard: React.FC<{ offer: Offer }> = ({ offer }) => (
 		title={offer.title}>
 		<div className='offer-content'>
 			<div className='offer-informations-container'>
-				<div className='offer-informations'>
-					<Icon icon='mdi:tie' /> <p>{offer.company.name}</p>
-				</div>
-				<div className='offer-informations'>
-					<Icon icon='mdi:location' /> <p>{offer.location}</p>
-				</div>
-				{offer.salary && (
+				<div className='offer-informations-group'>
 					<div className='offer-informations'>
-						<Icon icon='mingcute:pig-money-fill' />{' '}
-						<p>{offer.salary}€ / mois*</p>
+						<Icon icon='mdi:tie' /> <p>{offer.company.name}</p>
 					</div>
-				)}
+
+					<div className='offer-informations'>
+						{/* domain */}
+						<Icon icon='mdi:domain' /> <p>{offer.domain ?? 'Informatique'}</p>
+					</div>
+
+					<div className='offer-informations'>
+						<Icon icon='mdi:file-document-outline' />
+						<p>
+							{offer.contractType ?? 'Durée indéfinie'}
+							{offer.startDate &&
+							offer.endDate &&
+							offer.endDate > offer.startDate
+								? `${Math.ceil(
+										(new Date(offer.endDate).getTime() -
+											new Date(offer.startDate).getTime()) /
+											(1000 * 60 * 60 * 24 * 30)
+								  )} mois`
+								: ''}
+						</p>
+					</div>
+				</div>
+
+				<div className='offer-informations-group'>
+					<div className='offer-informations'>
+						<Icon icon='mdi:location' /> <p>{offer.location}</p>
+					</div>
+					<div className='offer-informations'>
+						<Icon icon='mdi:calendar-range' />
+						<p>
+							{offer.startDate
+								? new Date(offer.startDate).toLocaleDateString('fr-FR', {
+										day: '2-digit',
+										month: '2-digit',
+										year: 'numeric',
+								  })
+								: 'N/A'}
+						</p>
+					</div>
+					{offer.salary && (
+						<div className='offer-informations'>
+							<Icon icon='mingcute:pig-money-fill' />
+							<p>{offer.salary}€ / mois*</p>
+						</div>
+					)}
+				</div>
 			</div>
-			<p className='offer-description'>
-				{offer.short_description || 'No description provided.'}
-			</p>
+			{offer.short_description && (
+				<div className='offer-description'>
+					<Icon icon='mingcute:pig-money-fill' />
+
+					<p>{offer.short_description}</p>
+				</div>
+			)}
 		</div>
 		<Link
 			className='card-link'
@@ -54,17 +98,49 @@ const OfferFilter: React.FC<{
 		onFilterChange(filters);
 	};
 
+	return (
+		<form onSubmit={handleSubmit}>
+			<Input
+				type='text'
+				label='Location ?'
+				name='location'
+				value={filters.location}
+				onChange={handleChange}
+			/>
+			<Input
+				type='text'
+				label='Min. Salary ?'
+				name='salary'
+				value={filters.salary}
+				onChange={handleChange}
+			/>
+			<Button type='submit'>Apply</Button>
+		</form>
+	);
+};
+
+export default function Home() {
+	const { offers, loading, error, setParams } = useOffers();
 	const [theme, setTheme] = useState('light');
 
 	const toggleTheme = () => {
-		setTheme((prevTheme: string) => (prevTheme === 'light' ? 'dark' : 'light'));
+		setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
 	};
 
+	useEffect(() => {
+		document.body.setAttribute('data-theme', theme);
+	}, [theme]);
+
+	const handleFilterChange = (filters: Record<string, string>) => {
+		setParams(filters);
+	};
+
+	if (loading) return <div>Loading...</div>;
+	if (error) return <div>Error: {error}</div>;
+
 	return (
-		<>
-			<button
-				onClick={toggleTheme}
-				className='theme-button'>
+		<main>
+			<Button onClick={toggleTheme}>
 				{theme === 'light' ? (
 					<Icon
 						icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
@@ -78,43 +154,9 @@ const OfferFilter: React.FC<{
 						color='var(--info-color)'
 					/>
 				)}
-			</button>
-			<form onSubmit={handleSubmit}>
-				<input
-					type='text'
-					name='location'
-					placeholder='Location'
-					value={filters.location}
-					onChange={handleChange}
-				/>
-				<input
-					type='text'
-					name='salary'
-					placeholder='Minimum Salary'
-					value={filters.salary}
-					onChange={handleChange}
-				/>
-				<button type='submit'>Apply Filters</button>
-			</form>
-		</>
-	);
-};
-
-export default function Home() {
-	const { offers, loading, error, setParams } = useOffers();
-
-	const handleFilterChange = (filters: Record<string, string>) => {
-		setParams(filters);
-	};
-
-	if (loading) return <div>Loading...</div>;
-	if (error) return <div>Error: {error}</div>;
-
-	return (
-		<main>
-			<h1>Job Offers</h1>
+			</Button>
 			<OfferFilter onFilterChange={handleFilterChange} />
-			<div>
+			<div className='offer-grid'>
 				{offers.map((offer) => (
 					<OfferCard
 						key={offer._id}

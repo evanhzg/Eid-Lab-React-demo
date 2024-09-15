@@ -2,5 +2,15 @@
 
 body {
 	font-family: 'Montserrat', sans-serif;
-	background-color: var(--brand-color);
+	background-color: var(--theme-color);
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-s);
+}
+
+.theme-button {
+    
 }

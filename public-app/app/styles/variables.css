@@ -11,7 +11,7 @@
   --secondary-highlight-color: #00a6a6;
   --alt-secondary-highlight-color: #2ec4b6;
   
-  --light-color: #efeeee;
+  --light-color: #fdfdfd;
   --inverted-color: var(--dark-color);
   --theme-color: var(--light-color);
   --inverted-color-ghost: #1312002c;

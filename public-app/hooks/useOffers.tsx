@@ -4,11 +4,17 @@ import { fetchOffers } from '../lib/api';
 export interface Offer {
 	_id: string;
 	title: string;
-	company: string;
-	location: string;
 	description: string;
+	company: string;
+	contractType: string;
+	location: string;
 	salary: string;
-	postedDate: string;
+	requiredSkills: string[];
+	startDate: string;
+	endDate: string;
+	available: boolean;
+	created_at: string;
+	updated_at: string;
 }
 
 export const useOffers = (initialParams: Record<string, any> = {}) => {

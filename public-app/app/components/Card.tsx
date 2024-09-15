@@ -10,9 +10,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ className, title, children }) => {
 	return (
 		<div className={`${className} card`}>
-			<h2 className='card-title'>
-				<Icon icon='flat-color-icons:dvd-logo' /> {title}
-			</h2>
+			<h2 className='card-title'>{title}</h2>
 			{children}
 		</div>
 	);
