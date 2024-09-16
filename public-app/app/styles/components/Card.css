@@ -10,6 +10,7 @@
     transition: all 0.1s ease-in-out;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: var(--space-sm);
     position: relative;
     width: 300px;

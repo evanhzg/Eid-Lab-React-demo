@@ -4,6 +4,7 @@
 .custom-button {
     background-color: var(--soft-dark-color);
     color: var(--light-color);
+    border: none;
     border-radius: var(--border-radius-lg);
     padding: var(--space-s);
     box-shadow: 0 4px 6px var(--shadow-color);

@@ -6,13 +6,6 @@
   padding: var(--space-md);
 }
 
-h1 {
-  font-family: 'Sail', cursive;
-  font-size: 2.5em;
-  color: var(--brand-color);
-  margin-bottom: var(--space-md);
-}
-
 .offer-filter {
   background-color: var(--secondary-color);
   border-radius: var(--border-radius-lg);

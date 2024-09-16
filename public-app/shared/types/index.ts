@@ -26,7 +26,7 @@ export interface Offer {
     short_description: string;
     type: string;
     location: string;
-    salary: string;
+    salary: number;
     requirements: string[];
     start_date: string;
     end_date: string;

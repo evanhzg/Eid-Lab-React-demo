@@ -1,0 +1,48 @@
+@import '../globals.css';
+
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--space-md) var(--space-s);
+}
+
+.header-logo {
+	display: flex;
+	align-items: center;
+	gap: var(--space-xs);
+}
+
+.header-logo * {
+	font-size: 2rem;
+}
+
+ul {
+	font-family: 'Kanit', sans-serif;
+	display: flex;
+	align-items: center;
+	gap: var(--space-s);
+	list-style: none;
+	font-weight: 900;
+}
+
+li {
+	border-radius: var(--border-radius-lg);
+	padding: var(--space-xs) var(--space-s);
+	background-color: rgba(0, 0, 0, 0.05);
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	transition: all 0.1s ease;
+	cursor: pointer;
+}
+
+li:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+	color: var(--light-color);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-actions {
+	display: flex;
+	align-items: center;
+	gap: var(--space-s);
+}

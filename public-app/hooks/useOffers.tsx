@@ -8,7 +8,7 @@ export interface Offer {
 	company: string;
 	contractType: string;
 	location: string;
-	salary: string;
+	salary: number;
 	requiredSkills: string[];
 	startDate: string;
 	endDate: string;

@@ -1,17 +1,17 @@
 @import './variables.css';
 @import './globals.css';
 
+.homepage {
+background-image: url('../assets/hero-bg.jpg');
+background-size: cover;
+background-position: center;
+height: 100%;
+min-height: 100vh;
+}
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: var(--space-md);
-  }
-  
-  h1 {
-    font-family: 'Sail', cursive;
-    font-size: 2.5em;
-    color: var(--brand-color);
-    margin-bottom: var(--space-md);
   }
 
   form {
@@ -68,4 +68,25 @@
     .offer-filter button {
       width: 100%;
     }
+  }
+
+  .theme-button {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    max-width: fit-content !important;
+    aspect-ratio: 1/1;
+    border: none;
+    z-index: 1000;
+  }
+
+  .search-container {
+    width: 40% !important;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+  }
+
+  .search-container .searchbar {
+    width: 100% !important;
   }

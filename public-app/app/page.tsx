@@ -10,6 +10,8 @@ import Card from './components/Card';
 import Input from './components/Input';
 import Sparkles from './components/Sparkles';
 import Button, { SendButton } from './components/Button';
+import Header from './components/Header';
+import RangeSlider from './components/RangeSlider';
 
 const OfferCard: React.FC<{ offer: Offer }> = ({ offer }) => {
 	const [isHovered, setIsHovered] = useState(false);
@@ -93,13 +95,35 @@ const OfferCard: React.FC<{ offer: Offer }> = ({ offer }) => {
 };
 
 const OfferFilter: React.FC<{
-	onFilterChange: (filters: Record<string, string>) => void;
-}> = ({ onFilterChange }) => {
-	const [filters, setFilters] = useState({ location: '', salary: '' });
+	onFilterChange: (filters: Record<string, string | number>) => void;
+	onSearchChange: (searchTerm: string) => void;
+	minSalary: number;
+	maxSalary: number;
+}> = ({ onFilterChange, onSearchChange, minSalary, maxSalary }) => {
+	const [filters, setFilters] = useState({
+		location: '',
+		minSalary: 0,
+		maxSalary: 10000,
+	});
+	const [searchTerm, setSearchTerm] = useState('');
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setFilters((prev) => ({ ...prev, [name]: value }));
+	};
+
+	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		setSearchTerm(value);
+		onSearchChange(value);
+	};
+
+	const handleSalaryChange = (values: [number, number]) => {
+		setFilters((prev) => ({
+			...prev,
+			minSalary: values[0],
+			maxSalary: values[1],
+		}));
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {
@@ -108,29 +132,59 @@ const OfferFilter: React.FC<{
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<div className='search-container'>
 			<Input
+				className='searchbar'
 				type='text'
-				label='Location ?'
-				name='location'
-				value={filters.location}
-				onChange={handleChange}
+				label='Search...'
+				name='search'
+				value={searchTerm}
+				onChange={handleSearchChange}
 			/>
-			<Input
-				type='text'
-				label='Min. Salary ?'
-				name='salary'
-				value={filters.salary}
-				onChange={handleChange}
-			/>
-			<Button type='submit'>Apply</Button>
-		</form>
+			<form onSubmit={handleSubmit}>
+				<Input
+					type='text'
+					label='Location ?'
+					name='location'
+					value={filters.location}
+					onChange={handleChange}
+				/>
+				<RangeSlider
+					min={minSalary}
+					max={maxSalary}
+					step={100}
+					values={[filters.minSalary, filters.maxSalary]}
+					onChange={handleSalaryChange}
+				/>
+			</form>
+		</div>
 	);
+};
+
+const getSalaryRange = (offers: Offer[]): [number, number] => {
+	if (offers.length === 0) return [0, 0];
+
+	const salaries = offers
+		.map((offer) => offer.salary)
+		.filter(
+			(salary): salary is number => salary !== undefined && salary !== null
+		)
+		.sort((a, b) => a - b);
+
+	return [salaries[0], salaries[salaries.length - 1]];
 };
 
 export default function Home() {
 	const { offers, loading, error, setParams } = useOffers();
 	const [theme, setTheme] = useState('light');
+	const [searchTerm, setSearchTerm] = useState('');
+	const [salaryRange, setSalaryRange] = useState<[number, number]>([0, 10000]);
+
+	useEffect(() => {
+		if (offers.length > 0) {
+			setSalaryRange(getSalaryRange(offers));
+		}
+	}, [offers]);
 
 	const toggleTheme = () => {
 		setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
@@ -144,35 +198,55 @@ export default function Home() {
 		setParams(filters);
 	};
 
+	const handleSearchChange = (searchTerm: string) => {
+		setSearchTerm(searchTerm);
+	};
+
+	const filteredOffers = offers.filter(
+		(offer) =>
+			offer.company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			offer.title.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>Error: {error}</div>;
 
 	return (
-		<main>
-			<Button onClick={toggleTheme}>
-				{theme === 'light' ? (
-					<Icon
-						icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
-						style={{ fontSize: '1.5em' }}
-						color='var(--highlight-color)'
-					/>
-				) : (
-					<Icon
-						icon='line-md:moon-rising-filled-loop'
-						style={{ fontSize: '1.5em' }}
-						color='var(--info-color)'
-					/>
-				)}
-			</Button>
-			<OfferFilter onFilterChange={handleFilterChange} />
-			<div className='offer-grid'>
-				{offers.map((offer) => (
-					<OfferCard
-						key={offer._id}
-						offer={offer}
-					/>
-				))}
-			</div>
-		</main>
+		<div className='homepage'>
+			<Header />
+			<main>
+				<Button
+					className='theme-button'
+					onClick={toggleTheme}>
+					{theme === 'light' ? (
+						<Icon
+							icon='line-md:moon-filled-alt-to-sunny-filled-loop-transition'
+							style={{ fontSize: '1.5em' }}
+							color='var(--highlight-color)'
+						/>
+					) : (
+						<Icon
+							icon='line-md:moon-rising-filled-loop'
+							style={{ fontSize: '1.5em' }}
+							color='var(--info-color)'
+						/>
+					)}
+				</Button>
+				<OfferFilter
+					onFilterChange={handleFilterChange}
+					onSearchChange={handleSearchChange}
+					minSalary={salaryRange[0]}
+					maxSalary={salaryRange[1]}
+				/>
+				<div className='offer-grid'>
+					{filteredOffers.map((offer) => (
+						<OfferCard
+							key={offer._id}
+							offer={offer}
+						/>
+					))}
+				</div>
+			</main>
+		</div>
 	);
 }
