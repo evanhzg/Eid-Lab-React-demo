@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Sail&family=Montserrat:wght@300&display=swap');
+
+:root {
+  /* Colors */
+  --soft-color: #e0e0e0;
+  --soft-dark-color: #2c2c2c;
+
+  --brand-color: #F2D883;
+  --dark-color: #131200;
+  --highlight-color: #e9806e;
+  --secondary-highlight-color: #00a6a6;
+  --alt-secondary-highlight-color: #2ec4b6;
+  
+  --light-color: #efeeee;
+  --inverted-color: var(--dark-color);
+  --theme-color: var(--light-color);
+  --inverted-color-ghost: #1312002c;
+  --primary-color: var(--dark-color);
+  --secondary-color: var(--light-color);
+  --success-color: #4caf50;
+  --info-color: var(--secondary-highlight-color);
+  --warning-color: #ff9800;
+  --error-color: var(--highlight-color);
+  --shadow-color: #3333333a;
+
+  --background-color: var(--light-color);
+
+  /* Text Colors */
+  --primary-text-color: var(--dark-color);
+  --secondary-text-color: var(--light-color);
+
+  /* Border Styles */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+
+  /* Spacing */
+  --space-xs: 6px;
+  --space-s: 12px;
+  --space-sm: 24px;
+  --space-md: 48px;
+  --space-lg: 96px;
+
+  /* Button */
+  --button-padding: var(--space-xs) var(--space-sm);
+
+  /* Body */
+  --body-color: var(--light-color);
+}
+
+[data-theme="dark"] {
+  --soft-color: #2c2c2c;
+
+  --inverted-color: var(--light-color);
+  --theme-color: var(--dark-color);
+  --inverted-color-ghost: #efeeee2c;
+  --primary-color: var(--light-color);
+  --primary-text-color: var(--light-color);
+  --secondary-color: var(--dark-color);
+  --secondary-text-color: var(--brand-color);
+  --shadow-color: #5c5c5c1a;
+  --body-color: var(--dark-color);
+  --background-color: var(--dark-color);
+}

@@ -1,0 +1,233 @@
+@import './shared/styles/ui/Table.css';
+@import './shared/styles/ui/Modal.css';
+@import './shared/styles/variables.css';
+@import './shared/styles/ui/Sidebar.css';
+
+body {
+  background-color: var(--body-color);
+  color: var(--primary-text-color);
+  font-family: 'Roboto', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 0;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+.confirm-dialog__button {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+}
+
+.confirm-dialog__button--delete {
+  color: var(--error-color) !important;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .confirm-dialog__button {
+  background-color: var(--secondary-color) !important;
+  color: var(--primary-color) !important;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.custom-alert {
+  background-color: var(--alert-bg-color) !important;
+  color: var(--inverted-color) !important;
+  transition: opacity 300ms ease-in-out;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.custom-alert.closing {
+  animation: fadeOut 300ms ease-in-out;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header .page-title {
+  font-family: 'Sail', cursive;
+  font-size: 3em;
+  font-weight: bold;
+  text-transform: lowercase;
+  color: var(--primary-text-color);
+  background-color: var(--table-header-bg);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+#root {
+  width: 100%;
+}
+
+.app-buttons-group {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+p {
+  margin: 0;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+Button {
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color) !important;
+  border-radius: var(--border-radius-lg);
+  padding: var(--button-padding);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+Button.success {
+  background-color: var(--success-color) !important;
+}
+
+Button.info {
+  background-color: var(--info-color) !important;
+}
+
+Button.error {
+  background-color: var(--error-color) !important;
+}
+
+Button.delete {
+  background-color: var(--inverted-color) !important;
+  color: var(--error-color) !important;
+  font-weight: bold;
+}
+
+.highlighted-button {
+  background-color: var(--secondary-color) !important;
+  color: var(--primary-text-color) !important;
+  border-radius: var(--border-radius);
+  padding: var(--button-padding);
+}
+
+.theme-button {
+  margin-bottom: var(--space-sm);
+  border-radius: 50%;
+  aspect-ratio: 1;
+  border: none !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.theme-button:hover {
+  border: none !important;
+  opacity: 0.8;
+}
+
+.pagination-button {
+  background-color: var(--inverted-color) !important;
+  color: var(--light-color) !important;
+  border: 1px solid var(--light-color) !important;
+}
+
+[data-theme="dark"] .pagination-button {
+  background-color: var(--inverted-color) !important;
+  color: var(--light-color) !important;
+  border: 1px solid var(--light-color) !important;
+}
+
+.pagination-button:hover {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+Icon.success {
+  color: var(--success-color) !important;
+}
+
+.app-container {
+  padding-left: var(--sidebar-width);
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--gradient-background);
+}
+
+/* Theme-specific variables */
+[data-theme='light'] {
+  --gradient-background: linear-gradient(to bottom right, #e5e4e4, #ffffff);
+}
+
+[data-theme='dark'] {
+  --gradient-background: linear-gradient(to bottom right, #3b3b3b, #1a1a1a);
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+.confirm-dialog__button {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+}
+
+.confirm-dialog__button--delete {
+  color: var(--error-color) !important;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .confirm-dialog__button {
+  background-color: var(--secondary-color) !important;
+  color: var(--primary-color) !important;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.custom-alert {
+  background-color: var(--alert-bg-color) !important;
+  color: var(--inverted-color) !important;
+  transition: opacity 300ms ease-in-out;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.custom-alert.closing {
+  animation: fadeOut 300ms ease-in-out;
+}
+
+.custom-alert .MuiAlert-action {
+  padding: 0;
+  margin-right: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  height: 100%;
+}
+
+.close-button:hover {
+  opacity: 0.7;
+}
+
+.close-button .iconify {
+  display: block;
+}

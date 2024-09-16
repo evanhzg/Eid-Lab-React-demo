@@ -1,0 +1,71 @@
+@import './variables.css';
+@import './globals.css';
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-md);
+  }
+  
+  h1 {
+    font-family: 'Sail', cursive;
+    font-size: 2.5em;
+    color: var(--brand-color);
+    margin-bottom: var(--space-md);
+  }
+
+  form {
+    display: flex;
+    gap: var(--space-s);
+    flex-wrap: nowrap;
+  }
+  
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-sm);
+    justify-items: center;
+  }
+
+  .offer-content {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    align-items: center;
+
+    user-select: none;
+  }
+
+  .offer-informations-container {
+    display: flex;
+    gap: var(--space-sm);
+  }
+.offer-informations-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+  .offer-informations {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .offer-description {
+    background-color: var(--highlight-color);
+    padding: var(--space-sm);
+    border-radius: var(--border-radius-md);
+  }
+  
+  @media (max-width: 768px) {
+    .offer-filter form {
+      flex-direction: column;
+    }
+  
+    .offer-filter input,
+    .offer-filter button {
+      width: 100%;
+    }
+  }

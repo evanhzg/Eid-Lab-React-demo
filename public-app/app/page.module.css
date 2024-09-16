@@ -1,0 +1,105 @@
+@import './styles/variables.css';
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-md);
+}
+
+h1 {
+  font-family: 'Sail', cursive;
+  font-size: 2.5em;
+  color: var(--brand-color);
+  margin-bottom: var(--space-md);
+}
+
+.offer-filter {
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-md);
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.offer-filter form {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.offer-filter input {
+  flex: 1;
+  min-width: 200px;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--brand-color);
+  border-radius: var(--border-radius-md);
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+}
+
+.offer-filter button {
+  padding: var(--space-xs) var(--space-sm);
+  background-color: var(--brand-color);
+  color: var(--dark-color);
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.offer-filter button:hover {
+  background-color: var(--highlight-color);
+}
+
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+}
+
+.offer-card {
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-sm);
+  box-shadow: 0 4px 6px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px var(--shadow-color);
+}
+
+.offer-card h2 {
+  font-size: 1.2em;
+  color: var(--primary-text-color);
+  margin-bottom: var(--space-xs);
+}
+
+.offer-card p {
+  color: var(--primary-text-color);
+  margin-bottom: var(--space-xs);
+}
+
+.offer-card a {
+  display: inline-block;
+  margin-top: var(--space-xs);
+  color: var(--highlight-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.offer-card a:hover {
+  color: var(--secondary-highlight-color);
+}
+
+@media (max-width: 768px) {
+  .offer-filter form {
+    flex-direction: column;
+  }
+
+  .offer-filter input,
+  .offer-filter button {
+    width: 100%;
+  }
+}

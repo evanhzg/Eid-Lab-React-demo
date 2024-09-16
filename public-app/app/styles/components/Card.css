@@ -1,0 +1,47 @@
+@import '../variables.css';
+@import '../globals.css';
+
+.card {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-s);
+    box-shadow: 0 4px 6px var(--shadow-color);
+    transition: all 0.1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    position: relative;
+    width: 300px;
+}
+
+.card * {
+    z-index: 100;
+}
+
+.card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 6px 8px var(--shadow-color);
+}
+
+.card-title {
+    font-family: 'Kanit', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.card-link {
+    font-family: 'Kanit', sans-serif;
+    letter-spacing: 2px;
+    color: var(--light-color);
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+    background-color: var(--dark-color);
+    padding: var(--space-s);
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    text-transform: uppercase;
+}

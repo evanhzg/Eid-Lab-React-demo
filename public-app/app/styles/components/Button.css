@@ -1,0 +1,22 @@
+@import '../variables.css';
+@import '../globals.css';
+
+.custom-button {
+    background-color: var(--soft-dark-color);
+    color: var(--light-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-s);
+    box-shadow: 0 4px 6px var(--shadow-color);
+    transition: all 0.2s ease-in-out;
+    height: max-content;
+    cursor: pointer;
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+
+    &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 8px var(--shadow-color);
+    }
+}

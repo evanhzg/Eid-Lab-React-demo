@@ -1,0 +1,135 @@
+@import '../../../../shared/styles/variables.css';
+
+.user-graph-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.user-graph {
+  display: flex;
+  height: calc(100% - 60px); /* Adjust based on x-axis and legend height */
+  position: relative;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 40px;
+  padding-right: 10px;
+  height: 100%;
+  z-index: 2;
+}
+
+.y-axis-step {
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.y-axis-label {
+  position: absolute;
+  left: 10px;
+  font-size: 12px;
+  width: 20px;
+  text-align: right;
+}
+
+.x-axis-bar {
+  position: absolute;
+  left: 40px;
+  width: calc(100% - 40px);
+  height: 1px;
+  background-color: var(--inverted-color);
+  opacity: 0.1;
+}
+
+.graph-bars-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.tooltip-container {
+  align-items: flex-end;
+  padding-inline: 10px;
+  border-left: 1px dashed var(--inverted-color-ghost);
+}
+
+.graph-bar-group {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  align-items: flex-end;
+}
+
+.graph-bar {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-container {
+  display: flex;
+  width: 80%; /* Adjust as needed */
+  height: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 45%;
+  transition: height 0.3s ease;
+  z-index: 30;
+}
+
+.bar.students {
+  background-color: var(--highlight-color);
+}
+
+.bar.professionals {
+  background-color: var(--secondary-highlight-color);
+}
+
+.x-axis {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.x-axis-label {
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Legend styles */
+.legend {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.legend-color.students {
+  background-color: var(--primary-color);
+}
+
+.legend-color.professionals {
+  background-color: var(--secondary-color);
+}

@@ -1,0 +1,52 @@
+.custom-select {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.custom-select select {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: var(--border-radius-lg);
+  background-color: var(--soft-dark-color);
+  color: var(--light-color);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.custom-select label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--light-color);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.custom-select.focused label {
+  top: -12px;
+  left: var(--space-xs);
+  font-size: 12px;
+  color: var(--brand-color) !important;
+  padding: 0 var(--space-xs);
+  font-weight: 600;
+}
+
+.custom-select select:focus {
+  outline: none;
+  border-color: var(--inverted-color);
+}
+
+.custom-select::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: var(--light-color);
+  pointer-events: none;
+}

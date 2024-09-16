@@ -1,0 +1,197 @@
+/* Modal Backdrop */
+.custom-modal .MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Modal Box */
+.custom-modal .modal-box,
+.modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  max-width: 1000px;
+  max-height: 75vh;
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal Title */
+.custom-modal .modal-title {
+  color: var(--primary-text-color);
+  margin-bottom: var(--space-md);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Modal Form */
+.custom-modal .modal-form,
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: var(--space-sm);
+  color: var(--primary-text-color) !important;
+}
+
+/* Scrollbar Styles */
+.custom-modal .modal-form::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-modal .modal-form::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-modal .modal-form::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  border: 2px solid var(--secondary-color);
+}
+
+.custom-modal .modal-form::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Form Groups */
+.modal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.modal-form-group label {
+  font-weight: bold;
+  color: var(--primary-text-color) !important;
+}
+
+.modal-form-group > div:not(.modal-input) {
+  padding-inline: var(--space-xs);
+  display: flex;
+  gap: var(--space-sm);
+  margin: 0;
+}
+
+.modal-form-group > div {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: nowrap;
+}
+
+/* Form Inputs */
+.custom-modal input,
+.custom-modal textarea {
+  padding: 16.5px 14px;
+}
+
+.modal-box .MuiInputBase-root {
+  padding: 0;
+}
+
+fieldset {
+  border: none !important;
+}
+
+.custom-modal .MuiFormHelperText-root {
+  color: var(--primary-color);
+}
+
+/* Modal Actions */
+.custom-modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+/* Modal Buttons */
+.custom-modal .modal-button,
+.modal-button {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+}
+
+.custom-modal .modal-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.modal-button {
+  background-color: var(--inverted-color) !important;
+  color: var(--light-color) !important;
+}
+
+[data-theme="dark"] .modal-button {
+  background-color: var(--light-color) !important;
+  color: var(--inverted-color) !important;
+}
+
+/* Select Inputs */
+.custom-modal .MuiSelect-select,
+.custom-modal .MuiSelect-outlined, .custom-modal .MuiSelect-select:focus {
+  padding: 16.5px 14px;
+  background-color: var(--table-header-bg);
+  color: var(--primary-text-color);
+border-radius: var(--border-radius-lg);
+}
+
+.custom-modal .MuiOutlinedInput-notchedOutline {
+  border-color: var(--table-border-color) !important;
+}
+
+.custom-modal .MuiSelect-icon {
+  color: var(--primary-color);
+}
+
+.custom-modal .MuiMenuItem-root {
+  color: var(--inverted-color);
+}
+
+[data-theme="dark"] .custom-modal .MuiMenuItem-root {
+  color: var(--light-color);
+}
+
+.MuiMenu-paper {
+  background-color: var(--light-color);
+  border-radius: var(--border-radius-lg) !important;
+  margin-top: var(--space-xs);
+}
+
+.form-field-container {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0; /* This allows the flex item to shrink below its content size */
+}
+
+.required-icon {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: var(--primary-color);
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.modal-input {
+  width: 100%;
+  background-color: var(--table-header-bg);
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .modal-form-group > div {
+    flex-wrap: wrap;
+  }
+
+  .form-field-container {
+    flex-basis: 100%;
+  }
+}

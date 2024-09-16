@@ -1,0 +1,39 @@
+@import '../variables.css';
+
+.custom-input {
+    position: relative;
+    margin-bottom: 1rem;
+}
+  
+  .custom-input input {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    background-color: var(--soft-dark-color);
+    color: var(--light-color);
+    font-size: 16px;
+    transition: all 0.3s ease;
+    padding: var(--space-s) !important;
+  }
+  
+  .custom-input label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--light-color);
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  
+  .custom-input.focused label {
+    top: -12px;
+    left: var(--space-xs);
+    font-size: 12px;
+    color: var(--brand-color) !important;
+    padding: 0 var(--space-xs);
+    font-weight: 600;
+  }
+  
+  .custom-input input:focus {
+    outline: none;
+  }

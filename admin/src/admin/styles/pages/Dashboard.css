@@ -1,0 +1,98 @@
+.dashboard {
+  padding: 1rem;
+  color: var(--primary-text-color);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.dashboard-item {
+  background-color: transparent;
+  padding: 1rem;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+/* User Graph Styles */
+.user-graph-container, .latest-companies, .stat-item {
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: var(--secondary-color);
+  color: var(--primary-text-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.graph-bar .bar:hover, .latest-companies:hover, .stat-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px var(--shadow-color);
+}
+
+.graph-bar .bar{
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.graph-bar .bar:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px var(--shadow-color);
+}
+
+.legend-color {
+  border-radius: var(--border-radius-lg);
+}
+
+.graph-bar .bar.students, .legend-color.students {
+  background-color: var(--highlight-color);
+}
+
+.graph-bar .bar.professionals, .legend-color.professionals {
+  background-color: var(--secondary-highlight-color);
+}
+
+/* Latest Companies Styles */
+.company-item {
+  border-bottom: 1px solid var(--brand-color);
+  cursor: pointer;
+}
+
+.company-item:hover .company-name {
+transform: translateX(5px);
+}
+
+.company-name {
+  color: var(--highlight-color);
+  transition: transform 0.3s ease;
+}
+
+.company-date {
+  color: var(--secondary-highlight-color);
+  font-weight: 600;
+}
+
+/* Numeric Stats Styles */
+.stat-item {
+  cursor: pointer;
+}
+
+.stat-icon {
+  color: var(--highlight-color);
+}
+
+.stat-value {
+  color: var(--alt-secondary-highlight-color);
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .wide {
+    grid-column: auto;
+  }
+}
