@@ -5,9 +5,10 @@ import Hero from './components/Hero';
 export default function Home() {
 	return (
 		<div className='container homepage'>
-			<main>
+			<div className='page-content'>
+				<Header />
 				<Hero />
-			</main>
+			</div>
 		</div>
 	);
 }

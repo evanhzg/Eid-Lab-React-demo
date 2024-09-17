@@ -7,6 +7,10 @@ header {
 	padding: var(--space-md) var(--space-sm);
 }
 
+a {
+	text-decoration: none;
+}
+
 header .header-logo {
 	display: flex;
 	align-items: center;
@@ -38,6 +42,10 @@ header ul li:hover {
 	background-color: rgba(0, 0, 0, 0.1);
 	color: var(--light-color);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+header.neutral {
+	background-color: transparent;
 }
 
 header.neutral ul li {

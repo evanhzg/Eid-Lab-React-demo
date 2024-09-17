@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 
 import { useOffers, Offer } from '../../hooks/useOffers';
 import Link from 'next/link';
-import '../styles/homepage.css';
+import './styles.css';
 import Card from '../components/Card';
 import Input from '../components/Input';
 import Sparkles from '../components/Sparkles';
@@ -212,7 +212,7 @@ export default function Home() {
 
 	return (
 		<div className='container offers-page'>
-			<main>
+			<div className='page-content'>
 				<Button
 					className='theme-button'
 					onClick={toggleTheme}>
@@ -244,7 +244,7 @@ export default function Home() {
 						/>
 					))}
 				</div>
-			</main>
+			</div>
 		</div>
 	);
 }

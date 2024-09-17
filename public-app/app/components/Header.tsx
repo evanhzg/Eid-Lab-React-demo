@@ -6,11 +6,17 @@ import '../styles/components/Header.css';
 import { UserButton } from './Button';
 import Link from 'next/link';
 
-const Header = ({ className }: { className?: string }) => {
+const Header = ({
+	className,
+	neutral = false,
+}: {
+	className?: string;
+	neutral?: boolean;
+}) => {
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
 	return (
-		<header className={className}>
+		<header className={`${neutral ? 'neutral' : ''} ${className || ''}`}>
 			<Link
 				href='/'
 				className='header-logo'>
