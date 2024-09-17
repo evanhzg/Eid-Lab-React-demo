@@ -15,6 +15,20 @@ const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => {
 	);
 };
 
+const UserButton: React.FC<ButtonProps> = ({
+	children,
+	className,
+	...props
+}) => {
+	return (
+		<button
+			className={`user-button ${className || ''}`}
+			{...props}>
+			{children}
+		</button>
+	);
+};
+
 const SendButton: React.FC<ButtonProps> = ({
 	children,
 	className,
@@ -30,5 +44,5 @@ const SendButton: React.FC<ButtonProps> = ({
 	);
 };
 
-export { Button, SendButton };
+export { Button, SendButton, UserButton };
 export default Button;

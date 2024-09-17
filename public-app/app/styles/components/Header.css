@@ -4,20 +4,20 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: var(--space-md) var(--space-s);
+	padding: var(--space-md) var(--space-sm);
 }
 
-.header-logo {
+header .header-logo {
 	display: flex;
 	align-items: center;
 	gap: var(--space-xs);
 }
 
-.header-logo * {
+header .header-logo * {
 	font-size: 2rem;
 }
 
-ul {
+header ul {
 	font-family: 'Kanit', sans-serif;
 	display: flex;
 	align-items: center;
@@ -26,22 +26,33 @@ ul {
 	font-weight: 900;
 }
 
-li {
+header ul li {
 	border-radius: var(--border-radius-lg);
 	padding: var(--space-xs) var(--space-s);
 	background-color: rgba(0, 0, 0, 0.05);
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	transition: all 0.1s ease;
+	transition: all 0.3s ease;
 	cursor: pointer;
 }
 
-li:hover {
+header ul li:hover {
 	background-color: rgba(0, 0, 0, 0.1);
 	color: var(--light-color);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.header-actions {
+header.neutral ul li {
+    border: none;
+	background-color: transparent;
+}
+
+header.neutral ul li:hover {
+	color: var(--dark-color);
+	transform: translateY(-6px);
+    background-color: transparent;
+}
+
+
+header .header-actions {
 	display: flex;
 	align-items: center;
 	gap: var(--space-s);

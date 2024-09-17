@@ -1,0 +1,85 @@
+@import '../variables.css';
+@import '../globals.css';
+
+.hero {
+	border-radius: var(--border-radius-lg);
+	background-color: var(--dark-color);
+		
+	background-image: url('../../assets/hero-bg.jpg');
+	background-size: cover;
+	background-position: center;
+	min-height: 500px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: var(--space-sm);
+}
+
+.hero p {
+	color: var(--light-color) !important;
+	font-family: 'Kanit', sans-serif;
+	text-shadow: 0 0 6px var(--shadow-color);
+}
+
+.hero .hero-description-highlight {
+	font-weight: var(--font-weight-bold);
+}
+
+.hero .hero-slogan {
+	font-size: var(--font-size-lg);
+	font-weight: var(--font-weight-bold);
+	font-size: 4rem;
+}
+
+.hero .hero-button {
+	display: flex;
+	align-items: center;
+	gap: var(--space-xs);
+}
+
+.hero .hero-button p {
+	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-bold);
+}
+
+.hero .hero-button:hover {
+	transform: translateY(-3px);
+}
+
+.hero .input-container {
+	display: flex;
+	align-items: center;
+	position: relative;
+	font-family: 'Kanit', sans-serif;
+	min-width: 300px;
+}
+
+.hero .input-container .custom-input {
+	width: 100%;
+}
+
+.hero .input-container input {
+	box-shadow: 0 6px 12px var(--shadow-color);
+	width: calc(100% - var(--space-sm));
+	text-align: center;
+}
+
+.hero .input-container 
+.custom-input.focused label {
+ font-style: normal;
+}
+
+.hero .input-container label {
+	width: calc(100% - var(--space-sm));
+	font-style: italic;
+	text-align: center;
+
+}
+
+.hero .input-container Button {
+	position: absolute;
+	right: 0;
+}
+

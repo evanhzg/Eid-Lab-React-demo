@@ -1,7 +1,8 @@
 @import '../variables.css';
 @import '../globals.css';
 
-.custom-button {
+.custom-button,
+.user-button {
     background-color: var(--soft-dark-color);
     color: var(--light-color);
     border: none;
@@ -14,10 +15,44 @@
     font-weight: 600;
 
     text-transform: uppercase;
+}
 
+.custom-button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 8px var(--shadow-color);
+}
 
-    &:hover {
-        transform: scale(1.02);
-        box-shadow: 0 6px 8px var(--shadow-color);
-    }
+.user-button {
+	padding: var(--space-s) var(--space-sm);
+	border-radius: var(--border-radius-lg);
+	font-weight: 600;
+	letter-spacing: 0.05em;
+	border: 2px solid var(--dark-color);
+}
+
+.user-button.has-account {
+	background-color: var(--dark-color);
+	color: var(--light-color);
+	transition: all 0.2s ease;
+}
+
+.user-button.no-account {
+	color: var(--light-color);
+    border-color: transparent;
+	background-color: rgba(0, 0, 0, 0.1);
+	transition: all 0.1s ease;
+}
+
+.user-button:hover {
+	box-shadow: 0 6px 8px var(--shadow-color);
+}
+
+.user-button.no-account:hover {
+	transform: scale(1.02);
+}
+
+.user-button.has-account:hover {
+	background-color: var(--light-color);
+	color: var(--dark-color);
+	border-color: var(--light-color);
 }
